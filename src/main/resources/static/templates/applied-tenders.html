@@ -119,7 +119,7 @@
                                                     <button class="btn btn-success btn-xs" ng-click="award(Tender, true)" ng-if="Tender.stage == 'awarded'"> AWARD STAGE</button>
                                                     <button class="btn btn-success btn-xs" ng-click="contract(Tender, true)" ng-if="Tender.stage == 'contract'"> CONTRACT STAGE</button>
                                                     <button class="btn btn-success btn-xs" ng-click="lpo(Tender, true)" ng-if="Tender.stage == 'lpo'"> LPO STAGE</button>
-                                                    <button class="btn btn-success btn-xs" ng-click="progres(Tender, true)" ng-if="Tender.stage == 'progress'"> IN-PROGRESS STAGE</button>
+                                                    <button class="btn btn-success btn-xs" ng-click="progressReport(Tender, true)" ng-if="Tender.stage == 'progress'"> PROGRESS REPORT STAGE</button>
 
                                             </div>
                                         </td>
@@ -273,6 +273,49 @@
             </div>
         </div>
     </div>
+
+
+
+<!--     PROGRESS REPORT STAGE -->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="reportingStage">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-map-marker"></span> Progress Report</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="reportingStage = !reportingStage" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <form name="TenderView" class="form-horizontal">
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                            <tr>
+
+                                <th class="sorting">Title</th>
+                                <th class="sorting">Document</th>
+                                <th class="sorting">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Progress Report</td>
+                                <td><a href="" target="=_blank" style="color: #C0392B">COMPLETION-CERTIFICATE/T/2017/103.PDF</a></td>
+                                <td>
+                                    <div class="btn-group pull-left">
+                                        <button class="btn btn-danger btn-xs" ng-click="downloadReport(Tender)"><i class="fa fa-search-plus"></i> DOWNLOAD </button>
+                                        <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!--    AWARD STAGE-->

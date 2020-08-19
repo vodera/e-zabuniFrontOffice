@@ -1060,6 +1060,9 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$localStorage', '$window', 
         $scope.evaluation = function (){
             $scope.evaluationStage = true;
         }
+        $scope.progressReport = function (){
+            $scope.reportingStage = true;
+        }
 
         $scope.Notifications =
             [
@@ -1089,27 +1092,6 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$localStorage', '$window', 
             $scope.ShowTenderView = true;
             // $window.location=""
         }
-
-        DataService.getUserTypes().then(function (response) {
-            console.log("User Types Data:", response);
-            $scope.UserTypes = response.data.data;
-            console.log("usertype options", $scope.UserTypes);
-            $scope.progressBar.close();
-            $window.scrollTo(0, 0);
-        }, function (error) {
-            console.log("Error", error);
-            $scope.progressBar.close();
-            if (error.status === -1) {
-                $rootScope.notify('warning', 'Warning', 'Network Connectivity Issue Detected');
-            } else if (error.status === 401) {
-                $rootScope.expiredToken();
-            } else if (error.status === 403) {
-                $rootScope.notify('error', 'Error', error.data.message);
-                $window.location = '#/Error';
-            } else {
-                $rootScope.notify('error', 'Error', error.data === "" ? "Unknown error has occured" : error.data.message);
-            }
-        });
 
         $scope.Tenders =
             [{  TenderTitle:"REHABILITATION WORKS OF MBWALENI WATER",
