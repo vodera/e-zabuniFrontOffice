@@ -1,0 +1,329 @@
+<div class="tab-content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"><span class="fa fa-user"></span><strong> System User Info</strong> - {{SystemUser.fullName}}</h4>
+            <ul class="panel-controls">
+                <li><a ng-click="switchTab('Main')" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="panel-body"> 
+            <form name="UserViewForm.createUser" class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">User Type</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <input type="text" data-ng-model="SystemUser.userType.userType" class="form-control" readonly="">
+                                </div>                                            
+                                <span class="help-block">System User Type</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Full Name</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                    <input type="text" ng-model="SystemUser.fullName" class="form-control" name="fullnameText" placeholder="Enter full name" required ng-readonly="!SystemUser.editMode">
+                                </div>                                            
+                                <span class="help-block">User Full Name</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Phone Number</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                    <input type="text" ng-model="SystemUser.msisdn" class="form-control" minlength="10" maxlength="10" name="msisdnText" placeholder="Enter phone number" required ng-readonly="!SystemUser.editMode" numbers-Only ng-pattern="/^[0][7][0-9]/">
+                                </div>                                            
+                                <span class="help-block">User Phone Number</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Password Status</label>
+                            <div class="col-md-7">   
+                                <p class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-key"></span></span>
+                                    <input type="text" ng-model="SystemUser.passwordStatus" class="form-control" readonly="readonly">
+                                    <span class="input-group-btn btn-group">
+                                        <button has-permission='LOCK_USERS' type="button" class="btn btn-danger" ng-click="lockSystemUsers(SystemUser, true)"><i class="fa fa-unlock-alt"></i>{{SystemUser.passwordStatus === 'Locked' ? 'Unlock' : 'Lock'}}</button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">   
+                        <div ng-if="SystemUser.userType === 'Customer'" class="form-group">
+                            <label class="col-md-3 control-label text-left">Principal Customer</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <input type="text" ng-model="SystemUser.customerPK" class="form-control" placeholder="Customer Name" readonly="">
+                                </div>                                    
+                                <span class="help-block">Principal Customer</span>
+                            </div>
+                        </div>
+                        <div ng-if="(SystemUser.userType === 'CIT Agent' || SystemUser.userType === 'CIT Teller')" class="form-group">
+                            <label class="col-md-3 control-label text-left">CIT Agent</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <input type="text" ng-model="SystemUser.citAgentPK" class="form-control" placeholder="CIT Agent Name" readonly="">
+                                </div>                                    
+                                <span class="help-block">CIT Agent</span>
+                            </div>
+                        </div>  
+                        
+                        <div ng-if="SystemUser.userType === 'Bank User'" class="form-group">
+                            <label class="col-md-3 control-label text-left">Department</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <input ng-if="!SystemUser.editMode" type="text" ng-model="SystemUser.department.departmentName" class="form-control" placeholder="Department Name" readonly="">
+                                    <select ng-if="SystemUser.editMode" data-ng-options="Department.departmentId as Department.departmentName for Department in Departments" data-ng-model="SystemUser.departmentId" class="form-control" required>
+                                        <option value="" ng-if="!SystemUser.citAgentId">Select Department</option>
+                                    </select>
+                                </div>                                    
+                                <span class="help-block">User department</span>
+                            </div>
+                        </div>  
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Email Address</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                    <input type="text"  ng-model="SystemUser.emailAddress" class="form-control" name="emailAddressText" placeholder="Enter email address" readonly="">
+                                </div>                                            
+                                <span class="help-block">User Email Address</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Status</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <input type="text" ng-model="SystemUser.status" class="form-control" name="name" placeholder="User Status" readonly="">
+                                </div>                                    
+                                <span class="help-block">User Account Status</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div ng-if="!SystemUser.editMode" class="form-group pull-right">
+                        <div class="col-md-12">                                                                                                                                                                                                               
+                            <div class="btn-group"> 
+                                <button has-permission='DELETE_USERS' class="btn btn-danger" ng-click="deleteSystemUser(SystemUser, true)"><i class="fa fa-trash-o"></i> Delete </button>
+                                <button has-permission='DEACTIVATE_USERS' class="btn btn-warning" ng-click="deactivateSystemUser(SystemUser, true)"><i class="fa fa-lock"></i>{{SystemUser.status === 'Active' || SystemUser.status === 'New' ? ' Deactivate' : 'Activate' }}</button>  
+                                <button has-permission='UPDATE_USER' class="btn btn-secondary" ng-click="viewUser(SystemUser, true)"><i class="fa fa-edit"></i> Edit User</button> 
+                                <button class="btn btn-default" ng-click="switchTab('Main')"><i class="fa fa-reply"></i> Go back</button>
+                            </div>      
+                        </div>
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+        <div class="panel panel-default tabs" id="tabs">   
+            <ul class="nav nav-tabs" id="user-tablist">
+                <li has-permission='VIEW_ASSIGNED_USER_ROLES' ng-class="{active: CurrentTab === 1}"><a href="" ng-click="navigateTab(1)"><span class="fa fa-edit"></span> User Roles</a></li>
+                <li has-permission='VIEW_ALL_AUDIT_LOGS' ng-class="{active: CurrentTab === 2}"><a href="" ng-click="navigateTab(2)"><span class="fa fa-history"></span> Audit Trail</a></li>
+            </ul>
+            <div class="" ng-if="CurrentTab === 1">
+                <div class="panel-heading">
+                <h5 class="panel-title"><span class="fa fa-check"></span> Assigned Roles</h5>
+            </div> 
+            <form class="form-horizontal" name="UserRoles"> 
+                <div class="panel-group accordion">
+                    
+                                                        
+                        <div class="panel-body panel-body-open">
+                            <div class="form-group">
+                                <div class="col-md-12">  
+                                    <div class="form-group">
+                                        <div class="col-md-9"> 
+                                            <div class="checkbox-set">
+                                                <div class="form-group" ng-repeat="item in Roles" ng-if="$index % 3 === 0">
+                                                    <div class="col-md-4">                                    
+                                                        <label class="check"><input type="checkbox" class="icheckbox" ng-model="Roles[$index].isChecked" ng-disabled="!SystemUser.editMode"/> {{Roles[$index].roleName}}</label>
+                                                    </div>
+                                                    <div class="col-md-4">                                    
+                                                        <label ng-if="Roles[$index + 1]" class="check"><input type="checkbox" class="icheckbox" ng-model="Roles[$index + 1].isChecked" ng-disabled="!SystemUser.editMode"/> {{Roles[$index + 1].roleName}}</label>
+                                                    </div>
+                                                    <div class="col-md-4">                                    
+                                                        <label ng-if="Roles[$index + 2]" class="check"><input type="checkbox" class="icheckbox" ng-model="Roles[$index + 2].isChecked" ng-disabled="!SystemUser.editMode"/> {{Roles[$index + 2].roleName}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="help-block">The roles assigned to this user</span>
+                                        </div>
+                                    </div>
+                                    <!--  <input type="checkbox" ng-model="test.allItemsSelected" ng-change="checkAll()"/> -->
+                                </div>
+                            </div> 
+                        </div>                                
+                    
+<!--                    <div ng-if="SystemUser.editModes" class="panel-footer">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-default" ng-click="switchTab('Main')"><i class="fa fa-times-circle"></i> Cancel</button>
+                            <button class="btn btn-secondary" ng-click="saveUserRole()"><i class="fa fa-check-square-o"></i> Save Role</button>
+                        </div>
+                    </div>-->
+                </div> 
+            </form>
+                <div class="panel-footer">
+                    <div has-permission='UPDATE_USER' ng-if="SystemUser.editMode" class="btn-group pull-right">
+                            <button class="btn btn-default" ng-click="viewUser(SystemUser, false)"><i class="fa fa-times-circle"></i> Cancel</button>
+                            <button class="btn btn-secondary" ng-click="saveSystemUser()"><i class="fa fa-check-square-o"></i> Save User</button>
+                    </div>
+                </div>
+<!--                <div class="panel-heading">
+                    <h5 class="tab-panel-title"><strong> System User Roles</strong></h5>
+                </div>
+                <div id="datatable_wrapper">
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                            <tr>
+                                <th class="sorting col-centered">No</th>
+                                <th class="sorting">Role Name</th>
+                                <th class="sorting">Role Description</th>
+                                <th class="sorting">Date Assigned</th>
+                                <th class="sorting">Approval Status</th>
+                                <th class="sorting">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="UserRole in SystemUser.cmsUserRoleMapList track by $index">
+                                <td class="col-centered">{{$index + 1}}</td>
+                                <td>{{UserRole.role.roleName}}</td>
+                                <td>{{UserRole.role.description}}</td>
+                                <td>{{UserRole.role.creationDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{UserRole.role.actionStatus}}</td>
+                                <td ng-if="SystemUser.editMode">
+                                    <div class="btn-group text-center">
+                                        <button has-permission='ASSIGN_USER_ROLES' class="btn btn-default btn-xs" ng-click="removeRole($index, UserRole)"><i class="fa fa-times-circle"></i> Remove</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div>
+                <div class="panel-footer" ng-if="SystemUser.editMode">
+                    <div class="btn-group pull-right">
+                        <div class="pull-right">
+                        <button has-permission='ASSIGN_USER_ROLES' type="button" class="btn btn-primary" ng-click="assignUserRole(false)"><i class="fa fa-plus-circle"></i>Assign New Role(s)</button>
+                    </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div has-permission='UPDATE_USER' ng-if="SystemUser.editMode" class="btn-group pull-right">
+                            <button class="btn btn-default" ng-click="viewUser(SystemUser, false)"><i class="fa fa-times-circle"></i> Cancel</button>
+                            <button class="btn btn-secondary" ng-click="saveSystemUser()"><i class="fa fa-check-square-o"></i> Save User</button>
+                    </div>
+                </div>-->
+            </div> 
+            <div class="" ng-if="CurrentTab === 2">
+                <div class="panel-heading">
+                    <h4 class="tab-panel-title"><span class="fa fa-history"></span><strong> Audit Trail</strong></h4>
+                </div>
+                <div class="panel-body">
+                    <div id="datatable_wrapper">
+                        <form class="form-horizontal" name="searchForm">
+                            <div id="cit_agent_filter" class="dataTables_filter">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="col-md-3 text-left">Search:</label>
+                                            <div class="col-md-8">   
+                                                <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="AuditFilter.keyword">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3">Status:</label>
+                                            <div class="col-md-8">   
+                                                <select data-ng-options="approvalStatus for approvalStatus in ['All', 'Approved', 'Rejected', 'Unapproved']" data-ng-model="AuditFilter.approvalStatus" class="form-control">
+                                                    <option value="" ng-if="!approvalStatus">Select Approval Status</option>
+                                                </select>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-md-3">Date From:</label>
+                                            <div class="col-md-8">   
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="AuditFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3">Activity:</label>
+                                            <div class="col-md-8">   
+                                                <select data-ng-options="subscriptionStatus for subscriptionStatus in ['All', 'Update', 'Creation', 'Authenticaion', 'Deletion', 'Approve']" data-ng-model="AuditFilter.subscriptionStatus" class="form-control">
+                                                    <option value="" ng-if="!subscriptionStatus">Select Status</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="col-md-4">Date To:</label>
+                                            <div class="col-md-7">      
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="AuditFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>                                             
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class="btn-group pull-right">
+                                                <button class="btn btn-default" ng-click="loadUserAuditLog(true)"><i class="fa fa-times"></i> Reset</button>
+                                                <button class="btn btn-info" ng-click="loadUserAuditLog(false)"><i class="fa fa-filter"></i> Filter</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                      
+                            </div>   
+                        </form>
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr >
+                                    <th class="sorting col-centered">No</th>
+                                    <th class="sorting col-md-2">Occurrence Time</th>
+                                    <th class="sorting col-md-2">Username</th>
+                                    <th class="sorting col-centered">Activity</th>
+                                    <th class="sorting col-md-1 col-centered">Status</th>
+                                    <th class=" col-md-4">Description</th>
+                                    <th class="">Notes</th>
+                                    <th class="sorting col-md-1">IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="logs in AuditTrail track by $index">
+                                    <td class="col-centered">{{$index + 1}}</td>
+                                    <td>{{logs.occurenceTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td class="">{{logs.user.emailAddress}}</td>
+                                    <td class="col-centered">{{logs.activityType}}</td>
+                                    <td class="col-centered">{{logs.status}}</td>
+                                    <td class="">{{logs.description}}</td>
+                                    <td class="">{{logs.notes}}</td>
+                                    <td>{{logs.ipAddress}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-include src="'templates/table-footer.html'"></div>    
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+        </div>         
+    </div>
+</div>

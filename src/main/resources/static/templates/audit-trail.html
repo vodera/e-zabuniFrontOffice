@@ -1,0 +1,165 @@
+<section class="content" >       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>Audit Trail reports</li>
+        <li class="active">{{PageParams.breadCrumb}}</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="panel-x tab-contentx" ng-if="!ShowTransactionView">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><span class="fa fa-list-ul"></span><strong> {{PageParams.title}}</strong></h4>
+                                <!-- START DATATABLE EXPORT -->
+                                <div class="btn-group pull-right">
+                                    <ul class="panel-controls">
+                                        <li>
+                                            <div class="dataTables_psize">
+                                                <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="" ng-click="exportAuditTrail('csv')"><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="exportAuditTrail('xls')"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="exportAuditTrail('pdf')"><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-body"> 
+                                <div id="datatable_wrapper" class="">
+                                    <form class="form-horizontal" name="searchForm">
+                                    <div id="cit_agent_filter" class="dataTables_filter">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 text-left">Description:</label>
+                                                    <div class="col-md-8">   
+                                                        <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="AuditFilter.keyword">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Status:</label>
+                                                    <div class="col-md-8">   
+                                                        <select data-ng-options="approvalStatus for approvalStatus in ['All', 'Completed', 'Pending', 'Failed']" data-ng-model="AuditFilter.approvalStatus" class="form-control">
+                                                            <option value="" ng-if="!approvalStatus">Select Status</option>
+                                                        </select>
+                                                    </div>
+                                                </div>   
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Date From:</label>
+                                                    <div class="col-md-8">   
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="AuditFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Activity:</label>
+                                                    <div class="col-md-8">   
+                                                        <select data-ng-options="subscriptionStatus for subscriptionStatus in ['All', 'Update', 'Creation', 'Authentication', 'Deletion', 'Approve']" data-ng-model="AuditFilter.activity" class="form-control">
+                                                            <option value="" ng-if="!subscriptionStatus">Select Activity</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-4">Date To:</label>
+                                                    <div class="col-md-7">      
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="AuditFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>  
+                                                <div class="form-group" has-permission='VIEW_USERS'>
+                                                    <label class="col-md-4">Username:</label>
+                                                    <div class="col-md-7">      
+                                                        <div class="input-group has-feedback">
+                                                            <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                                            <div custom-select="users.userId as users.fullName for users in searchUser('')" custom-select-options="{ 'async': true }" ng-model="AuditFilter.userId">
+                                                                <div class="pull-left">
+                                                                    <strong>{{ users.fullName}}</strong><br/>
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="btn-group pull-right">
+                                                        <button class="btn btn-default" ng-click="resetAuditFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                        <button class="btn btn-info" ng-click="listAuditTrail()"><i class="fa fa-filter"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>   
+                                </form>
+                                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                        <thead>
+                                            <tr>
+                                                <th class="sorting col-centered">No</th>
+                                                <th class="sorting col-md-2">Occurrence Time</th>
+                                                <th class="sorting col-md-2">Username</th>
+                                                <th class="sorting col-centered">Activity</th>
+                                                <th class="sorting col-md-1 col-centered">Status</th>
+                                                <th class=" col-md-4">Description</th>
+                                                <th class="">Notes</th>
+                                                <th class="sorting col-md-1">IP Address</th>
+                                                
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="log in audit_trail track by $index">
+                                                <td class="col-centered">{{$index + 1}}</td>
+                                                <td>{{log.occurenceTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <td class="">{{log.user.emailAddress}}</td>
+                                                <td class="col-centered">{{log.activityType}}</td>
+                                                <td class="col-centered">{{log.status}}</td>
+                                                <td class="">{{log.description}}</td>
+                                                <td class="">{{log.notes}}</td>
+                                                <td>{{log.ipAddress}}</td>
+                                                
+                                                
+                                                <!--<td class="col-md-2">{{log.user.msisdn}}</td>-->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-include src="'templates/table-footer.html'"></div>    
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>  
+        </div>
+    <!-- END PAGE CONTENT WRAPPER -->     
+</section>

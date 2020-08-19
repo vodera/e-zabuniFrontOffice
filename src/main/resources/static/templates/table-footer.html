@@ -1,0 +1,12 @@
+<div class="dataTables_info">{{'Showing ' + showingStart + ' to ' + showingEnd + ' of ' + totalElements + ' entries'}}</div>
+<div class="dataTables_paginate paging_simple_numbers">
+    <a ng-class="{ disabled : first }" class="paginate_button previous" ng-click="!first && setPage(0)"><i class="fa fa-step-backward"></i></a>
+    <a ng-class="{ disabled : first }" class="paginate_button previous" ng-click="!first && setPage(currentPage - 1)">Previous</a>
+    <a ng-if="currentPage > 0" class="paginate_button previous" ng-click="!first && setPage(currentPage - 1)">....</a>
+    <span  ng-repeat="pageNumber in totalPages | startFrom:currentPage | limitTo:5" ng-class="{ active : currentPage == pageNumber}" >
+        <a ng-class="{ current : currentPage == pageNumber}" class="paginate_button" ng-click="pageNumber != currentPage && setPage(pageNumber)">{{pageNumber + 1}}</a> 
+    </span>
+    <a ng-if="((totalPages.length-1) - currentPage) >= 5" class="paginate_button next" ng-click="!last && setPage(currentPage + 1)">....</a>
+    <a ng-class="{ disabled : last }" class="paginate_button next" ng-click="!last && setPage(currentPage + 1)">Next</a>
+    <a ng-class="{ disabled : last }" class="paginate_button next" ng-click="!last && setPage(totalPages.length-1)"><i class="fa fa-step-forward"></i></a>
+</div>

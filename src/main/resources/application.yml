@@ -1,0 +1,33 @@
+server:
+    port: 8085
+app:
+    params:
+#        api-url: http://localhost:8082/gab/api/v1
+#        api-url: http://41.215.130.247:8081/cash-collection
+#        api-url: http://192.168.1.153:8081/cash-collection
+#        api-url: http://10.10.2.118:8082/cash-collection
+        google:
+            recaptcha:
+                site: 127.0.0.1
+                secret: 6Lf5e1UUAAAAAJTM30TH7op5V6u60Wc_tVOI-Tpy
+zuul:
+    host:
+        socket-timeout-millis: 300000
+    routes:
+        api:
+            url: ${app.params.api-url}
+security:
+#  basic:
+#    enabled: false
+  oauth2:
+    client:
+      clientId: bank_client
+      clientSecret: Gab8498#kddo@.
+      accessTokenUri: ${app.params.api-url}/oauth/token
+      grant-type: password
+      userAuthorizationUri: ${app.params.api-url}/oauth/authorize
+    resource:
+      userInfoUri: ${app.params.api-url}/user/me
+logging:
+    level:
+        root: DEBUG

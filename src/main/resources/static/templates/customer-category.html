@@ -1,0 +1,140 @@
+<section class="content"> 
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li> 
+        <li>Master Records</li> 
+        <li class="active">Customer Categories</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="fa fa-th-large"></span> Customer Categories</h3>
+                        <ul class="panel-controls">
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+<!--                        <div id="cit_agent_filter" class="dataTables_filter">
+                            <label>Search:<input class="form-control " placeholder="keywords" type="search"></label>
+                        </div> -->
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr>
+                                    <th class="sorting col-centered">No</th>
+                                    <th class="sorting col-left">Category Name</th>
+                                    <th class="sorting">Description</th>
+                                    <th class="sorting">Approval Status</th>
+                                    <th class="sorting">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="CustomerCategory in CustomerCategories track by $index">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{CustomerCategory.categoryName}}</td>
+                                    <td>{{CustomerCategory.description}}</td>
+                                    <td>{{CustomerCategory.actionStatus}}</td>
+                                    <td>
+                                        <div class="btn-group pull-left">
+                                            <button has-permission='UPDATE_CUSTOMER_CATEGORIES' class="btn btn-default btn-xs" ng-click="editCustomerCategory(CustomerCategory)"><i class="fa fa-pencil"></i> Edit </button>
+                                            <button has-permission='DELETE_CUSTOMER_CATEGORIES' class="btn btn-danger btn-xs" ng-click="deleteCustomerCategory(CustomerCategory, true)"><i class="fa fa-trash-o"></i> Delete </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>                        
+                        <div ng-include src="'templates/table-footer.html'"></div> 
+                    </div>
+                    <div class="panel-footer">
+                        <div class="pull-right">
+                            <button has-permission='CREATE_CUSTOMER_CATEGORY' type="button" class="btn btn-secondary" ng-click="showCustCategoryDlg({})"><i class="fa fa-plus-circle"></i>Add New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowCustCategory">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-th-large"></span> Customer Category</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="ShowCustCategory = !ShowCustCategory" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="CustomerCategoryForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Category Name</label>
+                                <div class="col-md-5"> 
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-tag"></span></span>
+                                        <input type="text" ng-model="CustomerCategory.categoryName" class="form-control" name="categoryNameText" placeholder="Category Name" required> 
+                                    </div>
+                                    <span class="help-block">Customer Category Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Description</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="CustomerCategory.description" class="form-control" name="descriptionText" placeholder="Enter description"> </textarea>
+                                    </div>
+                                    <span class="help-block">Customer Category Description</span>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="ShowCustCategory = !ShowCustCategory"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-secondary" ng-click="saveCustomerCategory()"><i class="fa fa-check-square-o"></i> Save Category</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+    
+    <!--DELETE CUSTOMER CATEGORY-->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="DeleteCCategorytDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-sitemap"></span> Customer Category</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="DeleteCCategorytDlg = !DeleteCCategorytDlg" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DeleteCustomerCategoryForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Description</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="CustomerCategoryData.notes" class="form-control" name="message" placeholder="Enter Note" required=""> </textarea>
+                                    </div>
+                                    <span class="help-block">Note Description</span>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="DeleteCCategorytDlg = !DeleteCCategorytDlg"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-danger" ng-click="deleteCategory()"><i class="fa fa-check-trash-o"></i> Delete Category</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+</section>

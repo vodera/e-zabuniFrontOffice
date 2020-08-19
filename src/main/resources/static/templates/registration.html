@@ -1,0 +1,203 @@
+<section class="content" >
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Registration</a></li>
+        <li class="">User</li>
+        <li class="active">Company Pre-Qualification</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><span class="fa fa-user"></span><strong> System User Info</strong></h4>
+<!--                <ul class="panel-controls">-->
+<!--                    <li><a ng-click="" class="panel-remove"><span class="fa fa-times"></span></a></li>-->
+<!--                </ul>-->
+            </div>
+            <div class="panel-body">
+                <div class="row dataTables_filter">
+                    <div class="col-md-12">
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="searchPrincipal(true)"><i class="fa fa-eraser"></i> Clear</button>
+                            <button type="button" class="btn btn-info" ng-click="searchPrincipal(false)"><i class="fa fa-search"></i> Validate</button>
+                        </div>
+                        <div class="form-group  pull-right col-md-4">
+                            <label class="col-md-4 control-label text-left">ID Number:</label>
+                            <div class="col-md-8">
+                                <input class="form-control " placeholder="Enter ID Number" type="text" ng-model="BankCustomer.search" numbers-Only required="" >
+                            </div>
+                        </div>
+                        <div class="form-group  pull-right col-md-4">
+                            <label class="col-md-4 control-label text-left">First Name</label>
+                            <div class="col-md-8">
+                                <input class="form-control " placeholder="Enter First Name" type="text" ng-model="BankCustomer.search" required="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form name="CreateNewUser" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Full Name</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="SystemUser.fullName" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">User Full Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Email Address</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                        <input type="email" required=""  ng-model="SystemUser.emailAddress" class="form-control" name="emailAddressText" placeholder="Enter email address">
+                                    </div>
+                                    <span class="help-block">User Email Address</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Password</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                        <input type="password" required=""  ng-model="SystemUser.password" class="form-control" name="emailAddressText" placeholder="Enter your password">
+                                    </div>
+                                    <span class="help-block">User password</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Phone Number</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                        <input type="text" ng-model="SystemUser.msisdn" class="form-control" minlength="10" maxlength="10" name="msisdnText" placeholder="Enter phone number" numbers-Only required ng-pattern="/^[0][7][0-9]/">
+                                    </div>
+                                    <span class="help-block">User Phone Number (National format e.g. 07xxxxxxxx)</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Confirm Email</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                        <input type="email" required=""  ng-model="SystemUser.emailAddress2" class="form-control" name="emailAddressText" placeholder="Enter email address">
+                                    </div>
+                                    <span class="help-block">Confirm Email Address</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Confirm Password</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                        <input type="password" required=""  ng-model="SystemUser.password2" class="form-control" name="emailAddressText" placeholder="Confirm your password">
+                                    </div>
+                                    <span class="help-block">Confirm password</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-default" ng-click="viewUser(SystemUser, false)"><i class="fa fa-times-circle"></i> Cancel</button>
+                            <button class="btn btn-secondary" ng-click="saveSystemUser()"><i class="fa fa-check-square-o"></i> Save User</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+<!--            COMPANY PRE-QUALIFICATION-->
+            <div class="panel-heading">
+                <h4 class="panel-title"><span class="fa fa-user"></span><strong> Company Pre-Qualification</strong></h4>
+<!--                <ul class="panel-controls">-->
+<!--                    <li><a ng-click="" class="panel-remove"><span class="fa fa-times"></span></a></li>-->
+<!--                </ul>-->
+            </div>
+            <div class="panel-body">
+                <form name="CreateNewUser" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Company/Business Name</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="SystemUser.companyName" class="form-control" name="fullnameText" placeholder="Enter company name" required>
+                                    </div>
+                                    <span class="help-block">Company Registered Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Registration Certificate Number</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="SystemUser.companyNumber" class="form-control" name="fullnameText" placeholder="Enter registration certificate number" required>
+                                    </div>
+                                    <span class="help-block">Company Registration Certificate Number</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Kenya Revenue Authority PIN number</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                        <input type="text" ng-model="SystemUser.PIN" class="form-control" minlength="10" maxlength="10" name="msisdnText" placeholder="Enter PIN number" numbers-Only required ng-pattern="/^[0][7][0-9]/">
+                                    </div>
+                                    <span class="help-block">KRA PIN Number</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Business Category</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <select data-ng-options="BusinessCategory.Category for BusinessCategory in BusinessCategories" data-ng-model="BusinessCategory.Category" class="form-control" ng-change='userTypeChange(BusinessCategory.Category)' required>
+                                            <option value="" ng-if="!BusinessCategory.Category">Select Business Category</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block">Business Category</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">IFMIS Number(optional)</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                        <input type="email"  ng-model="SystemUser.emailAddress" class="form-control" name="emailAddressText" placeholder="Enter IFMIS number">
+                                    </div>
+                                    <span class="help-block">IFMIS Number</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">YAGPO Number(Optional)</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <input type="text" ng-model="SystemUser.status" class="form-control" name="name" placeholder="Enter YAGPO Number">
+                                    </div>
+                                    <span class="help-block">YAGPO Number</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-default" ng-click="viewUser(SystemUser, false)"><i class="fa fa-times-circle"></i> Cancel</button>
+                            <button class="btn btn-secondary" ng-click="validateCompany()"><i class="fa fa-check-square-o"></i> Validate Company</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

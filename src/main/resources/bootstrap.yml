@@ -1,0 +1,5 @@
+spring:
+    application:
+        name: gab-admin
+    jmx:
+        default-domain: gab-admin

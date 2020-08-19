@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" class="body-full-height" ng-app="CMSLoginApp">
+    <!--oncontextmenu="return false"-->
+    <head>
+        <!-- META SECTION -->
+        <title>E-Zabuni Procurement System</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <!-- END META SECTION -->
+
+        <!-- CSS INCLUDE -->
+        <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.min.css"/>
+        <script type="text/javascript">
+            var onloadCallback = function () {
+                try {
+                    grecaptcha.render('g-recaptcha', {
+                        'sitekey': '6Lf5e1UUAAAAAA374n3L-2ZJM64d9qgIGaxvg5c9'
+                    });
+                } catch (ex) {
+                    //captcha exception
+                }
+            };
+        </script>
+
+    </head>
+<!--    <body style="width: 100%; height: 100%;">-->
+    <body style="width: 100%; height: 100%; background: url(img/backgrounds/procurement1.png)repeat 0px 0px; background-size: cover; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-attachment: fixed;">
+    <!-- main -->
+        <div class="ng-view"></div>
+        <!-- //main -->
+        <div class="app-spinner" name="mainspinner" ng-show="showLoading">
+            <div class="spinner-message">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <div><span  onload="javascript: console.log('Loaded captcha');" class="spinner-text">Loading.........</span></div>
+            </div>
+        </div>
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type='text/javascript' src="js/plugins/angularjs/angular.min.js?v=0.0.2-BETA"></script>
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+                async defer>
+        </script>
+        <script type='text/javascript' src="scripts/LoginApp.js?v=0.0.2-BETA"></script>
+    </body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,127 @@
+<section class="content">       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li> 
+        <li class="">CIT Agent Onboarding</li>
+        <li class="">CIT Crew</li>
+        <li class="active">List CIT Crew</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">        
+                
+                <div class="panel panel-default tabs" id="tabs">   
+                    <ul class="nav nav-tabs" id="tablist1">
+                        <li ng-class="{active:!ShowCITAgentCrewView}"><a href="" ng-click="switchTab('Main')">CIT AGENT CREW LIST</a></li>
+                        <li ng-if="ShowCITAgentCrewView" ng-class="{active:ShowCITAgentCrewView}"><a href="" ng-click="switchTab('View')">{{CITAgentCrew.fullName}}</a></li>
+                    </ul>
+                    <div class="panel-body tab-content" ng-if="!ShowCITAgentCrewView">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><span class="fa fa-list-ul"></span><strong> CIT Agent Crew List</strong></h4>
+                                <!-- START DATATABLE EXPORT -->
+                                <div class="btn-group pull-right">
+                                    <ul class="panel-controls">
+                                        <li>
+                                            <div class="dataTables_psize">
+                                                <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                    </select>
+                                                </label>
+                                            </div></li>
+                                        <li>
+                                            <div class="btn-group">
+                                            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" ng-click="DownloadReport('csv')"><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="" ng-click="DownloadReport('xls')"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="" ng-click="DownloadReport('pdf')"><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                            </ul>
+                                        </div>
+                                        </li>
+                                    </ul>                                
+                                </div>
+                            </div>
+                            <div class="panel-body"> 
+                                <div id="datatable_wrapper" class="">
+                                    <form class="form-horizontal" name="searchForm">
+                                        <div id="cit_agent_filter" class="dataTables_filter">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 text-left">Search:</label>
+                                                        <div class="col-md-8">   
+                                                            <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="CitCrewFilter.keyword">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <div class="btn-group pull-right">
+                                                            <button class="btn btn-default" ng-click="resetCitCrewFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                            <button class="btn btn-info" ng-click="listCITCrew()"><i class="fa fa-filter"></i> Filter</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                      
+                                        </div>   
+                                    </form>  
+                                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                        <thead>
+                                            <tr>
+                                                <th class="sorting col-centered">No</th>
+                                                <th class="sorting">CIT Agent</th>
+                                                <th class="sorting col-left">Staff ID</th>                                            
+                                                <th class="sorting">Full Name</th>
+                                                <th class="sorting">Designation</th>
+                                                <th class="sorting">Phone Number</th>
+                                                <th class="sorting">Email Address</th>
+                                                <th class="sorting">ID Number</th>
+                                                <th class="sorting">Creation Date</th>
+                                                <th class="sorting">Status</th>
+                                                <!--<th class="sorting">Batch ID</th>-->
+                                                <th class="sorting">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                            <tr ng-repeat="CITCrew in CITCrews track by $index">
+                                                <td>{{$index + 1}}</td>
+                                                <td>{{CITCrew.citAgent.citAgentName}}</td>
+                                                <td>{{CITCrew.staffId}}</td>
+                                                <td>{{CITCrew.fullName}}</td>
+                                                <td>{{CITCrew.designation}}</td>
+                                                <td>{{CITCrew.msisdn}}</td>
+                                                <td>{{CITCrew.emailAddress}}</td>
+                                                <!--<td>{{CITCrew.documentType}}</td>-->
+                                                <td>{{CITCrew.documentNumber}}</td>
+                                                <td>{{CITCrew.creationDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <td>{{CITCrew.actionStatus}}</td>
+                                                <!--<td>{{CITCrew.batchId}}</td>-->
+                                                <td>
+                                                    <div class="btn-group pull-left">
+                                                        <button class="btn btn-default btn-xs" ng-click="viewCITAgentCrew(CITCrew, false)"><i class="fa fa-search-plus"></i> View </button>
+                                                        <button has-permission='UPDATE_CIT_AGENT_CREW' class="btn btn-default btn-xs" ng-click="viewCITAgentCrew(CITCrew, true)"><i class="fa fa-pencil"></i> Edit </button>
+                                                        <!--<button class="btn btn-default btn-xs"><i class="fa fa-sticky-note"></i> Notes </button>-->
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-include src="'templates/table-footer.html'"></div>                                
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="panel-body tab-content" ng-if="ShowCITAgentCrewView">
+                        <div ng-include src="'templates/cit-agent-crew.html'" flex></div>
+                    </div>
+                </div>     
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->                                                
+</section>

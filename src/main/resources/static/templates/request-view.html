@@ -1,0 +1,744 @@
+<div class="tab-content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"><span class="fa fa-money"></span><strong> Cash Collection Request </strong></h4><label class="tab-panel-title">{{'[' + CollectionRequest.requestId + ']'}}</label>
+            <ul class="panel-controls">
+                <li><a ng-click="switchTab('Main')" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="panel-body">   
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- START DEFAULT WIZARD -->
+                    <div class="wizard">
+                        <ul class="steps_6 anchor">
+                            <li>
+                                <a href="" ng-class="{done:requestStage >= 1}">
+                                    <span class="stepNumber">1</span>
+                                    <span class="stepDesc">Request Stage 1<br><small>Cash Collection Initiation</small></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" ng-class="{done:requestStage >= 2, selected:requestStage === 1, disabled:requestStage < 3}">
+                                    <span class="stepNumber">2</span>
+                                    <span class="stepDesc">Request Stage 2<br><small>Forward to CIT Agent</small></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" ng-class="{done:requestStage >= 3, selected:requestStage === 2, disabled:requestStage < 4}">
+                                    <span class="stepNumber">3</span>
+                                    <span class="stepDesc">Request Stage 3<br><small>CIT Crew Scheduling</small></span>                   
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" ng-class="{done:requestStage >= 4, selected:requestStage === 3, disabled:requestStage < 5}">
+                                    <span class="stepNumber">4</span>
+                                    <span class="stepDesc">Request Stage 4<br><small>CIT Crew Confirmation</small></span>                   
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" ng-class="{done:requestStage >= 5, selected:requestStage === 4, disabled:requestStage < 6}">
+                                    <span class="stepNumber">5</span>
+                                    <span class="stepDesc">Request Stage 5<br><small>Cash Collection Tallying & Input</small></span>                   
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" ng-class="{done:requestStage >= 6, selected:requestStage === 5, disabled:requestStage < 7}">
+                                    <span class="stepNumber">6</span>
+                                    <span class="stepDesc">Request Stage 6<br><small>Confirmation & Posting</small></span>                   
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="stepContainer" style="height: 55px;">
+                            <div ng-if="requestStage === 1" id="step-1" class="content checkbox-set">   
+                                <h4><strong>Request Stage</strong>: Cash Collection Initiation</h4>
+                                <p>Cash Collection Request with the Outlet details, preferred collection time, accounts and amounts per currency has been initiated and sent to the Bank.</p>
+                            </div>
+                            <div ng-if="requestStage === 2" id="step-2" class="content checkbox-set">
+                                <h4><strong>Request Stage</strong>: Forward to CIT Agent</h4>
+                                <p>The Bank operator has received the Cash Collection Request, verified the details and forwarded the request to a CIT Agent for Crew Scheduling.</p>
+                            </div>
+                            <div ng-if="requestStage === 3" id="step-3" class="content checkbox-set">
+                                <h4><strong>Request Stage</strong>: CIT Crew Scheduling</h4>
+                                <p>CIT Agent has received the Cash Collection Request and scheduled CIT Crew for dispatch.</p>
+                            </div>
+
+                            <div ng-if="requestStage === 4" id="step-4" class="content checkbox-set">
+                                <h4><strong>Request Stage</strong>: CIT Crew Scheduling</h4>
+                                <p>CIT Agent Crew have checked-in into the customer location and they have been confirmed.</p>
+                            </div>
+                            <div ng-if="requestStage === 5" id="step-5" class="content checkbox-set">
+                                <h4><strong>Request Stage</strong>: Cash Collection Tallying & Input</h4>
+                                <p>The CIT Agent Cashier has counted the cash and entered the counted cash into the system.</p>
+                            </div>
+                            <div ng-if="requestStage === 6" id="step-6" class="content checkbox-set">
+                                <h4><strong>Request Stage</strong>: Completed</h4>
+                                <p>The request has been completed. The customer confirmed the request and the transaction has been posted for processing.</p>
+                            </div>
+                        </div>
+                    </div>                                    
+                    <!-- END DEFAULT WIZARD -->
+                </div>
+            </div>                              
+            <div class="" style="margin-top: 50px"></div>
+            <div ng-if="!ShowCrewSchedule && !ShowConfirmCrew && !ShowRequestTrx" class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="tab-panel-title"><span class="fa fa-info-circle"></span><strong> Request Details</strong></h5>
+                </div>
+                <form name="RequestViewForm" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Request ID:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" data-ng-model="CollectionRequest.requestId" class="form-control" readOnly="">
+                                    </div>                                            
+                                </div>
+                            </div>                           
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Request Time:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.requestTime" ng-value="CollectionRequest.requestTime | date:'yyyy-MM-dd HH:mm:ss'" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>                         
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Preferred Collection Time:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.prefCollectionTime" ng-value="CollectionRequest.prefCollectionTime | date:'yyyy-MM-dd HH:mm:ss'" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Customer Name:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" data-ng-model="CollectionRequest.outlet.customer.customerName" class="form-control" readOnly="">
+                                    </div>                                            
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Collection Point:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text"  ng-model="CollectionRequest.outlet" ng-value="CollectionRequest.outlet.outletName+' - '+CollectionRequest.outlet.physicalAddress" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Base Currency:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.currencyCode" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>                           
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">CIT Agent Name:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.citAgent.citAgentName" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Request Stage:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.requestStage" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Request Status:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.requestStatus" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Description:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.description" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>                     
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Number of Vehicles:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.vehicleQty" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Requested By:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.requestByObject.fullName" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>                    
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Total Value:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.totalValue"  ng-value="CollectionRequest.totalValue | number:'2'" class="form-control" readonly="">
+                                    </div> 
+                                </div>
+                            </div>                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Completion Time:</label>
+                                <div class="col-md-7">                                            
+                                    <div class="has-feedback">
+                                        <input type="text" ng-model="CollectionRequest.completionTime" ng-value="CollectionRequest.completionTime ? (CollectionRequest.completionTime | date:'yyyy-MM-dd HH:mm:ss') : 'NA'" class="form-control" readonly="">
+                                    </div>                                            
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </form>
+                <div class="panel-footer">
+                    <div class="form-group pull-right">
+                        <div class="col-md-12">                                                                                                                                                                                                               
+                            <div class="btn-group">
+                                <button class="btn btn-default" ng-click="switchTab('Main')"><i class="fa fa-times-circle-o"></i> Dismiss</button> 
+                                <!--<button has-permission='CANCEL_CASH_COLLECTION' ng-if="CollectionRequest.requestByObject.fullName && requestStage < 6" class="btn btn-danger" ng-click="cancelRequest()"><i class="fa fa-times"></i> Cancel Request</button>-->  
+                                <button has-permission='FORWARD_CASH_COLLECTION_REQUEST' ng-if="requestStage === 1" class="btn btn-secondary" ng-click="processRequest()"><i class="fa fa-chevron-right"></i> Forward To CIT</button>  
+                                <button has-permission='SCHEDULE_CREW' ng-if="requestStage === 2" class="btn btn-secondary" ng-click="processRequest()"><i class="fa fa-clock-o"></i> Schedule Crew</button> 
+                                <button has-permission='VIEW_CASH_COLLECTION' ng-if="requestStage === 3" class="btn btn-secondary" ng-click="processRequest()"><i class="fa fa-check-square-o"></i> Confirm Crew Schedule</button>
+                                <button has-permission='VIEW_CASH_COLLECTION' ng-if="requestStage === 4" class="btn btn-secondary" ng-click="processRequest()"><i class="fa fa-money"></i> Input Counted Cash</button>
+                                <button has-permission='INTIATE_CASH_COLLECTION' ng-if="requestStage === 5" class="btn btn-secondary" ng-click="processRequest()"><i class="fa fa-check-square-o"></i> Confirm Request</button>
+                            </div>      
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form class="form-horizontal" name="CollectionRequestForms.CrewScheduleForm">
+                <div ng-if="ShowCrewSchedule" class="panel panel-default" ng-repeat="CITCrewAllocation in CITCrewAllocations track by $index">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><span class="fa fa-clock-o"></span><strong> CIT Agent Crew Scheduling</strong></h4>
+                        <ul class="panel-controls">
+                            <li>
+                                <h4 class="tab-panel-title"><strong>[{{$index + 1}}]</strong></h4>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-body"> 
+                        <div class="row">
+                            <div class="col-md-6">   
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label text-left">CIT Teller</label>
+                                    <div class="col-md-7">                                            
+                                        <div class="input-group has-feedback">
+                                            <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                            <div custom-select="CITTeller.crewId as CITTeller.fullName for CITTeller in searchAsyncx($searchTerm, 'Cashier')" custom-select-options="{ 'async': true }" ng-model="CITCrewAllocation.tellerId" required>
+                                                <div class="pull-left">
+                                                    <strong>{{ CITTeller.fullName}}</strong><br/>
+                                                    <small><span>Staff ID: {{CITTeller.staffId}}</span></small>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>                                            
+                                        <span class="help-block">Select CIT Agent Teller</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label text-left">CIT Commander</label>
+                                    <div class="col-md-7">                                            
+                                        <div class="input-group has-feedback">
+                                            <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                            <div custom-select="CITCommander.crewId as CITCommander.fullName for CITCommander in searchAsyncx($searchTerm, 'Commander')" custom-select-options="{ 'async': true }" ng-model="CITCrewAllocation.commanderId" required>
+                                                <div class="pull-left">
+                                                    <strong>{{ CITCommander.fullName}}</strong><br/>
+                                                    <small><span>Staff ID: {{CITCommander.staffId}}</span></small>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>                                            
+                                        <span class="help-block">Select CIT Agent Commander</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label text-left">Chase Car</label>
+                                    <div class="col-md-7">                                            
+                                        <div class="input-group has-feedback">
+                                            <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                            <div custom-select="ChaseCar.vehicleId as ChaseCar.regNumber for ChaseCar in searchAsyncx($searchTerm, 'ChaseCar')" custom-select-options="{ 'async': true }" ng-model="CITCrewAllocation.chaseCarId" required>
+                                                <div class="pull-left">
+                                                    <strong>{{ ChaseCar.regNumber}}</strong><br/>
+                                                    <small><span>Fleet Number: {{ChaseCar.fleetNumber}}</span></small>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>                                            
+                                        <span class="help-block">Select CIT Chase Car</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label text-left">CIT Driver</label>
+                                    <div class="col-md-7">                                            
+                                        <div class="input-group has-feedback">
+                                            <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                            <div custom-select="CITDriver.crewId as CITDriver.fullName for CITDriver in searchAsyncx($searchTerm, 'Driver')" custom-select-options="{ 'async': true }" ng-model="CITCrewAllocation.driverId" required>
+                                                <div class="pull-left">
+                                                    <strong>{{ CITDriver.fullName}}</strong><br/>
+                                                    <small><span>Staff ID: {{CITDriver.staffId}}</span></small>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>                                            
+                                        <span class="help-block">Select CIT Agent Driver</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label text-left">Lead Car</label>
+                                    <div class="col-md-7">                                            
+                                        <div class="input-group has-feedback">
+                                            <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                            <div custom-select="LeadCar.vehicleId as LeadCar.regNumber for LeadCar in searchAsyncx($searchTerm, 'LeadCar')" custom-select-options="{ 'async': true }" ng-model="CITCrewAllocation.leadCarId" required>
+                                                <div class="pull-left">
+                                                    <strong>{{ LeadCar.regNumber}}</strong><br/>
+                                                    <small><span>Fleet Number: {{LeadCar.fleetNumber}}</span></small>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>                                            
+                                        <span class="help-block">Select CIT Lead Car</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                            
+                        <div ng-if="$last" class="panel-footer">
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-default" ng-click="closeDialog()"><i class="fa fa-times-circle-o"></i> Cancel</button>
+                                <button class="btn btn-secondary" ng-click="processRequest(true)"><i class="fa fa-check-square-o"></i> Submit Crew</button>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </form>
+            <div  ng-if="ShowConfirmCrew" class="panel panel-default" ng-repeat="CITCrewAllocation in CollectionRequest.crewAllocations track by $index">
+                <div class="panel-heading">
+                    <h4 class="tab-panel-title"><span class="fa fa-users"></span><strong> CIT Agent Crew List</strong></h4>
+                    <ul class="panel-controls">
+                        <li>
+                            <h4 class="tab-panel-title"><strong>[{{$index + 1}}]</strong></h4>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- CIT CREW ITEM -->
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel-body profile">
+                                            <div class="profile-image">
+                                                <img src="img/profile_bg.png" alt="CIT Cashier"/>
+                                            </div>
+                                            <div class="profile-data">
+                                                <div class="profile-data-name">CIT Agent Cashier</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel-body">                                    
+                                            <div class="contact-info">
+                                                <p><small>Staff ID:</small><br/>{{CITCrewAllocation.teller.staffId}}</p>
+                                                <p><small>ID Number:</small><br/>{{CITCrewAllocation.teller.documentNumber}}</p>  
+                                                <p><small>Cashier Name:</small><br/>{{CITCrewAllocation.teller.fullName}}</p>                                 
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>                       
+                            </div>
+                            <!-- END CIT CREW ITEM -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- CIT CREW ITEM -->
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel-body profile">
+                                            <div class="profile-image">
+                                                <img src="img/profile_bg.png" alt="CIT Driver"/>
+                                            </div>
+                                            <div class="profile-data">
+                                                <div class="profile-data-name">CIT Agent Driver</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel-body">                                    
+                                            <div class="contact-info">
+                                                <p><small>Staff ID:</small><br/>{{CITCrewAllocation.driver.staffId}}</p>
+                                                <p><small>ID Number:</small><br/>{{CITCrewAllocation.driver.documentNumber}}</p>  
+                                                <p><small>Driver Name:</small><br/>{{CITCrewAllocation.driver.fullName}}</p>                                 
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>                       
+                            </div>
+                            <!-- END CIT CREW ITEM -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- CIT CREW ITEM -->
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel-body profile">
+                                            <div class="profile-image">
+                                                <img src="img/profile_bg.png" alt="CIT Commander"/>
+                                            </div>
+                                            <div class="profile-data">
+                                                <div class="profile-data-name">CIT Agent Commander</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel-body">                                    
+                                            <div class="contact-info">
+                                                <p><small>Staff ID:</small><br/>{{CITCrewAllocation.commander.staffId}}</p>
+                                                <p><small>ID Number:</small><br/>{{CITCrewAllocation.commander.documentNumber}}</p>  
+                                                <p><small>commander Name:</small><br/>{{CITCrewAllocation.commander.fullName}}</p>                                 
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>                       
+                            </div>
+                            <!-- END CIT CREW ITEM -->
+                        </div>
+                    </div>
+                    <div class="row checkbox-set">
+                        <div class="content col-md-6">   
+                            <div class="panel panel-default">
+                                <div class="col-md-3">
+                                    <div class="panel-body profile">
+                                        <div class="profile-data">
+                                            <div class="profile-data-name">Lead Car</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="panel-body">                                    
+                                        <div class="contact-info">
+                                            <p><small>Reg Number: </small>{{CITCrewAllocation.leadCar.regNumber}}</p>                                
+                                        </div>
+                                    </div>   
+                                </div>                     
+                            </div>
+                        </div>
+                        <div class="content col-md-6">   
+                            <div class="panel panel-default">
+                                <div class="col-md-3">
+                                    <div class="panel-body profile">
+                                        <div class="profile-data">
+                                            <div class="profile-data-name">Chase Car</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="panel-body">                                    
+                                        <div class="contact-info">
+                                            <p><small>Reg Number: </small>{{CITCrewAllocation.chaseCar.regNumber}}</p>                                
+                                        </div>
+                                    </div>   
+                                </div>                 
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="" style="margin-top: 40px"></div>
+                    <form class="form-horizontal" name="CollectionRequestForms.ConfirmCrewForm">  
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Notes:</label>
+                                <div class="col-md-7">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="CITCrewAllocation.notes" class="form-control" placeholder="Enter notes"></textarea>
+                                    </div> 
+                                    <span class="help-block">Add a comment (optional)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-default" ng-click="closeDialog()"><i class="fa fa-times-circle-o"></i> Cancel</button>
+                            <button class="btn btn-secondary" ng-click="processRequest(true, CITCrewAllocation)"><i class="fa fa-check-square-o"></i> Confirm Crew</button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div  ng-if="ShowRequestTrx" class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="tab-panel-title"><span class="fa fa-list-ul"></span><strong> Cash Collection Request Transactions</strong></h4>
+                    <ul class="panel-controls">
+                        <li>
+                            <button class="btn btn-default btn-xs"><i class="fa fa-keyboard-o"></i></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div id="datatable_wrapper">
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                            <tr>
+                                <th class="sorting col-centered">No</th>
+                                <th class="sorting">Request ID</th>
+                                <th class="sorting">Transaction ID</th>
+                                <th class="sorting">Time Initiated</th>
+                                <th class="sorting">Currency</th>
+                                <th class="sorting">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="CollectionTransaction in CollectionRequest.transactions track by $index">
+                                <td class="col-centered">{{$index + 1}}</td>
+                                <td>{{CollectionRequest.requestId}}</td>
+                                <td>{{CollectionTransaction.trxId}}</td>
+                                <td>{{CollectionTransaction.timeInitiated| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{CollectionTransaction.currencyCode.currencyCode}}</td>
+                                <td>
+                                    <div class="btn-group pull-left">
+                                        <button ng-if="(requestStage === 4 && !CollectionTransaction.submitted)" class="btn btn-warning btn-xs" ng-click="inputTally(CollectionTransaction)"><i class="fa fa-external-link"></i> Input Count</button>
+                                        <button ng-if="(requestStage === 5 && !CollectionTransaction.confirmed)" class="btn btn-secondary btn-xs" ng-click="showTrxConfirm(CollectionTransaction)"><i class="fa fa-check-square"></i> Confirm Transaction</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                      
+                </div>
+                <div class="panel-footer">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-secondary" ng-click="closeDialog()"><i class="fa fa-chevron-left"></i> Go Back</button>
+                    </div>
+                </div>
+                </div> 
+            </div>
+        <div ng-if="!ShowCrewSchedule && !ShowConfirmCrew && !ShowRequestTrx" class="panel panel-default tabs" id="tabs">   
+            <ul class="nav nav-tabs" id="cust-tablist">
+                <li ng-class="{active: CurrentTab === 1}"><a href="" ng-click="navigateTab(1)"><span class="fa fa-list-ul"></span> Request Transactions</a></li>
+                <li ng-class="{active: CurrentTab === 2}"><a href="" ng-click="navigateTab(2)"><span class="fa fa-truck"></span> CIT Agent Crew</a></li>
+                <li ng-if="show" ng-class="{active: CurrentTab === 3}"><a href="" ng-click="navigateTab(3)"><span class="fa fa-gbp"></span> Counted Cash Entries</a></li>
+                <li ng-class="{active: CurrentTab === 4}"><a href="" ng-click="navigateTab(4)"><span class="fa fa-history"></span> Activity Log</a></li>
+            </ul>
+            <div class="" ng-if="CurrentTab === 1">
+                <div class="panel-heading">
+                    <h5 class="tab-panel-title"><span class="fa fa-list-ul"></span><strong> Request Transactions</strong></h5>
+                </div>
+                <div id="datatable_wrapper">
+                    <table class="table datatable table-bordered table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th class="sorting col-centered">No</th>
+                                <th class="sorting">Transaction ID</th>
+                                <th class="sorting">Time Initiated</th>
+                                <th class="sorting">Currency</th>
+                                <th class="sorting">Account Number</th>
+                                <th class="sorting col-right">Request Amount</th>
+                                <th class="sorting col-right">Counted Cash</th>
+                                <th class="sorting">Time Completed</th>                                
+                                <th class="sorting">Transaction Ref</th>
+                                <!--<th ng-if="requestStage < 5" class="sorting">Action</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="CollectionTransaction in CollectionRequest.transactions track by $index">
+                                <td class="col-centered">{{$index + 1}}</td>
+                                <td>{{CollectionTransaction.trxId}}</td>
+                                <td>{{CollectionTransaction.timeInitiated| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{CollectionTransaction.currencyCode.currencyCode}}</td>
+                                <td>{{CollectionTransaction.accountNumber}}</td>
+                                <td class="col-right">{{CollectionTransaction.trxValue | number:'2'}}</td>
+                                <td class="col-right">{{CollectionTransaction.countedValue ? (CollectionTransaction.countedValue | number:'2') : '0.00'}}</td>
+                                <td>{{CollectionTransaction.timeCompleted ? (CollectionTransaction.timeCompleted | date:'yyyy-MM-dd HH:mm:ss') : 'N/A'}}</td>
+                                <td>{{CollectionTransaction.trxRefNumber}}</td>                                
+<!--                                <td ng-if="requestStage < 5">
+                                    <div class="btn-group pull-left">
+                                        <button has-permission='AMEND_TRANSACTION_AMOUNT' class="btn btn-secondary btn-xs" ng-click="amendTrxAmount(CollectionTransaction, false)"><i class="fa fa-edit"></i> Amend</button>
+                                        <button has-permission='CANCEL_CASH_COLLECTION' class="btn btn-danger btn-xs" ng-click="cancelTrx(CollectionTransaction, false)"><i class="fa fa-times"></i> Cancel</button>
+                                    </div>
+                                </td>-->
+                            </tr>
+                        </tbody>
+                    </table>                      
+                </div>
+                <div class="panel-footer"></div>
+            </div> 
+            <div class="" ng-if="CurrentTab === 2" ng-repeat="CITCrewAllocation in CollectionRequest.crewAllocations track by $index">
+                <div class="panel-heading">
+                    <h4 class="tab-panel-title"><span class="fa fa-users"></span><strong> CIT Agent Crew List</strong></h4>
+                    <ul class="panel-controls">
+                        <li>
+                            <h4 class="tab-panel-title">[{{$index + 1}}]</h4>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- CIT CREW ITEM -->
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel-body profile">
+                                            <div class="profile-image">
+                                                <img src="img/profile_bg.png" alt="CIT Cashier"/>
+                                            </div>
+                                            <div class="profile-data">
+                                                <div class="profile-data-name">CIT Agent Cashier</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel-body">                                    
+                                            <div class="contact-info">
+                                                <p><small>Staff ID:</small><br/>{{CITCrewAllocation.teller.staffId}}</p>
+                                                <p><small>ID Number:</small><br/>{{CITCrewAllocation.teller.documentNumber}}</p>  
+                                                <p><small>Cashier Name:</small><br/>{{CITCrewAllocation.teller.fullName}}</p>                                 
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>                       
+                            </div>
+                            <!-- END CIT CREW ITEM -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- CIT CREW ITEM -->
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel-body profile">
+                                            <div class="profile-image">
+                                                <img src="img/profile_bg.png" alt="CIT Driver"/>
+                                            </div>
+                                            <div class="profile-data">
+                                                <div class="profile-data-name">CIT Agent Driver</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel-body">                                    
+                                            <div class="contact-info">
+                                                <p><small>Staff ID:</small><br/>{{CITCrewAllocation.driver.staffId}}</p>
+                                                <p><small>ID Number:</small><br/>{{CITCrewAllocation.driver.documentNumber}}</p>  
+                                                <p><small>Driver Name:</small><br/>{{CITCrewAllocation.driver.fullName}}</p>                                 
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>                       
+                            </div>
+                            <!-- END CIT CREW ITEM -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- CIT CREW ITEM -->
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel-body profile">
+                                            <div class="profile-image">
+                                                <img src="img/profile_bg.png" alt="CIT Commander"/>
+                                            </div>
+                                            <div class="profile-data">
+                                                <div class="profile-data-name">CIT Agent Commander</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel-body">                                    
+                                            <div class="contact-info">
+                                                <p><small>Staff ID:</small><br/>{{CITCrewAllocation.commander.staffId}}</p>
+                                                <p><small>ID Number:</small><br/>{{CITCrewAllocation.commander.documentNumber}}</p>  
+                                                <p><small>commander Name:</small><br/>{{CITCrewAllocation.commander.fullName}}</p>                                 
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>                       
+                            </div>
+                            <!-- END CIT CREW ITEM -->
+                        </div>
+                    </div>
+                    <div class="row checkbox-set">
+                        <div class="content col-md-6">   
+                            <div class="panel panel-default">
+                                <div class="col-md-3">
+                                    <div class="panel-body profile">
+                                        <div class="profile-data">
+                                            <div class="profile-data-name">Lead Car</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="panel-body">                                    
+                                        <div class="contact-info">
+                                            <p><small>Reg Number: </small>{{CITCrewAllocation.leadCar.regNumber}}</p>                                
+                                        </div>
+                                    </div>   
+                                </div>                     
+                            </div>
+                        </div>
+                        <div class="content col-md-6">   
+                            <div class="panel panel-default">
+                                <div class="col-md-3">
+                                    <div class="panel-body profile">
+                                        <div class="profile-data">
+                                            <div class="profile-data-name">Chase Car</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="panel-body">                                    
+                                        <div class="contact-info">
+                                            <p><small>Reg Number: </small>{{CITCrewAllocation.chaseCar.regNumber}}</p>                                
+                                        </div>
+                                    </div>   
+                                </div>                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="" ng-if="CurrentTab === 4">
+                <div class="panel-heading">
+                    <h5 class="tab-panel-title"><span class="fa fa-history"></span><strong> Activity Log</strong></h5>
+                </div>
+                <div id="datatable_wrapper">
+                    <table class="table datatable table-bordered table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th class="sorting col-centered">No</th>
+                                <th class="sorting">Action Time</th>
+                                <th class="sorting">Action</th>
+                                <th class="sorting">Notes</th>
+                                <th class="sorting">Request Stage</th>
+                                <th class="sorting">Action By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="CollectionTransaction in CollectionRequest.activityLogs track by $index">
+                                <td class="col-centered">{{$index + 1}}</td>
+                                <td>{{CollectionTransaction.actionTime| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{CollectionTransaction.action}}</td>
+                                <td>{{CollectionTransaction.notes}}</td>  
+                                <td>{{CollectionTransaction.requestStage}}</td>                               
+                                <td>{{CollectionTransaction.user.fullName}}</td>    
+                            </tr>
+                        </tbody>
+                    </table>                      
+                </div>
+                <div class="panel-footer"></div>
+            </div> 
+        </div>         
+    </div>
+</div>

@@ -1,0 +1,154 @@
+<form class="form-horizontal" name="citAgentCrewForm">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="tab-panel-title"><span class="fa fa-user"></span><strong> Staff Details</strong></h3>
+        </div>              
+        <div class="panel-body"> 
+            <div class="row">
+                <div class="col-md-6">
+                     <div class="form-group">
+                        <label class="col-md-2 control-label text-left">CIT Agent</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <input type="text" ng-model="CITAgentCrew.citAgent.citAgentName" class="form-control" name="citAgentText" ng-readonly="true"> 
+                            </div>
+                            <span class="help-block">CIT Agent Name</span>       
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Full Name</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CITAgentCrew.fullName" class="form-control" name="name" placeholder="Full Name" required="" ng-readonly="!editMode"> 
+                            </div> 
+                            <span class="help-block">CIT Agent Crew Full Name</span>
+                        </div>
+                    </div>
+                   <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Phone Number</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                <input type="tel" ng-model="CITAgentCrew.msisdn" class="form-control" minlength="10" maxlength="10" numbers-only name="msisdnText" placeholder="Phone number" ng-readonly="!editMode"  ng-pattern="/^[0][7][0-9]/"> 
+                            </div>
+                            <span class="help-block">Staff Phone Number (National format e.g. 07xxxxxxxx)</span>        
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Document Type</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select class="form-control" data-ng-options="docType for docType in ['NAT ID', 'Passport']" ng-model="CITAgentCrew.documentType" name="docTypeSelect" ng-readonly="!editMode">
+                                    <option value="" ng-if="!CITAgentCrew.documentType">Select Document Type</option>
+                                </select>  
+                            </div> 
+                            <span class="help-block">Identification Document Type</span>       
+                        </div>
+                    </div>
+                </div>                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Staff ID</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CITAgentCrew.staffId" class="form-control" numbers-only name="StaffIdText" ng-readonly="true"> 
+                            </div>
+                            <span class="help-block">Staff Identification Number</span>       
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Email Address</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                <input type="email" ng-model="CITAgentCrew.emailAddress" class="form-control" name="emailText" placeholder="Email address" ng-readonly="!editMode">
+                            </div>
+                            <span class="help-block">Email address of the staff</span> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Designation</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CITAgentCrew.designation" class="form-control" name="designationText" required="" ng-readonly="!editMode"> 
+                            </div>
+                            <span class="help-block">Staff Designation | Job Title</span>        
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Document Number</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CITAgentCrew.documentNumber" class="form-control" numbers-only name="documentNumberText" placeholder="Document Number" ng-readonly="!editMode">   
+                            </div> 
+                            <span class="help-block">Identification Document Number</span>       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">  
+            <div ng-if="!editMode" class="form-group pull-right">
+                <div class="col-md-12">                                                                                                                                                                                                               
+                    <div class="btn-group"> 
+                        <button has-permission='DELETE_CIT_AGENT_CREW' class="btn btn-danger" ng-click="deleteCITCrewPopup(CITAgentCrew, true)"><i class="fa fa-trash-o"></i> Delete CIT Crew</button>                                                    
+                        <button has-permission='UPDATE_CIT_AGENT_CREW' class="btn btn-secondary" ng-click="viewCITAgentCrew(CITAgentCrew, true)"><i class="fa fa-edit"></i> Edit CIT Crew</button>  
+                        <button class="btn btn-default" ng-click="switchTab('Main')"><i class="fa fa-times-circle"></i> Dismiss</button> 
+                    </div>      
+                </div>
+            </div>
+            <div class="btn-group pull-right">
+                <button ng-if="editMode" class="btn btn-warning" ng-click="switchTab('Main')"><i class="fa fa-times-circle"></i> Cancel</button>
+                <button has-permission='UPDATE_CIT_AGENT_CREW' ng-if="editMode" class="btn btn-secondary" data-toggle="dropdown" ng-click="saveCITCrew()"><i class="fa fa-send"></i> Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!--DELETE TEMPLATE-->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="removeCITCrew">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete CIT Agent Crew</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closePopup()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DeleteCITForm">
+                        <div class="col-md-12">
+                            <div class="form-group text-left" >
+                                <label class="col-md-3 control-label">Note</label>
+                                <div class="col-md-7">                                            
+                                    <div class="input-group">
+                                        <!--<span class="input-group-addon"></span>-->
+                                        <textarea  style="width:280%; height: 180%;" type="text" ng-model="citdata.notes" class="form-control" name="message" placeholder="write note" required="">
+                                            </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button has-permission='DELETE_CIT_AGENT_CREW' class="btn btn-secondary" ng-click="deleteCIT()"><i class="glyphicon glyphicon-saved"></i> Delete</button>
+                                <button type="button" class="btn btn-default" ng-click="closePopup()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+
+
+
+
+

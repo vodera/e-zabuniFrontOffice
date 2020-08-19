@@ -1,0 +1,563 @@
+<div class="tab-content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"><span class="fa fa-user"></span><strong> Customer KYC Info</strong> - {{PrincipalCustomer.customerName}}</h4>
+            <ul class="panel-controls">
+                <li><a ng-click="switchTab('Main')" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="panel-body"> 
+            <form name="CustomerViewForm" class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">   
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Customer Name</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-tag"></span></span>
+                                    <input type="text" ng-model="PrincipalCustomer.customerName" class="form-control" name="name" placeholder="Customer Name" ng-readonly="!PrincipalCustomer.editMode">
+                                </div>                                    
+                                <span class="help-block">The full name of the customer</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Physical Location</label>
+                            <div class="col-md-7">                                            
+                                <div ng-if="!PrincipalCustomer.editMode" class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-map-marker"></span></span>
+                                    <input type="text"  ng-model="PrincipalCustomer.physicalAddress" class="form-control" name="locationText" placeholder="Enter physical address" readonly="">
+                                </div>    
+                                <div ng-if="PrincipalCustomer.editMode" class=" has-feedback">
+                                    <textarea  ng-model="PrincipalCustomer.physicalAddress" class="form-control" name="locationText" placeholder="Enter physical address"></textarea>
+                                </div>
+                                <span class="help-block">Physical Location Address</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Customer Category</label>
+                            <div class="col-md-7">                                            
+                                <div ng-if="!PrincipalCustomer.editMode" class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <input type="text" data-ng-model="PrincipalCustomer.category.categoryName" class="form-control" readOnly="">
+                                </div>
+                                <div ng-if="PrincipalCustomer.editMode" class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <select data-ng-options="category.custCategoryId as category.categoryName for category in CustomerCategories" data-ng-model="PrincipalCustomer.custCategoryId" class="form-control" required>
+                                        <option value="" ng-if="!PrincipalCustomer.custCategoryId">Select Category</option>
+                                    </select>
+                                </div>
+                                <span class="help-block">Customer Category</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Postal Address</label>
+                            <div class="col-md-7">                                            
+                                <div ng-if="!PrincipalCustomer.editMode" class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-envelope"></span></span>
+                                    <input type="text" ng-model="PrincipalCustomer.postalAddress" class="form-control" name="postalAddressText" placeholder="Enter postal address" readonly="">
+                                </div>  
+                                <div ng-if="PrincipalCustomer.editMode" class="has-feedback">
+                                    <textarea ng-model="PrincipalCustomer.postalAddress" class="form-control" name="postalAddressText" placeholder="Enter postal address"></textarea>
+                                </div>    
+                                <span class="help-block">Customer Postal Address</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group pull-right">
+                        <div class="col-md-12">   
+                            <button class="btn btn-danger" ng-click="deleteCustomerPopup(PrincipalCustomer, true)"><i class="fa fa-trash-o"></i> Delete Customer</button>
+                            <div ng-if="!PrincipalCustomer.editMode" class="btn-group">
+                                <button has-permission='UPDATE_CUSTOMER' class="btn btn-info" ng-click="enableCustomerEdit()"><i class="fa fa-edit"></i>Update</button>
+                                <!--<button has-permission='' class="btn btn-danger"><i class="fa fa-lock"></i> Deactivate</button>-->  
+                                <button has-permission='DEACTIVATE_CUSTOMER' class="btn btn-warning" ng-click="deactivateCustomer(PrincipalCustomer, true)"><i class="fa fa-lock"></i>{{PrincipalCustomer.status === 'Active' ? ' Deactivate' : 'Activate' }}</button>
+                                
+                                <button class="btn btn-default" ng-click="switchTab('Main')"><i class="fa fa-reply"></i> Go back</button>
+                            </div>
+                            <div ng-if="PrincipalCustomer.editMode" class="btn-group">
+                                <button class="btn btn-warning" ng-click="viewCustomer(PrincipalCustomer, false)"><i class="fa fa-times-circle"></i> Cancel</button>      
+                                
+                                <button has-permission='UPDATE_CUSTOMER' class="btn btn-secondary" ng-click="updateCustomer()"><i class="fa fa-check-square-o"></i> Save Customer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!--deactivate-->
+        <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="deactivateCustomerForm">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-user"></span> Deactivate/Activate</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="deactivateCustomerForm = !deactivateCustomerForm" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="deactivatePCustomerForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Note</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="data.notes" class="form-control" name="message" placeholder="Enter note" required=""> </textarea>
+                                    </div>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-warning" ng-click="deactivateCUST()"><i class="fa fa-lock"></i> Submit</button>
+                                <button type="button" class="btn btn-default" ng-click="deactivateCustomerForm = !deactivateCustomerForm"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+        
+        
+        <!--DELETE TEMPLATE-->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="removeCustomer">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete Customer</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closePopup()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DeleteCustomerForm">
+                        <div class="col-md-12">
+                            <div class="form-group text-left" >
+                                <label class="col-md-3 control-label">Note</label>
+                                <div class="col-md-7">                                            
+                                    <div class="input-group">
+                                        <!--<span class="input-group-addon"></span>-->
+                                        <textarea  style="width:280%; height: 180%;" type="text" ng-model="data.notes" class="form-control" name="message" placeholder="write note" required="">
+                                            </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button has-permission='DELETE_CUSTOMERS' class="btn btn-danger" ng-click="deleteCust()"><i class="fa fa-trash-o"></i> Delete</button>
+                                <button type="button" class="btn btn-default" ng-click="closePopup()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+        
+        
+        
+        
+        <div ng-if="!PrincipalCustomer.editMode" class="panel panel-default tabs" id="tabs">   
+            <ul class="nav nav-tabs" id="cust-tablist">
+                <li has-permission='VIEW_CUSTOMER_ACCOUNT' ng-class="{active: CurrentTab === 1}"><a href="" ng-click="navigateTab(1)"><span class="fa fa-check-square-o"></span> Customer Accounts</a></li>
+                <li has-permission='VIEW_OUTLETS' ng-class="{active: CurrentTab === 2}"><a href="" ng-click="navigateTab(2)"><span class="fa fa-map-marker"></span> Customer Outlets</a></li>
+                <!--<li has-permission='VIEW_CASH_COLLECTION' ng-class="{active: CurrentTab === 3}"><a href="" ng-click="navigateTab(3)"><span class="fa fa-money"></span> Cash Collection Requests</a></li>-->
+                <li has-permission='VIEW_CONTACTS' ng-class="{active: CurrentTab === 4}"><a href="" ng-click="navigateTab(4)"><span class="fa fa-user"></span> Customer Contacts</a></li>
+                <li has-permission='VIEW_ALL_AUDIT_LOGS' ng-class="{active: CurrentTab === 5}"><a href="" ng-click="navigateTab(5)"><span class="fa fa-history"></span> Audit Log</a></li>
+            </ul>
+            <div class="" ng-if="CurrentTab === 1">
+                <div class="panel-heading">
+                    <h5 class="tab-panel-title"><span class="fa fa-check-square-o"></span><strong> Customer Bank Accounts</strong></h5>
+                </div>
+                <div>
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                            <tr>
+                                <th class="sorting col-centered">No</th>
+                                <th class="sorting">Branch Name</th>
+                                <th class="sorting">Currency</th>
+                                <th class="sorting">Account Type</th>
+                                <th class="sorting">Account Number</th>
+                                <th class="sorting">Account Name</th>
+                                <th class="sorting">Account Status</th>
+                                <th class="sorting">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="CustAcc in CustomerAccounts track by $index">
+                                <td class="col-centered">{{$index + 1}}</td>
+                                <td>{{CustAcc.branchName}}</td>
+                                <td>{{CustAcc.currency.currencyCode}}</td>
+                                <td>{{CustAcc.accountType}}</td>
+                                <td>{{CustAcc.accountNumber}}</td>
+                                <td>{{CustAcc.accountName}}</td>
+                                <td>{{CustAcc.accountStatus}}</td>                                
+                                <td>
+<!--                                    <div class="btn-group pull-left">
+                                        <button class="btn btn-danger btn-xs" ng-click="delinkAccount(CustomerAccounts)"><i class="fa fa-unlink"></i> De-link </button>
+                                    </div>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div>
+                <div class="panel-footer">
+                    <div class="btn-group pull-right">
+                        <button has-permission='ADD_CUSTOMER_ACCOUNT' type="button" class="btn btn-primary" ng-click="showDlg()"><i class="fa fa-plus-circle"></i>Add Account</button>
+                    </div>
+                </div>
+            </div> 
+            <div class="" ng-if="CurrentTab === 2">
+                <div class="panel-heading">
+                    <h4 class="tab-panel-title"><span class="fa fa-map-marker"></span><strong> Customer Outlets</strong></h4>
+                </div>
+                <div class="panel-body">
+                    <div>
+<!--                        <div class="dataTables_filter">
+                            <label>Search:<input class="form-control " placeholder="keywords" type="search"></label>
+                        </div>-->
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr>
+                                    <th class="sorting col-centered">No</th>
+                                    <!--<th class="sorting">Customer Name</th>-->
+                                    <th class="sorting">Outlet Name</th>
+                                    <th class="sorting">Physical Address</th>
+                                    <th class="sorting">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="CustomerOutlet in CustomerOutlets track by $index">
+                                    <td class="col-centered">{{$index + 1}}</td>
+                                    <!--<td>{{CustomerOutlet.customer.customerName}}</td>-->
+                                    <td>{{CustomerOutlet.outletName}}</td>
+                                    <td>{{CustomerOutlet.physicalAddress}}</td>
+                                    <td>
+                                        <div class="btn-group pull-left">
+                                            <button class="btn btn-default btn-xs" ng-click="viewOutlet(CustomerOutlet)"><i class="fa fa-search-plus"></i> View </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">  
+                        <div class="pull-right btn-group">
+                            <button type="button" class="btn btn-primary" ng-click="navCustomerOutlet()"><i class="fa fa-plus-circle"></i>Add Outlet</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!--ADD OUTLET DIALOG-->
+            <div class="modal-dlg fade in"  tabindex="-1"   role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowOutlet">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-building"></span>{{CustOutlet.outletId ? ' Edit Customer Outlet' : ' Add Customer Outlet'}}</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeAndclear()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <form class="form-horizontal" name="OutletForm">                   
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Outlet Name:</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="newOutlet.outletName" class="form-control" name="name" placeholder="Outlet Name" required>
+                            </div>                                            
+                            <span class="help-block">Customer Outlet Name</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Physical Address:</label>
+                        <div class="col-md-7">                                            
+                            <div class=" has-feedback">
+                                <textarea  ng-model="newOutlet.physicalAddress" class="form-control" name="locationText" placeholder="Enter physical address" required></textarea>
+                            </div>                                            
+                            <span class="help-block">Physical Location Address</span>
+                        </div>
+                    </div>
+<!--                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Outlet Account(s):</label>
+                        <div class="col-md-7">          
+                            <div class="alert alert-danger" role="alert" ng-show="checkAccountError">
+                                <button type="button" class="close" data-dismiss="alert" ng-click="checkAccountError = !checkAccountError"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                You must select an account
+                            </div>
+                            <div class="checkbox-set">
+                                <div class="form-group" ng-repeat="CustomerAccount in CustomerAccounts" ng-if="$index % 1 == 0">
+                                    <div class="col-md-12">                                    
+                                        <label class="check"><input type="checkbox" class="icheckbox" ng-model="CustomerAccount.isChecked" ng-value="{{CustomerAccount.accountNumber}}"/> {{CustomerAccount.accountNumber + ' - ' + CustomerAccount.accountName}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="help-block">The Bank Account(s) to linked to this Outlet</span>
+                        </div>
+                    </div>-->
+                    <div class="modal-footer">                            
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closeAndclear()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="addOutlet(PrincipalCustomer.customerId, OutletForm, newOutlet)"><i class="fa fa-check-square-o"></i>{{CustOutlet.outletId ? ' Save Outlet':' Add Outlet'}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+            <!--END ADD OUTLET DIALOG-->
+            
+            
+            
+            
+            
+            <div class="" ng-if="CurrentTab === 3">
+                <div class="panel-heading">
+                    <h5 class="tab-panel-title"><span class="fa fa-list-ul"></span><strong> Cash Collection Requests</strong></h5>
+                </div>
+                <div>
+<!--                    <form class="form-horizontal" name="searchForm">
+                    <div id="cit_agent_filter" class="dataTables_filter">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="col-md-3 text-left">Search:</label>
+                                    <div class="col-md-8">   
+                                        <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="RequestFilter.keyword">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-md-4">Date From:</label>
+                                    <div class="col-md-7">   
+                                        <p class="input-group">
+                                            <input type="text" class="form-control text-left" uib-datepicker-popup data-ng-model="RequestFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="col-md-3">Date To:</label>
+                                    <div class="col-md-8">      
+                                        <p class="input-group">
+                                            <input type="text" class="form-control text-left" uib-datepicker-popup data-ng-model="RequestFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="btn-group pull-right">
+                                        <button class="btn btn-default" ng-click=""><i class="fa fa-times"></i> Reset</button>
+                                        <button class="btn btn-info" ng-click="filterRequests()"><i class="fa fa-filter"></i> Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                      
+                    </div>   
+                </form>-->
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                            <tr>
+                                <th class="sorting col-centered">No</th>
+                                <th class="sorting">Request ID</th>
+                                <th class="sorting">Request Time</th>
+                                <th class="sorting">Preferred Time</th>
+                                <th class="sorting">Base Currency</th>
+                                <th class="sorting">Total Value</th>
+                                <th class="sorting">No. Vehicles</th>
+                                <th class="sorting">Request Status</th>
+                                <th class="sorting">Request Stage</th>
+                                <th class="sorting">Completion Time</th>
+                                <th class="sorting">Requested By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="CollectionRequest in CollectionRequests track by $index">
+                                <td class="col-centered">{{$index + 1}}</td>
+                                <td>{{CollectionRequest.requestId}}</td>
+                                <td>{{CollectionRequest.requestTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{CollectionRequest.prefCollectionTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>{{CollectionRequest.currencyCode}}</td>
+                                <td>{{CollectionRequest.totalValue}}</td>
+                                <td>{{CollectionRequest.vehicleQty}}</td>
+                                <td>{{CollectionRequest.requestStatus}}</td>
+                                <td>{{CollectionRequest.requestStage}}</td>
+                                <td>{{CollectionRequest.completionTime ? (CollectionRequest.completionTime | date:'yyyy-MM-dd HH:mm:ss') : 'N/A'}}</td>
+                                <td>{{CollectionRequest.requestedBy}}</td>
+                            </tr>
+                        </tbody>
+                    </table>    
+                    <div ng-include src="'templates/table-footer.html'"></div>  
+                </div>
+                <div class="panel-footer"></div>
+            </div> 
+            <div class="" ng-if="CurrentTab === 4">
+                <div class="panel-heading" >
+                    <h4 class="tab-panel-title"><span class="fa fa-user"></span><strong> Customer Contact(s)</strong></h4>
+                </div>
+                <div class="panel-body" ng-if="!ShowContactView">
+                    <div id="datatable_wrapper">
+<!--                        <div id="batch_filter" class="dataTables_filter">
+                            <label>Search:<input class="form-control " placeholder="keywords" type="search"></label>
+                        </div>-->
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr>
+                                    <th class="sorting col-centered">No</th>
+                                    <th class="sorting">Contact Name</th>
+                                    <th class="sorting">Phone Number</th>
+                                    <th class="sorting">Email Address</th>
+                                    <th class="sorting">Action Status</th>
+                                    <th class="sorting">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="CustomerContact in CustomerContacts track by $index">
+                                    <td class="col-centered">{{$index + 1}}</td>
+                                    <td>{{CustomerContact.fullName}}</td>
+                                    <td>{{CustomerContact.msisdn}}</td>
+                                    <td>{{CustomerContact.emailAddress}}</td>
+                                    <td>{{CustomerContact.actionStatus}}</td>
+                                    <td>
+                                        <div class="btn-group pull-left">
+                                            <button class="btn btn-default btn-xs" ng-click="viewContact(CustomerContact)"><i class="fa fa-pencil"></i> View </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-include src="'templates/table-footer.html'"></div>  
+                    </div>
+                    
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">  
+                            <button type="button" class="btn btn-primary" ng-click="showDlg()"><i class="fa fa-user"><i class="fa fa-plus"></i></i>Add Contact</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-bodyx tab-contentx" ng-if="ShowContactView">
+                        <div ng-include src="'templates/contact-view.html'" flex></div>
+                </div>
+            </div>
+            <div class="" ng-if="CurrentTab === 5">
+                <div class="panel-heading">
+                    <h4 class="tab-panel-title"><span class="fa fa-list-ul"></span><strong> Audit Logs</strong></h4>
+                </div>
+                <div class="panel-body">
+                    <div id="datatable_wrapper">
+                        <form class="form-horizontal" name="searchForm">
+                            <div id="cit_agent_filter" class="dataTables_filter">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="col-md-3 text-left">Search:</label>
+                                            <div class="col-md-8">   
+                                                <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="AuditFilter.keyword">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3">Status:</label>
+                                            <div class="col-md-8">   
+                                                <select data-ng-options="approvalStatus for approvalStatus in ['All', 'Approved', 'Rejected', 'Unapproved']" data-ng-model="AuditFilter.approvalStatus" class="form-control">
+                                                    <option value="" ng-if="!approvalStatus">Select Approval Status</option>
+                                                </select>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-md-3">Date From:</label>
+                                            <div class="col-md-8">   
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="AuditFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3">Activity:</label>
+                                            <div class="col-md-8">   
+                                                <select data-ng-options="subscriptionStatus for subscriptionStatus in ['All', 'Update', 'Creation', 'Authenticaion', 'Deletion', 'Approve']" data-ng-model="AuditFilter.subscriptionStatus" class="form-control">
+                                                    <option value="" ng-if="!subscriptionStatus">Select Status</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="col-md-4">Date To:</label>
+                                            <div class="col-md-7">      
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="AuditFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>                                             
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class="btn-group pull-right">
+                                                <button class="btn btn-default" ng-click="loadCustomersAuditLog(true)"><i class="fa fa-times"></i> Reset</button>
+                                                <button class="btn btn-info" ng-click="loadCustomersAuditLog(false)"><i class="fa fa-filter"></i> Filter</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                      
+                            </div>   
+                        </form>
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr >
+                                    <th class="sorting col-centered">No</th>
+                                    <th class="sorting col-md-2">Occurrence Time</th>
+                                    <th class="sorting col-md-2">Username</th>
+                                    <th class="sorting col-centered">Activity</th>
+                                    <th class="sorting col-md-1 col-centered">Status</th>
+                                    <th class=" col-md-4">Description</th>
+                                    <th class="">Notes</th>
+                                    <th class="sorting col-md-1">IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="logsCustomers in CustomerAuditTrail track by $index">
+                                    <td class="col-centered">{{$index + 1}}</td>
+                                    <td>{{logsCustomers.occurenceTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td class="">{{logsCustomers.user.emailAddress}}</td>
+                                    <td class="col-centered">{{logsCustomers.activityType}}</td>
+                                    <td class="col-centered">{{logsCustomers.status}}</td>
+                                    <td class="">{{logsCustomers.description}}</td>
+                                    <td class="">{{logsCustomers.notes}}</td>
+                                    <td>{{logsCustomers.ipAddress}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div ng-include src="'templates/table-footer.html'"></div>  
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+        </div>  
+        
+    </div>
+</div>

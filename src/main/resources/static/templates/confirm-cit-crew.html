@@ -1,0 +1,133 @@
+<section class="content">       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li> 
+        <li class="">CIT Agent Onboarding</li>
+        <li class="">CIT Crew</li>
+        <li class="active">Confirm CIT Crew</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal" name="CITCrewConfirmForm">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><span class="fa fa-clipboard"></span><strong> Confirm CIT Agent Crew</strong></h4>
+                            <!-- START DATATABLE EXPORT -->
+                            <div class="btn-group pull-right">
+                                <ul class="panel-controls">
+                                    <li>
+                                        <div class="dataTables_psize">
+                                            <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                </select>
+                                            </label>
+                                        </div></li>
+                                    <li>
+                                        <div class="btn-group">
+                                            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" ><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href=""><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href=""><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>                                
+                            </div>
+                        </div>
+                        <div class="panel-body"> 
+                            <div id="datatable_wrapper" class="">
+                            <form class="form-horizontal" name="searchForm">
+                                <div id="cit_agent_filter" class="dataTables_filter">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-md-3 text-left">Search:</label>
+                                                <div class="col-md-8">   
+                                                    <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="CitCrewFilter.keyword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="btn-group pull-right">
+                                                    <button class="btn btn-default" ng-click="resetCitCrewFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                    <button class="btn btn-info" ng-click="confirmCITCrew()"><i class="fa fa-filter"></i> Filter</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                      
+                                </div>   
+                            </form>
+                                <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                    <thead>
+                                        <tr>
+                                            <th class="col-centered"><input type="checkbox" ng-model="UnconfirmedCITCrew.allItemsSelected" ng-change="checkAll()"/></th>
+                                            <th class="sorting col-centered">No</th>
+                                            <th class="sorting">CIT Agent</th>
+                                            <th class="sorting col-left">Staff ID</th>                                            
+                                            <th class="sorting">Full Name</th>
+                                            <th class="sorting">Designation</th>
+                                            <th class="sorting">Phone Number</th>
+                                            <th class="sorting">Email Address</th>
+                                            <th class="sorting">ID Number</th>
+                                            <th class="sorting">Creation Date</th>
+                                            <th class="sorting col-centered">Approval Status</th>
+                                            <th class="sorting">Batch ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody> 
+                                        <tr ng-repeat="CITCrew in UnconfirmedCITCrew track by $index">
+                                            <td class="col-centered"><input type="checkbox" ng-model="CITCrew.isChecked" ng-change="checkOne()" /></td>
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{CITCrew.citAgent.citAgentName}}</td>
+                                            <td>{{CITCrew.staffId}}</td>
+                                            <td>{{CITCrew.fullName}}</td>
+                                            <td>{{CITCrew.designation}}</td>
+                                            <td>{{CITCrew.msisdn}}</td>
+                                            <td>{{CITCrew.emailAddress}}</td>
+                                            <td>{{CITCrew.documentNumber}}</td>
+                                            <td>{{CITCrew.creationDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                            
+                                            <td class="col-centered">{{CITCrew.actionStatus}}</td>
+                                            <td>{{CITCrew.batchId}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-include src="'templates/table-footer.html'"></div>
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title"><span class="fa fa-check"></span> Confirm records</h5>
+                                    </div>
+                                    <div class="panel-body"> 
+                                        <div class="row">
+                                            <div class="col-md-6">                                                
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label text-left"> Notes:</label>
+                                                    <div class="col-md-9"> 
+                                                        <textarea class="form-control" ng-model="CITCrewConfirm.notes" required=""></textarea>
+                                                        <span class="help-block">Confirmation notes</span>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-group pull-right">
+                                                    <a class="btn btn-default" href="#/CITCrew"><i class="fa fa-times-circle"></i> Dismiss</a>
+                                                    <button class="btn btn-secondary" has-permission="APPROVE_CIT_AGENT_CREW" ng-click="confirmCITCrew()"><i class="fa fa-check"></i> Confirm</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>  
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->                                                
+</section>

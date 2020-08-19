@@ -1,0 +1,123 @@
+<form class="form-horizontal" name="BatchUploadForms.BatchUploadForm">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="col-md-3">
+            <h4 class="panel-title"><span class="fa fa-upload"></span><strong> File Upload</strong></h4>
+            
+            </div>
+            <div class="col-md-3">
+            <div class="btn-group pull-right">
+                <a class="btn btn-secondary" href="{{config.API_ROOT}}batchfiles/crew-template.csv?access_token={{token}}"><i class="fa fa-download"></i> Download Crew Template</a>
+            </div>
+            </div>
+            <div class="col-md-3">
+            <div class="btn-group pull-right">
+                <a class="btn btn-secondary" href="{{config.API_ROOT}}batchfiles/teller-template.csv?access_token={{token}}"><i class="fa fa-download"></i> Download Teller Template</a>
+            </div>
+            </div>
+            <div class="col-md-3">
+            <div class="btn-group pull-right">
+                <a class=" button btn btn-secondary"  href="{{config.API_ROOT}}batchfiles/vehicle-template.csv?access_token={{token}}"><i class="fa fa-download"></i> Download Vehicle Template</a>
+            </div>
+            </div>
+            <ul class="panel-controls">
+                <li><a ng-click="showUploadView(false)" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                
+            </ul>
+        </div>
+        <div class="panel-body">        
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label text-left">Select File Category</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select data-ng-options="fileCategory for fileCategory in ['CIT Agent Crew', 'CIT Vehicle']" data-ng-model="FileUpload.fileCategory" class="form-control" ng-change='fileCategoryChange()'>
+                                <option value="" ng-if="!FileUpload.fileCategory">Select File Category</option>
+                                </select>
+                            </div>                                            
+                            <span class="help-block">Select Batch File Category</span>
+                        </div>
+                    </div>
+                    <div ng-if="FileUpload.fileCategory" class="form-group">
+                        <label class="col-md-4 control-label text-left">Select CIT Agent</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select data-ng-options="CITAgent.citAgentId as CITAgent.citAgentName for CITAgent in CITAgents" data-ng-model="FileUpload.citAgentId" class="form-control" required>
+                                    <option value="" ng-if="!FileUpload.citAgentId">Select CIT Agent</option>
+                                </select>
+                            </div>                                            
+                            <span class="help-block">Select CIT Agent</span>
+                        </div>
+                    </div>
+                    <div ng-if="FileUpload.fileCategory === 'CIT Agent Crew'" class="form-group">
+                        <label class="col-md-4 control-label text-left">Crew Category</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select data-ng-options="CrewCategory.crewCategoryId as CrewCategory.categoryName for CrewCategory in CrewCategories" data-ng-model="FileUpload.crewCategoryId" class="form-control" required>
+                                    <option value="" ng-if="!FileUpload.crewCategoryId">Select Crew Category</option>
+                                </select>
+                            </div>                                            
+                            <span class="help-block">Select Crew Category</span>
+                        </div>
+                    </div>
+                    <div ng-if="FileUpload.fileCategory === 'CIT Vehicle'" class="form-group">
+                        <label class="col-md-4 control-label text-left">Select Vehicle Type</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select data-ng-options="vehicleType for vehicleType in ['Lead Car', 'Chase Car']" data-ng-model="FileUpload.vehicleType" class="form-control">
+                                <option value="" ng-if="!FileUpload.vehicleType">Select Vehicle Type</option>
+                                </select>
+                            </div>                                            
+                            <span class="help-block">Select CIT Vehicle Type</span>
+                        </div>
+                    </div>
+                    <div ng-if="FileUpload.fileCategory" class="form-group">
+                        <label class="col-md-4 control-label text-left">Filename</label>
+                        <div class="col-md-7">  
+                            <div class="uploader">
+                                <input type="file" file-upload accept=".xlsx,.xls,.csv" required><span class="filename">{{FileUpload.file ? FileUpload.file.name : 'No file selected'}}</span>
+                                <span class="action">Choose File</span>
+                            </div>
+                            <span class="help-block">Choose the file to upload</span>
+                        </div>
+                    </div>
+                    <div ng-if="FileUpload.fileCategory" class="form-group">
+                        <label class="col-md-4 control-label text-left"> Notes:</label>
+                        <div class="col-md-7"> 
+                            <textarea class="form-control" ng-model="FileUpload.notes"></textarea>
+                        </div>
+                    </div>
+                    <div ng-if="FileUpload.fileCategory" class="form-group">
+                        <label class="col-md-4 control-label text-left"></label>
+                        <div class="col-md-7">
+                            <div class="btn-group pull-right">
+                                <button type="reset" class="btn btn-default"><i class="fa fa-times-circle"></i> Reset</button>
+                                <button class="btn btn-secondary" ng-click="uploadBatchFile()"><i class="fa fa-upload"></i> Upload File</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--                <div class="col-md-6">
+                 <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="btn-group pull-right">
+                                <a class="btn btn-secondary" href="{{config.API_ROOT}}batchfiles/crew-template.csv?access_token={{token}}"><i class="fa fa-download"></i> Download Crew Template</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="btn-group pull-right">
+                                <a class=" button btn btn-secondary"  href="{{config.API_ROOT}}batchfiles/vehicle-template.csv?access_token={{token}}"><i class="fa fa-download"></i> Download Vehicle Template</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <div class="panel-footer"></div>
+    </div> 
+</form>

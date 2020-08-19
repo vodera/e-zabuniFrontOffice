@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="">
+    <ResourceLink name="cashCollectionApiUrl" global="simpleValue"
+                  type="java.lang.String"/>
+<!--    <ResourceLink name="simpleValue" global="simpleValue"
+                  type="java.lang.Integer"/>-->
+</Context>

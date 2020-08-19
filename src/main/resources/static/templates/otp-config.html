@@ -1,0 +1,122 @@
+<section class="content"> 
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li> 
+        <li>System Configuration</li> 
+        <li class="active">OTP Configuration</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">                
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><span class="fa fa-cog"></span> OTP Configuration</h3>
+                            <ul class="panel-controls">
+                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body">
+<!--                            <div id="cit_agent_filter" class="dataTables_filter">
+                                <label>Search:<input class="form-control " placeholder="keywords" type="search"></label>
+                            </div> -->
+                            <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                <thead>
+                                    <tr>
+                                        <th class="sorting col-centered">No</th>
+                                        <th class="sorting col-left">User Type</th>
+                                        <th class="sorting">Email Configuration</th>
+                                        <th class="sorting">SMS Configuraiton</th>
+                                        <th class="sorting">Description</th>
+                                        <th class="sorting">Action Status</th>
+                                        <th class="sorting">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="otpconfig in otpconfigs track by $index">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{otpconfig.userType}}</td>
+                                        <td class="col-centered"><input type="checkbox" ng-model="otpconfigs[$index].otpEmailEnabled" ng-disabled="!otpconfig.editMode" /></td>
+                                        <td class="col-centered"><input type="checkbox" ng-model="otpconfigs[$index].otpSmsEnabled" ng-disabled="!otpconfig.editMode"/></td>
+                                        <td>{{otpconfig.description}}</td>
+                                        <td>{{otpconfig.actionStatus}}</td>
+                                        <td>
+                                            <div class="btn-group pull-left">
+                                                <button has-permission='UPDATE_GLOBAL_INTEGRATION' class="btn btn-default btn-xs" ng-click="editotpconfig(otpconfig, true)"><i class="fa fa-pencil"></i> Edit </button>
+                                                <button has-permission='UPDATE_GLOBAL_INTEGRATION' class="btn btn-default btn-xs" ng-click="saveotpconfig(otpconfig)" ng-show="otpconfig.editMode"><i class="fa fa-check"></i> Save </button>
+                                           
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div ng-include src="'templates/table-footer.html'"></div>  
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowParamEdit">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-cog"></span> Update {{GlobalConfigs.title}}</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="ShowParamEdit = !ShowParamEdit" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="GlobalParamForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Parameter Name</label>
+                                <div class="col-md-5"> 
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-tag"></span></span>
+                                        <input type="text" ng-model="GlobalParam.parameter" class="form-control" name="parameterText" placeholder="Parameter Name" readonly=""> 
+                                    </div>
+                                    <span class="help-block">Parameter Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Parameter Value</label>
+                                <div class="col-md-5">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input ng-if="GlobalParam.valueType === 'NUMBER'" type="text" ng-model="GlobalParam.value" numbers-Only class="form-control" name="valueText" placeholder="Param value" required>
+                                        <input ng-if="(GlobalParam.valueType === 'TEXT' || GlobalParam.valueType === null)" type="text" ng-model="GlobalParam.value" class="form-control" name="valueText" placeholder="Param value" required>
+                                        <input ng-if="GlobalParam.valueType === 'PASSWORD'" type="password" ng-model="GlobalParam.value" class="form-control" name="valueText" placeholder="Param value" required>
+                                        <input ng-if="GlobalParam.valueType === 'EMAIL'" type="email" ng-model="GlobalParam.value" class="form-control" name="valueText" placeholder="Param value" required>
+                                        <select ng-if="GlobalParam.valueType === 'CURRENCY'" data-ng-options="Currency.currencyCode as Currency.currencyName+' - '+Currency.currencyCode for Currency in Currencies" data-ng-model="GlobalParam.value" class="form-control"  ng-change='currencyChange()' ng-readonly="CollectionEntry.entryId">
+                                            <option value="" ng-if="!CollectionEntry.Currency">Select Currency</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block">Parameter Value</span>
+                                </div>
+                            </div>   
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Description</label>
+                                <div class="col-md-5">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-rss"></span></span>
+                                        <input type="text" ng-model="GlobalParam.description" class="form-control" name="descriptionText" placeholder="Enter description" readonly=""> 
+                                    </div>
+                                    <span class="help-block">Parameter Description</span>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="ShowParamEdit = !ShowParamEdit"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-secondary" ng-click="saveGlobalParam()"><i class="fa fa-check-square-o"></i> Save Parameter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+</section>

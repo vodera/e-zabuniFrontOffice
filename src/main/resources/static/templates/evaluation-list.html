@@ -1,0 +1,288 @@
+<section class="content" >
+    <div class="page-content-wrap" ng-init="UserViewForm = {}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-x tab-contentx" ng-if="!ShowTenderView">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><span class="fa fa-user"></span><strong>    Evaluated Tenders</strong></h4>
+                            <!-- START DATATABLE EXPORT -->
+                            <div class="btn-group pull-right">
+                                <ul class="panel-controls">
+                                    <li>
+                                        <div class="dataTables_psize">
+                                            <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                            </select>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="btn-group">
+                                            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" ng-click="exportUsers('csv')" ><img alt="CSV" src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="" ng-click="exportUsers('xls')"><img alt="XLS" src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="" ng-click="exportUsers('pdf')"><img alt="PDF" src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="datatable_wrapper" class="">
+                                <form class="form-horizontal" name="searchForm">
+                                    <div id="cit_agent_filter" class="dataTables_filter">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 text-left">Search:</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="UserFilter.keyword">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3">User Type:</label>
+                                                    <div class="col-md-8">
+                                                        <select data-ng-options="UserFilter.id as UserFilter.userType for UserFilter in UserTypes" data-ng-model="UserFilter.userType" class="form-control" ng-change='userTypeChange(UserFilter.userType)'>
+                                                            <option value="" ng-if="!userType">Select User Category</option>
+                                                        </select>
+                                                        <!--                                                        <select data-ng-options="userType for userType in ['Bank Admin', 'Bank Operator', 'Customer', 'CIT Agent', 'CIT Teller']" data-ng-model="UserFilter.userType" class="form-control">
+                                                                                                                    <option value="" ng-if="!userType">Select User Category</option>
+                                                                                                                </select>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-4">User Status:</label>
+                                                    <div class="col-md-7">
+                                                        <select data-ng-options="userStatus for userStatus in ['All', 'Active', 'Inactive']" data-ng-model="UserFilter.userStatus" class="form-control">
+                                                            <option value="" ng-if="!userStatus">Select Status</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4">Approval Status:</label>
+                                                    <div class="col-md-7">
+                                                        <select data-ng-options="approvalStatus for approvalStatus in ['All', 'Approved', 'Rejected', 'Unapproved']" data-ng-model="UserFilter.approvalStatus" class="form-control">
+                                                            <option value="" ng-if="!approvalStatus">Select Approval Status</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="btn-group pull-right">
+                                                        <button class="btn btn-default" ng-click="resetUsersFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                        <button class="btn btn-info" ng-click="listUsers()"><i class="fa fa-filter"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                    <thead>
+                                    <tr>
+                                        <th class="sorting col-centered">No</th>
+                                        <th class="sorting">Tender Title</th>
+                                        <th class="sorting">Procurement Method</th>
+                                        <th class="sorting col-left">Entity Name</th>
+                                        <th class="sorting">Application Fee</th>
+                                        <th class="sorting">Date Published</th>
+                                        <th class="sorting">Closing Date</th>
+                                        <th class="sorting">Reference Number</th>
+                                        <th class="sorting">Status</th>
+                                        <th class="sorting">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="Tender in Tenders track by $index">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{Tender.TenderTitle}}</td>
+                                        <td>{{Tender.TenderType}}</td>
+                                        <td>{{Tender.EntityName}}</td>
+                                        <td>{{Tender.ApplicationFee}}</td>
+                                        <td>{{Tender.PublishDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td>{{Tender.CloseDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                        <td>{{Tender.ReferenceNo}}</td>
+                                        <td>{{Tender.Status}}</td>
+                                        <td>
+                                            <div class="btn-group pull-left">
+                                                <button class="btn btn-default btn-xs" ng-click="ViewTender(Tender)"><i class="fa fa-search-plus"></i> View </button>
+                                                <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-include src="'templates/table-footer.html'"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-bodyx tab-contentx" ng-if="ShowTenderView">
+                    <div ng-include src="'templates/tender-view.html'" flex></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowAssignRole">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-check-square-o"></span> Assign New User Role(s)</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeDlg()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="AssignUserRoleForm">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left">User Role(s):</label>
+                                <div class="col-md-10">
+                                    <div class="checkbox-set">
+                                        <div class="form-group" ng-repeat="UserRole in UnassignedRoles" ng-if="$index % 3 === 0">
+                                            <div class="col-md-4">
+                                                <label class="check"><input type="checkbox" class="icheckbox" ng-model="UnassignedRoles[$index].isChecked"/> {{UnassignedRoles[$index].roleName}}</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label ng-if="UnassignedRoles[$index + 1]" class="check"><input type="checkbox" class="icheckbox" ng-model="UnassignedRoles[$index+1].isChecked"/> {{UnassignedRoles[$index+1].roleName}}</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label ng-if="UnassignedRoles[$index + 2]" class="check"><input type="checkbox" class="icheckbox" ng-model="UnassignedRoles[$index+2].isChecked"/> {{UnassignedRoles[$index+2].roleName}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="help-block">The Role(s) to assigned to this User</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closePopup()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button class="btn btn-secondary" ng-click="assignUserRole(true)"><i class="fa fa-check-square-o"></i> Assign Role(s)</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="TenderApplication">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-map-marker"></span> Tender Appliation</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="SystemUserForm = !SystemUserForm" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><span class="fa fa-user"></span><strong> Tender Documents</strong></h4>
+                        <ul class="panel-controls">
+                            <li><a ng-click="" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <form name="TenderView" class="form-horizontal">
+                            <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                <thead>
+                                <tr>
+                                    <th class="sorting">Title</th>
+                                    <th class="sorting">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Completed Tender Documents</td>
+                                    <td>
+                                        <div class="btn-group pull-left">
+                                            <button class="btn btn-danger btn-xs" ng-click="ViewTender(Tender)"><i class="fa fa-search-plus"></i> UPLOAD </button>
+                                            <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="LockSystemUserForm">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-user"></span> Lock/Unlock</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="LockSystemUserForm = !LockSystemUserForm" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="form-horizontal" name="LockSystemUserForms">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Note</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="SystemUser.notes" class="form-control" name="message" placeholder="Enter note" required=""> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-danger" ng-click="lockUsers()"><i class="fa fa-unlock-alt"></i> Submit</button>
+                                <button type="button" class="btn btn-default" ng-click="LockSystemUserForm = !LockSystemUserForm"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="deactivateSystemUserForm">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-user"></span> Deactivate/Activate</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="deactivateSystemUserForm = !deactivateSystemUserForm" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="form-horizontal" name="deactivateSysUserForms">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Note</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="SystemUser.notes" class="form-control" name="message" placeholder="Enter note" required=""> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-warning" ng-click="deactivateUsers()"><i class="fa fa-times-circle"></i> Submit</button>
+                                <button type="button" class="btn btn-default" ng-click="deactivateSystemUserForm = !deactivateSystemUserForm"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

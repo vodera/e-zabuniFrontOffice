@@ -1,0 +1,161 @@
+<section class="content" >
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li class="">User Management</li>
+        <li class="active">Create New User</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><span class="fa fa-user"></span><strong> System User Info</strong></h4>
+                <ul class="panel-controls">
+                    <li><a ng-click="" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <form name="CreateNewUser" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">User Type</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <select data-ng-options="SystemUser.id as SystemUser.userType for SystemUser in UserTypes" data-ng-model="SystemUser.userTypeId" class="form-control" ng-change='userTypeChange(SystemUser.userTypeId)' required>
+                                            <option value="" ng-if="!SystemUser.userTypeId">Select User Type</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block">System User Type</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Full Name</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="SystemUser.fullName" class="form-control" name="fullnameText" placeholder="Enter full name" required>
+                                    </div>
+                                    <span class="help-block">User Full Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Phone Number</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                        <input type="text" ng-model="SystemUser.msisdn" class="form-control" minlength="10" maxlength="10" name="msisdnText" placeholder="Enter phone number" numbers-Only required ng-pattern="/^[0][7][0-9]/">
+                                    </div>
+                                    <span class="help-block">User Phone Number (National format e.g. 07xxxxxxxx)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div ng-if="SystemUser.userTypeId === 4" class="form-group">
+                                <label class="col-md-3 control-label text-left">Principal Customer</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <div custom-select="PrincipalCustomer.customerId as PrincipalCustomer.customerName for PrincipalCustomer in searchCustomer($searchTerm)" custom-select-options="{ 'async': true }" ng-model="SystemUser.customerId" required>
+                                            <div class="pull-left">
+                                                <strong>{{ PrincipalCustomer.customerName}}</strong><br/>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                    <span class="help-block">Principal Customer</span>
+                                </div>
+                            </div>
+                            <div ng-if="(SystemUser.userTypeId === 3 || SystemUser.userTypeId === 5)" class="form-group">
+                                <label class="col-md-3 control-label text-left">CIT Agent</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <select data-ng-options="CITAgent.citAgentId as CITAgent.citAgentName for CITAgent in CITAgents" data-ng-model="SystemUser.citAgentId" class="form-control" required>
+                                            <option value="" ng-if="!SystemUser.citAgentId">Select CIT Agent</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block">CIT Agent</span>
+                                </div>
+                            </div>
+                            <div ng-if="SystemUser.userTypeId === 2" class="form-group">
+                                <label class="col-md-3 control-label text-left">Department</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <select data-ng-options="Department.departmentId as Department.departmentName for Department in Departments" data-ng-model="SystemUser.departmentId" class="form-control" required>
+                                            <option value="" ng-if="!SystemUser.departmentId">Select Department</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block">User department</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Email Address</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                        <input type="email" required=""  ng-model="SystemUser.emailAddress" class="form-control" name="emailAddressText" placeholder="Enter email address">
+                                    </div>
+                                    <span class="help-block">User Email Address</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Active Status</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <input type="text" ng-model="SystemUser.status" class="form-control" name="name" placeholder="User Status" readonly="">
+                                    </div>
+                                    <span class="help-block">User Account Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 25px;">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">User Role(s):</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-10">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left"></label>
+                                <div class="col-md-10">
+                                    <div class="checkbox-set">
+                                        <div class="form-group" ng-repeat="UserRole in UserRoles" ng-if="$index % 4 === 0">
+                                            <div class="col-md-3">
+                                                <label class="check"><input type="checkbox" class="icheckbox" ng-model="UserRoles[$index].isChecked"/> {{UserRoles[$index].roleName}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label ng-if="UserRoles[$index + 1]" class="check"><input type="checkbox" class="icheckbox" ng-model="UserRoles[$index+1].isChecked"/> {{UserRoles[$index+1].roleName}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label ng-if="UserRoles[$index + 2]" class="check"><input type="checkbox" class="icheckbox" ng-model="UserRoles[$index+2].isChecked"/> {{UserRoles[$index+2].roleName}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label ng-if="UserRoles[$index + 3]" class="check"><input type="checkbox" class="icheckbox" ng-model="UserRoles[$index+3].isChecked"/> {{UserRoles[$index+3].roleName}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="help-block">The Role(s) to assigned to this User</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-default" ng-click="viewUser(SystemUser, false)"><i class="fa fa-times-circle"></i> Cancel</button>
+                            <button class="btn btn-secondary" ng-click="saveSystemUser()"><i class="fa fa-check-square-o"></i> Save User</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

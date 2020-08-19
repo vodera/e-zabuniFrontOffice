@@ -1,0 +1,201 @@
+<section class="content"> 
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">CIT Agents</a></li>                    
+        <li class="active">New CIT Agent</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal" name="CITAgentForm">
+                    <div class="panel panel-colorful">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><strong>CIT Agent</strong> On-boarding</h3>
+                            <ul class="panel-controls">
+                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body"> 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">CIT Agent Name</label>
+                                        <div class="col-md-7">                                            
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                <input type="text" ng-model="CITAgent.citAgentName" class="form-control" name="name" placeholder="CIT Agent Name" required ng-readonly="!editMode">
+                                            </div>                                    
+                                            <span class="help-block">The full name of the CIT Company</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Company Telephone</label>
+                                        <div class="col-md-7">                                            
+                                            <div class="input-group has-feedback">
+                                                <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                                <input type="text" ng-model="CITAgent.companyTel" class="form-control" minlength="8" maxlength="15" numbers-only name="telNumberText" placeholder="Tel" ng-readonly="!editMode">
+                                            </div>                                            
+                                            <span class="help-block">Telephone number</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Postal Address</label>
+                                        <div class="col-md-7">                                            
+                                            <div class="has-feedback">
+                                                <textarea ng-model="CITAgent.postalAddress" class="form-control" name="postalAddressText" placeholder="Enter postal address" ng-readonly="!editMode"></textarea>
+                                            </div>                                            
+                                            <span class="help-block">CIT Agent Postal Address</span>
+                                        </div>
+                                    </div>
+<!--                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Region(s):</label>
+                                        <div class="col-md-9">                                            
+                                            <div class="checkbox-set">
+                                                <div class="form-group" ng-repeat="Region in Regions" ng-if="$index % 2 === 0">
+                                                    <div class="col-md-5">                                    
+                                                        <label class="check"><input type="checkbox" class="icheckbox" ng-model="Regions[$index].isChecked"/> {{Regions[$index].regionName}}</label>
+                                                    </div>
+                                                    <div class="col-md-5">                                    
+                                                        <label ng-if="Regions[$index + 1]" class="check"><input type="checkbox" class="icheckbox" ng-model="Regions[$index+1].isChecked"/> {{Regions[$index+1].regionName}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="help-block">The regions under which the CIT Agent operates</span>
+                                        </div>
+                                    </div>-->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Company PIN</label>
+                                        <div class="col-md-7">                                            
+                                            <div class="input-group has-feedback">
+                                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                <input type="text" ng-model="CITAgent.pinNumber" class="form-control" name="pinNumberText" placeholder="Enter PIN Number" ng-readonly="!editMode">
+                                            </div>                                            
+                                            <span class="help-block">CIT Agent KRA PIN Number</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Company Email</label>
+                                        <div class="col-md-7">                                            
+                                            <div class="input-group has-feedback">
+                                                <span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+                                                <input type="email" ng-model="CITAgent.emailAddress" class="form-control" name="emailText" placeholder="info@company.com" ng-readonly="!editMode">
+                                            </div>                                            
+                                            <span class="help-block">CIT Agent Email Address</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Physical Location</label>
+                                        <div class="col-md-7">                                            
+                                            <div class="has-feedback">
+                                                <textarea ng-model="CITAgent.location" class="form-control" name="locationText" placeholder="Enter physical address" ng-readonly="!editMode"></textarea>
+                                            </div>                                            
+                                            <span class="help-block">Physical Location Address</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                
+                                <div ng-if="!editMode" class="form-group pull-right">
+                                    <div class="col-md-12">                                                                                                                                                                                                               
+                                        <div class="btn-group">
+                                            
+                                            <button has-permission='UPDATE_CIT_AGENT' class="btn btn-secondary" ng-click="editCITAgent()"><i class="fa fa-pencil"></i> Edit</button>          
+                                             <button has-permission='DELETE_CIT_AGENT' class="btn btn-danger" ng-click="deleteCITPopup(CITAgent, true)"><i class="fa fa-trash-o"></i> Delete</button>
+                                            <button has-permission='DEACTIVATE_CIT_AGENT' class="btn btn-warning" ng-click="deactivateCIT(CITAgent, true)"><i class="fa fa-lock"></i>{{CITAgent.status === 'Active' ? ' Deactivate' : 'Activate' }}</button>                                           
+                                            <button class="btn btn-default" ng-click="viewCit(CITAgent)"><i class="fa fa-times-circle"></i> Go back</button> 
+                                            
+                                        </div>      
+                                    </div>
+                                </div>
+                                <div class="btn-group pull-right" has-permission='UPDATE_CIT_AGENT'>
+                                    <button ng-if="editMode" class="btn btn-default" ng-click=""><i class="fa fa-times-circle"></i> Cancel</button>
+                                    <button has-permission='UPDATE_CIT_AGENT' ng-if="editMode" class="btn btn-info" data-toggle="dropdown" ng-click="saveCITAgent()"><i class="glyphicon glyphicon-saved"></i> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->  
+    
+    <!--DELETE TEMPLATE-->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="removeCIT">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete CIT Agent</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closePopup()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DeleteCITForm">
+                        <div class="col-md-12">
+                            <div class="form-group text-left" >
+                                <label class="col-md-3 control-label">Note</label>
+                                <div class="col-md-7">                                            
+                                    <div class="input-group">
+                                        <!--<span class="input-group-addon"></span>-->
+                                        <textarea  style="width:280%; height: 180%;" type="text" ng-model="citdata.notes" class="form-control" name="message" placeholder="write note" required="">
+                                            </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button has-permission='DELETE_CIT_AGENT' class="btn btn-danger" ng-click="deleteCIT()"><i class="fa fa-trash-o"></i> Delete</button>
+                                <button type="button" class="btn btn-default" ng-click="closePopup()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="deactivateCITForm">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-user"></span> Deactivate/Activate</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="deactivateCITForm = !deactivateCITForm" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="deactivateCITAgentForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Note</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="citagentdata.notes" class="form-control" name="message" placeholder="Enter note" required=""> </textarea>
+                                    </div>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-warning" ng-click="deactivateCITAgent()"><i class="fa fa-lock"></i> Submit</button>
+                                <button type="button" class="btn btn-default" ng-click="deactivateCITForm = !deactivateCITForm"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+</section>
+
+
+
+
+

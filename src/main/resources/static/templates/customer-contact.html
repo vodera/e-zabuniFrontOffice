@@ -1,0 +1,99 @@
+<div class="tab-content">
+    <form class="form-horizontal" name="CustomerContactForm">
+        <div class="panel panel-default" ng-repeat="CustOutlet in CustomerOutlets track by $index">
+            <div class="panel-heading">
+                <h4 class="panel-title"><span class="fa fa-map-marker"></span><strong> {{'Outlet(' + ($index + 1) + ')'}}</strong>{{' - ' + CustOutlet.outletName}}</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Outlet Name:</label>
+                            <div class="col-md-7">                                            
+                                <div class=" has-feedback">
+                                    <input type="text" ng-model="CustOutlet.outletName" class="form-control" name="name" placeholder="Outlet Name" readonly="" >
+                                </div>                                            
+                                <span class="help-block">Customer Outlet Name</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Outlet Account(s):</label>
+                            <div class="col-md-7">
+                                <div class="checkbox-set">
+                                    <div class="form-group" ng-repeat="OutletAccount in CustOutlet.accounts" ng-if="$index % 1 === 0">
+                                        <div class="col-md-12">                                    
+                                            <label class="check"><input type="checkbox" class="icheckbox" checked="checked" disabled="disabled"/> {{OutletAccount.accountNumber + ' - ' + OutletAccount.accountName}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="help-block">The Bank Account(s) to linked to this Outlet</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Physical Address:</label>
+                            <div class="col-md-9">                                            
+                                <div class=" has-feedback">
+                                    <input  ng-model="CustOutlet.physicalAddress" class="form-control" name="locationText" placeholder="Enter physical address" readonly="">
+                                </div>                                            
+                                <span class="help-block">Physical Location Address</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left"></label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-heading">
+                    <h5 class="panel-title"><span class="fa fa-user"></span> Contact(s)</h5>
+                </div>
+                <div id="datatable_wrapper">
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                            <tr>
+                                <th class="sorting col-centered">No</th>
+                                <th class="sorting">Contact Name</th>
+                                <th class="sorting">Phone Number</th>
+                                <th class="sorting">Email Address</th>
+                                <th class="sorting">Account(s)</th>
+                                <th class="sorting">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="OutletContact in CustOutlet.OutletContacts track by $index">
+                                <td class="col-centered">{{$index + 1}}</td>
+                                <td>{{OutletContact.fullName}}</td>
+                                <td>{{OutletContact.msisdn}}</td>
+                                <td>{{OutletContact.emailAddress}}</td>
+                                <td><span ng-repeat="OutletContactAccount in OutletContact.accounts track by $index">{{OutletContactAccount.accountNumber}}{{$last ? '' : ', '}}</span></td>
+                                <td>
+                                    <div class="btn-group pull-left">
+                                        <button class="btn btn-default btn-xs" ng-click="editOutletContact($index, $parent.$index)"><i class="fa fa-pencil"></i> Edit </button>
+                                        <button class="btn btn-default btn-xs" ng-click="removeItem($index, $parent.$index)"><i class="fa fa-times-circle"></i> Remove</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>  
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default" ng-click="showDlg(CustOutlet)"><i class="fa fa-plus-circle"></i>Add Contact</button>
+                    </div>
+                </div>
+                <div class="panel-footer" ng-if="$last">
+                    <div class="btn-group pull-left">
+                        <button type="button" class="btn btn-warning" ng-click="navigatePreviousStep()"><i class="fa fa-chevron-left"></i> Go Back</button>
+                    </div>
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-secondary" ng-click="proceedNextStep()"><i class="fa fa-chevron-right"></i> Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>     
+    </form>
+</div>

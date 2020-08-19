@@ -1,0 +1,84 @@
+<section class="content">
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li class="active">My Profile</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <form class="" name="MyProfileForm">
+            <div class="panel panel-colorful">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="fa fa-user"></span><strong> My Profile</strong></h3>
+                    <ul class="panel-controls">
+                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body profile bg-info">
+
+                                    <div class="profile-image">
+                                        <img src="img/user-profile.png" alt="User Profile">
+                                    </div>
+                                    <div class="profile-data">
+                                        <div class="profile-data-name">{{userDetails.fullName}}</div>
+                                        <div class="profile-data-title">{{userDetails.emailAddress}}</div>
+                                    </div>
+                                    <div class="profile-controls">
+                                        <a href="#" class="profile-control-left"><span class=""></span></a>
+                                        <a href="pages-messages.html" class="profile-control-right"><span class="fa fa-pencil"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-success0">
+                                    <div class="panel-body panel-body-pricing">
+                                        <h2>Profile Details</h2>
+                                    </div>
+                                    <div class="panel-body list-group">
+<!--                                        <div class="list-group-item">-->
+<!--                                            <div class="form-group">-->
+<!--                                                <label>User Type</label>-->
+<!--                                                <input type="text" readonly="" class="form-control" ng-value="userDetails.userType" placeholder="User Type">-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+                                        <div class="list-group-item">
+                                            <div class="form-group">
+                                                <label>Email address</label>
+                                                <input type="email" readonly="" class="form-control" ng-value="'oderavick@gmail.com'" placeholder="Enter Email Address">
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="form-group">
+                                                <label>Full Name</label>
+                                                <input type="text" readonly="" class="form-control" ng-value="'Victor Odera'" placeholder="Full Name">
+                                            </div>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <div class="form-group">
+                                                <label>Phone number</label>
+                                                <input type="text" readonly="" class="form-control" ng-value="'0718809966'" placeholder="Phone Number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <a class="btn btn-success btn-block" href="#/PasswordChange">Change Password</a>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">
+                            <a class="btn btn-default" href="#"><i class="fa fa-times-circle"></i> Close</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+</section>

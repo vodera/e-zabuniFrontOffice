@@ -1,0 +1,258 @@
+<section class="content" >
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><span class="fa fa-user"></span><strong> Tender Details</strong></h4>
+<!--                <ul class="panel-controls">-->
+<!--                    <li><a ng-click="" class="panel-remove"><span class="fa fa-times"></span></a></li>-->
+<!--                </ul>-->
+            </div>
+            <div class="panel-body">
+                <form name="TenderView.view" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Entity Type</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="Tender.EntityType" class="form-control" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Entity Type</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Entity Name</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="Tender.EntityName" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Entity Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Reference No</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-sort-numeric-desc"></span></span>
+                                        <input type="text" ng-model="Tender.ReferenceNo" class="form-control" minlength="10" maxlength="10" name="msisdnText" placeholder="Enter phone number" numbers-Only readonly="" ng-pattern="/^[0][7][0-9]/">
+                                    </div>
+                                    <span class="help-block">Reference Number</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Title</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="Tender.TenderTitle" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Tender Title</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Category</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="Tender.TenderCategory" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Tender Category</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Type</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="Tender.TenderType" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Tender Type</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Application Fee</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-money"></span></span>
+                                        <input type="text" ng-model="Tender.ApplicationFee" class="form-control" name="fullnameText" placeholder="Enter full name" required>
+                                    </div>
+                                    <span class="help-block">Application Fee</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Date Published</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                        <input type="text" ng-model="Tender.PublishDate" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Publish Date</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Submission Closing Date</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                        <input type="text" ng-model="Tender.CloseDate" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Closing Date</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Opening Venue</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-location-arrow"></span></span>
+                                        <input type="text" ng-model="Tender.OpeningVenue" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Opening Venue</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Opening Date</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                        <input type="text" ng-model="Tender.OpeningDate" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Opening Date</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Opening Time</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                                        <input type="text" ng-model="Tender.OpeningTime" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Opening Time</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Tender Status</label>
+                                <div class="col-md-7">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="Tender.Status" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                                    </div>
+                                    <span class="help-block">Tender Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-10">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <label class="col-md-3 control-label text-left">Other Details</label>
+                                    <div class=" has-feedback">
+                                        <textarea  ng-model="Tender.OtherDetails" class="form-control" name="locationText" placeholder="Enter physical address"></textarea>
+                                    </div>
+<!--                                    <span class="help-block">Physical Location Address</span>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><span class="fa fa-user"></span><strong> Tender Documents</strong></h4>
+<!--                            <ul class="panel-controls">-->
+<!--                                <li><a ng-click="" class="panel-remove"><span class="fa fa-times"></span></a></li>-->
+<!--                            </ul>-->
+                        </div>
+                        <div class="panel-body">
+                            <form name="TenderView" class="form-horizontal">
+                                <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                    <thead>
+                                    <tr>
+                                        <th class="sorting">Document Name</th>
+                                        <th class="sorting">Date Uploaded</th>
+                                        <th class="sorting">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><a href="" target="=_blank" style="color: #C0392B">TENDER DOCUMENT FOR REHABILITATION WORKS OF MBWALENI WATER PAN PROJECT IN KWALE COUNTY</a></td>
+                                        <td>25th-Aug-2020</td>
+                                        <td>
+                                            <div class="btn-group pull-left">
+                                                <button class="btn btn-danger btn-xs" ng-click="ViewTender(Tender)"><i class="fa fa-search-plus"></i> DOWNLOAD </button>
+                                                <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="panel-footer">
+                        <div class="btn-group pull-right">
+<!--                            <button class="btn btn-default" ng-click="viewUser(Tender, false)"><i class="fa fa-times-circle"></i> Cancel</button>-->
+                            <button class="btn btn-secondary" ng-click="applyTender()"><i class="fa fa-check-square-o"></i> APPLY</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="TenderApplication">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-map-marker"></span> Tender Appliation</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="TenderApplication = !TenderApplication" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><span class="fa fa-user"></span><strong> Tender Documents</strong></h4>
+                        <ul class="panel-controls">
+                            <li><a ng-click="" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <form name="TenderView" class="form-horizontal">
+                            <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                <thead>
+                                <tr>
+                                    <th class="sorting">Title</th>
+                                    <th class="sorting">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Completed Tender Documents</td>
+                                    <td>
+                                        <div class="btn-group pull-left">
+<!--                                            <button class="btn btn-danger btn-xs" ng-click=""><i class="fa fa-search-plus"></i> UPLOAD </button>-->
+                                            <input type="file" id="myFile" name="filename">
+                                            <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

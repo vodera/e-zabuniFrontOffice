@@ -1,0 +1,85 @@
+<section >
+    <div class="main-agileinfo slider login-body">
+        <div class="items-group">
+            <div class="item agileits-w3layouts">
+                <div class="w3lsfooteragileits" style="text-align: center; margin-top: 80px;">
+                    <img class=""
+                         src="img/backgrounds/emblem.svg" style="width: 150px; height: 150px;">
+                </div>
+                <div class="login-block text main-agileits" style="background: #C49F06; margin-top: 50px;">
+                    <span class="circleLight"></span>
+                    <!-- login form -->
+                    <div class="login-form loginw3-agile">
+                        <div class="agile-row">
+                            <div class="login-title"><strong>Welcome</strong>, Please login</div>
+                            <div class="login-agileits-top">
+                                <form id="login-form" class="form-horizontal" name="LoginForm" autocomplete="off">
+                                        <div class="alert alert-danger" role="alert" ng-show="showLoginErrorMsg">
+                                            <button type="button" class="close" data-dismiss="alert" ng-click="showLoginErrorMsg = !showLoginErrorMsg"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <strong>Login Error! </strong>{{loginErrorMsg}}
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Username</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                <input type="email" name="usernameText" class="form-control" placeholder="Login / E-mail" ng-model="vm.username" ng-required="true" ng-paste="$event.preventDefault();" autofocus  autocomplete="off"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Password</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="fa fa-unlock-alt"></span></span>
+                                                <input type="password" name="passwordText" class="form-control" placeholder="Your Password" ng-model="vm.password" ng-required="true" ng-paste="$event.preventDefault();"  autocomplete="off"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <a href="#/ForgotPassword" class="btn-link" style="color:#ddc754;">Forgot your password?</a>
+                                        </div>
+                                        <div class="col-md-6">
+<!--                                            <a href="#" class="btn-link" style="color:#ffffff;">Create an account</a>-->
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="alignment: center">
+                                        <div class="col-md-12">
+                                            <div ng-init="initCaptcha()" class="g-recaptcha" id="g-recaptcha" data-sitekey="6Lf5e1UUAAAAAA374n3L-2ZJM64d9qgIGaxvg5c9"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-6 btn-group">
+                                            <button class="btn btn-primary btn-block btn-sm" ng-click="createAccount()">
+                                                <!--<i class="fa fa-sign-in"> Log In </i>-->
+                                                <span><i class="fa fa-refresh fa-spin"></i>Create an account</span>
+                                            </button>
+
+                                        </div>
+                                        <div class="col-md-6 btn-group">
+                                            <button form="login-form" class="btn btn-info btn-block btn-sm" ng-click="doLogin()" ng-disabled="{{disabled}}" >
+                                                <!--<i class="fa fa-sign-in"> Log In </i>-->
+                                                <span ng-show="LoginButtonText == 'Logging In'"><i class="fa fa-refresh fa-spin"></i></span>
+                                                    {{ searchButtonText }}                  {{LoginButtonText}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3lsfooteragileits">
+                    <p style="color: #000000"> <b>&copy;2020 E-Zabuni Procurement System [v{{AppVersion}}] | All Rights Reserved | <a href="" target="=_blank" style="color: #C0392B">Turubini Limited</a></b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

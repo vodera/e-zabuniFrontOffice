@@ -1,0 +1,14 @@
+{
+    "elements": {
+        "botdetect-captcha": {},
+        "toaster-container": {}
+    },
+    "attributes": {
+        "file-upload": {
+            "context": "input"
+        },
+        "has-permission": {
+            "context": "li"
+        }
+    }
+}

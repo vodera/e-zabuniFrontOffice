@@ -1,0 +1,617 @@
+<section class="content">
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li class="active">Dashboard</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+    <!-- START WIDGETS -->
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Tender Summary</h3>
+            <ul class="panel-controls panel-controls-title">
+                <li>
+                    <div id="reportrange" class="dtrange" ng-click="showDateFilter()">
+                        <span> </span><b class="caret"></b>
+
+                    </div>
+                </li>
+                <li><a href="" ng-click="loadCollectionSummary()" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel-body" ng-show = "dtrange">
+        <div id="datatable_wrapper" class="">
+            <form class="form-horizontal" name="searchForm">
+                <div id="cit_agent_filter" class="dataTables_filter">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-4">Date From:</label>
+                                <div class="col-md-7">
+                                    <p class="input-group">
+                                        <input type="text" class="form-control text-left" uib-datepicker-popup="dd-MM-yyyy" data-ng-model="DashboardFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="col-md-3">Date To:</label>
+                                <div class="col-md-8">
+                                    <p class="input-group">
+                                        <input type="text" class="form-control text-left" uib-datepicker-popup="dd-MM-yyyy" data-ng-model="DashboardFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="float: right;">
+                            <div class="form-group">
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-default" ng-click="resetFilter()"><i class="fa fa-times"></i> Reset</button>
+                                    <button class="btn btn-info" ng-click="loadCollectionSummary()"><i class="fa fa-filter"></i> Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="widget widget-default widget-carousel">
+            <div class="col-md-3">
+                <a class="info-tiles tiles-success" href="#/TenderList">
+                    <div class="tiles-heading">Total Tenders Posted</div>
+                    <div class="tiles-body-alt">
+                        <!--<i class="fa fa-money"></i>-->
+<!--                        <div class="text-center"><span class="text-top">KES</span><span class="text-smallcaps">{{CashCollectionSummary.totalAmount}}</span>-->
+                        <div class="text-center"><span class="text-top"></span><span class="text-smallcaps">23</span>
+                        </div>
+                        <small>Tenders Listed</small>
+                    </div>
+                    <div class="tiles-footer">View Tenders</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a class="info-tiles tiles-orange" href="#/CompletedTender">
+                    <div class="tiles-heading">Completed Tenders</div>
+                    <div class="tiles-body-alt">
+                        <i class="fa fa-check-square-o"></i>
+<!--                        <div class="text-center">{{CashCollectionSummary.completed}}</div>-->
+                        <div class="text-center">5</div>
+                        <small>No. of my tenders completed</small>
+                    </div>
+                    <div class="tiles-footer">View Completed Tenders</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a class="info-tiles tiles-info" href="#/PendingRequests">
+                    <div class="tiles-heading">Ongoing Tenders</div>
+                    <div class="tiles-body-alt">
+                        <i class="fa fa-spinner"></i>
+<!--                        <div class="text-center">{{CashCollectionSummary.pending}}<span class="text-smallcaps"></span>-->
+                        <div class="text-center">0<span class="text-smallcaps"></span>
+                        </div>
+                        <small>No. of ongoing tenders</small>
+                    </div>
+                    <div class="tiles-footer">View ongoing tenders</div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a class="info-tiles tiles-danger" href="#/AppliedTender">
+                    <div class="tiles-heading">Applied Tenders</div>
+                    <div class="tiles-body-alt">
+                        <i class="fa fa-strikethrough"></i>
+<!--                        <div class="text-center">{{CashCollectionSummary.cancelled}}</div>-->
+                        <div class="text-center">13</div>
+                        <small>No. of applied tenders</small>
+                    </div>
+                    <div class="tiles-footer">View applied tenders</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Verification Summary</h3>
+                <!--                <ul class="panel-controls panel-controls-title">
+                                    <li>
+                                        <div id="reportrange" class="dtrange">
+                                            <span></span><b class="caret"></b>
+                                        </div>
+                                    </li>
+                                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                                </ul>                               -->
+            </div>
+        <div class="panel-body">
+
+        <div class="col-md-3">
+
+            <!-- START WIDGET REGISTRED -->
+            <div class="widget widget-success widget-item-icon">
+                <div class="widget-item-left">
+                    <span class="fa fa-user"></span>
+                </div>
+                <div class="widget-data">
+                    <div class="widget-int num-count">PASS</div>
+                    <div class="widget-title">Tax Compliance Verification</div>
+                    <div class="widget-subtitle">Kenya Revenue Authority Certification</div>
+                </div>
+                <!--                <div class="widget-controls">
+                                    <a href="" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>                            -->
+            </div>
+            <!-- END WIDGET REGISTRED -->
+
+        </div>
+        <div class="col-md-3">
+
+            <!-- START WIDGET REGISTRED -->
+            <div class="widget widget-danger widget-item-icon">
+                <div class="widget-item-left">
+                    <span class="fa fa-check-square-o"></span>
+                </div>
+                <div class="widget-data">
+                    <div class="widget-int num-count">FAIL</div>
+                    <div class="widget-title">YAGPO Verification</div>
+                    <div class="widget-subtitle">Youth Access To Government Procurement Opportunities Program</div>
+                </div>
+                <!--                <div class="widget-controls">
+                                    <a href="" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>                            -->
+            </div>
+            <!-- END WIDGET REGISTRED -->
+
+        </div>
+        <div class="col-md-3">
+
+            <!-- START WIDGET MESSAGES -->
+            <div class="widget widget-success widget-item-icon">
+                <div class="widget-item-left">
+                    <span class="fa fa-times-circle-o"></span>
+                </div>
+                <div class="widget-data">
+                    <div class="widget-int num-count">PASS</div>
+                    <div class="widget-title">E-Citizen Verification</div>
+                    <div class="widget-subtitle">Registrar of Companies</div>
+                </div>
+                <!--                <div class="widget-controls">
+                                    <a href="" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>-->
+            </div>
+            <!-- END WIDGET MESSAGES -->
+
+        </div>
+        <div class="col-md-3">
+
+            <!-- START WIDGET MESSAGES -->
+            <div class="widget widget-success widget-item-icon">
+                <div class="widget-item-left">
+                    <span class="fa fa-times"></span>
+                </div>
+                <div class="widget-data">
+                    <div class="widget-int num-count">PASS</div>
+                    <div class="widget-title">IFMIS Verification</div>
+                    <div class="widget-subtitle">Integrated Financial Management Information System</div>
+                </div>
+                <!--                <div class="widget-controls">
+                                    <a href="" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>-->
+            </div>
+            <!-- END WIDGET MESSAGES -->
+
+        </div>
+        </div>
+    </div>
+    <!-- END WIDGETS -->
+
+        <div class="page-content-wrap" ng-init="UserViewForm = {}">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel-x tab-contentx" ng-if="!ShowTenderView">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><span class="fa fa-user"></span><strong>Applied Tenders</strong></h4>
+                                <!-- START DATATABLE EXPORT -->
+                                <div class="btn-group pull-right">
+                                    <ul class="panel-controls">
+                                        <li>
+                                            <div class="dataTables_psize">
+                                                <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                </select>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="" ng-click="exportUsers('csv')" ><img alt="CSV" src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="exportUsers('xls')"><img alt="XLS" src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="exportUsers('pdf')"><img alt="PDF" src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="datatable_wrapper" class="">
+                                    <form class="form-horizontal" name="searchForm">
+                                        <div id="cit_agent_filter" class="dataTables_filter">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 text-left">Search:</label>
+                                                        <div class="col-md-8">
+                                                            <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="UserFilter.keyword">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3">User Type:</label>
+                                                        <div class="col-md-8">
+                                                            <select data-ng-options="UserFilter.id as UserFilter.userType for UserFilter in UserTypes" data-ng-model="UserFilter.userType" class="form-control" ng-change='userTypeChange(UserFilter.userType)'>
+                                                                <option value="" ng-if="!userType">Select User Category</option>
+                                                            </select>
+                                                            <!--                                                        <select data-ng-options="userType for userType in ['Bank Admin', 'Bank Operator', 'Customer', 'CIT Agent', 'CIT Teller']" data-ng-model="UserFilter.userType" class="form-control">
+                                                                                                                        <option value="" ng-if="!userType">Select User Category</option>
+                                                                                                                    </select>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4">User Status:</label>
+                                                        <div class="col-md-7">
+                                                            <select data-ng-options="userStatus for userStatus in ['All', 'Active', 'Inactive']" data-ng-model="UserFilter.userStatus" class="form-control">
+                                                                <option value="" ng-if="!userStatus">Select Status</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-4">Approval Status:</label>
+                                                        <div class="col-md-7">
+                                                            <select data-ng-options="approvalStatus for approvalStatus in ['All', 'Approved', 'Rejected', 'Unapproved']" data-ng-model="UserFilter.approvalStatus" class="form-control">
+                                                                <option value="" ng-if="!approvalStatus">Select Approval Status</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <div class="btn-group pull-right">
+                                                            <button class="btn btn-default" ng-click="resetUsersFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                            <button class="btn btn-info" ng-click="listUsers()"><i class="fa fa-filter"></i> Filter</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                        <thead>
+                                        <tr>
+                                            <th class="sorting col-centered">No</th>
+                                            <th class="sorting">Tender Title</th>
+                                            <th class="sorting">Procurement Method</th>
+                                            <th class="sorting col-left">Entity Name</th>
+                                            <th class="sorting">Reference Number</th>
+                                            <th class="sorting">Status</th>
+                                            <th class="sorting">Message</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="Tender in Tenders track by $index">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{Tender.TenderTitle}}</td>
+                                            <td>{{Tender.TenderType}}</td>
+                                            <td>{{Tender.EntityName}}</td>
+                                            <td>{{Tender.ReferenceNo}}</td>
+                                            <td>
+                                                <div class="btn-group pull-left">
+                                                    <button class="btn btn-success btn-xs" ng-click="opening(Tender)" ng-if="Tender.stage == 'opening'"> OPENING STAGE</button>
+                                                    <button class="btn btn-success btn-xs" ng-click="evaluation(Tender, false)" ng-if="Tender.stage == 'evaluation'">EVALUATION STAGE</button>
+                                                    <button class="btn btn-success btn-xs" ng-click="award(Tender, true)" ng-if="Tender.stage == 'awarded'"> AWARD STAGE</button>
+                                                    <button class="btn btn-success btn-xs" ng-click="contract(Tender, true)" ng-if="Tender.stage == 'contract'"> CONTRACT STAGE</button>
+                                                    <button class="btn btn-success btn-xs" ng-click="lpo(Tender, true)" ng-if="Tender.stage == 'lpo'"> LPO STAGE</button>
+                                                    <button class="btn btn-success btn-xs" ng-click="progres(Tender, true)" ng-if="Tender.stage == 'progress'"> IN-PROGRESS STAGE</button>
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group pull-left">
+                                                    <button class="btn btn-danger btn-xs" ng-click="chatBox(Tender)"><i class="fa fa-envelope"></i> Chat </button>
+                                                    <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-include src="'templates/table-footer.html'"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-bodyx tab-contentx" ng-if="ShowEvaluation">
+                        <div ng-include src="'templates/evaluation-list.html'" flex></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- START DASHBOARD CHART -->
+    <div class="chart-holder" id="dashboard-area-1" style="height: 200px;"></div>
+    <div class="block-full-width">
+
+    </div>
+    </div>
+    <!-- END DASHBOARD CHART -->
+
+
+
+
+<!--    CHAT BOX-->
+<div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="chat">
+    <div class="modal-form">
+        <div class="modal-header">
+            <h3 class="modal-title"><span class="fa fa-map-marker"></span> Chat Box</h3>
+            <ul class="panel-controls">
+                <li><a href="" ng-click="chat = !chat" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label text-left">Subject</label>
+                <div class="col-md-7">
+                    <div class="input-group has-feedback">
+                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                        <input type="text" ng-model="Tender.subject" class="form-control" name="fullnameText" placeholder="Enter subject" required >
+                    </div>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label text-left">Message</label>
+                <div class="col-md-7">
+                    <div class="input-group has-feedback">
+                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                        <textarea type="text" ng-model="Tender.message" class="form-control" name="fullnameText" placeholder="Enter message" required></textarea>
+                    </div>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group pull-right">
+                    <button class="btn btn-default" ng-click="viewUser(SystemUser, false)"><i class="fa fa-times-circle"></i> Cancel</button>
+                    <button class="btn btn-secondary" ng-click="saveSystemUser()"><i class="fa fa-check-square-o"></i> Send </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--    OPENING STAGE-->
+<div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="openingStage">
+    <div class="modal-form">
+        <div class="modal-header">
+            <h3 class="modal-title"><span class="fa fa-map-marker"></span> Opening Status</h3>
+            <ul class="panel-controls">
+                <li><a href="" ng-click="openingStage = !openingStage" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label text-left">Opening Date</label>
+                <div class="col-md-7">
+                    <div class="input-group has-feedback">
+                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                        <input type="text" ng-model="Tender.OpeningDate" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                    </div>
+<!--                    <span class="help-block">Date</span>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label text-left">Opening Time</label>
+                <div class="col-md-7">
+                    <div class="input-group has-feedback">
+                        <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                        <input type="text" ng-model="Tender.OpeningTime" class="form-control" name="fullnameText" placeholder="Enter full name" readonly="">
+                    </div>
+<!--                    <span class="help-block">Time</span>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label text-left">Opening Venue</label>
+                <div class="col-md-7">
+                    <div class="input-group has-feedback">
+                        <span class="input-group-addon"><span class="fa fa-location-arrow"></span></span>
+                        <input type="text" ng-model="Tender.OpeningTime" class="form-control" minlength="10" maxlength="10" name="msisdnText" placeholder="Enter phone number" numbers-Only ng-pattern="/^[0][7][0-9]/" readonly="">
+                    </div>
+<!--                    <span class="help-block">Venue</span>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--    CONTRACT STAGE-->
+<div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="contractStage">
+    <div class="modal-form">
+        <div class="modal-header">
+            <h3 class="modal-title"><span class="fa fa-map-marker"></span> Contract</h3>
+            <ul class="panel-controls">
+                <li><a href="" ng-click="contractStage = !contractStage" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="panel-body">
+                <form name="TenderView" class="form-horizontal">
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                        <tr>
+
+                            <th class="sorting">Title</th>
+                            <th class="sorting">Document</th>
+                            <th class="sorting">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Contract</td>
+                            <td><a href="" target="=_blank" style="color: #C0392B">NIB/T/006/2018-2017.PDF</a></td>
+                            <td>
+                                <div class="btn-group pull-left">
+                                    <button class="btn btn-danger btn-xs" ng-click="ViewTender(Tender)"><i class="fa fa-search-plus"></i> DOWNLOAD </button>
+                                    <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--    AWARD STAGE-->
+<div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="awardStage">
+    <div class="modal-form">
+        <div class="modal-header">
+            <h3 class="modal-title"><span class="fa fa-map-marker"></span> Award</h3>
+            <ul class="panel-controls">
+                <li><a href="" ng-click="awardStage = !awardStage" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="panel-body">
+                <form name="TenderView" class="form-horizontal">
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                        <tr>
+
+                            <th class="sorting">Title</th>
+                            <th class="sorting">Document</th>
+                            <th class="sorting">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Award Letter</td>
+                            <td><a href="" target="=_blank" style="color: #C0392B">AWARD-LETTER.PDF</a></td>
+                            <td>
+                                <div class="btn-group pull-left">
+                                    <button class="btn btn-danger btn-xs" ng-click="ViewTender(Tender)"><i class="fa fa-search-plus"></i> DOWNLOAD </button>
+                                    <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--    LPO-->
+<div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="lpoStage">
+    <div class="modal-form">
+        <div class="modal-header">
+            <h3 class="modal-title"><span class="fa fa-map-marker"></span> LPO</h3>
+            <ul class="panel-controls">
+                <li><a href="" ng-click="lpoStage = !lpoStage" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="panel-body">
+                <form name="TenderView" class="form-horizontal">
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                        <tr>
+
+                            <th class="sorting">Title</th>
+                            <th class="sorting">Document</th>
+                            <th class="sorting">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>LPO</td>
+                            <td><a href="" target="=_blank" style="color: #C0392B">NIB/LPO/006/2018-2017.PDF</a></td>
+                            <td>
+                                <div class="btn-group pull-left">
+                                    <button class="btn btn-danger btn-xs" ng-click="ViewTender(Tender)"><i class="fa fa-search-plus"></i> DOWNLOAD </button>
+                                    <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--    EVALUATION STAGE-->
+<div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="evaluationStage">
+    <div class="modal-form">
+        <div class="modal-header">
+            <h3 class="modal-title"><span class="fa fa-map-marker"></span> REHABILITATION WORKS OF MBWALENI WATER</h3>
+            <ul class="panel-controls">
+                <li><a href="" ng-click="evaluationStage = !evaluationStage" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="panel-body">
+                <form name="TenderView" class="form-horizontal">
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                        <tr>
+                            <th class="sorting">Company Name</th>
+                            <th class="sorting">Notification of award</th>
+                            <th class="sorting">Evaluation Report</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="Notification in Notifications track by $index">
+                            <td>{{Notification.companyName}}</td>
+                            <td>{{Notification.notification}}</td>
+                            <td>
+                                <div class="btn-group pull-left">
+                                    <button class="btn btn-danger btn-xs" ng-click="ViewTender(Tender)"><i class="fa fa-search-plus"></i> DOWNLOAD REPORT </button>
+                                    <!--<button h00ssion='LOCK_USERS' class="btn btn-success btn-xs" ng-click="unlockUser(SystemUser, true)"><i class="fa fa-unlock-alt"></i> Unlock </button>-->
+                                </div>
+                            </td>
+                        <tr>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</section>

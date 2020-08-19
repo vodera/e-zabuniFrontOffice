@@ -1,0 +1,111 @@
+<form class="form-horizontal" name="citAgentCrewForm" ng-controller="ListCITVehicleCtrl">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="tab-panel-title"><span class="fa fa-truck"></span><strong> CIT Vehicle Details</strong></h3>
+        </div>              
+        <div class="panel-body"> 
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">CIT Agent</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <input type="text" ng-model="CITVehicle.citAgent.citAgentName" class="form-control" name="citAgentText" ng-readonly="true"> 
+                            </div>
+                            <span class="help-block">CIT Agent Name</span>       
+                        </div>
+                    </div>
+                   <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Reg Number</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-registration-mark"></span></span>
+                                <input type="text" ng-model="CITVehicle.regNumber" class="form-control" name="regNumberText" placeholder="Registration number" required ng-readonly="!editMode"> 
+                            </div>
+                            <span class="help-block">Car Registration Number</span>        
+                        </div>
+                    </div>
+                </div>                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Car Category</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select class="form-control" data-ng-options="carCategory for carCategory in ['Lead Car', 'Chase Car']" ng-model="CITVehicle.category" name="carCategorySelect" required ng-readonly="!editMode"></select>  
+                            </div> 
+                            <span class="help-block">CIT Vehicle Category</span>
+                        </div>
+                    </div>                        
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Fleet Number</label>
+                        <div class="col-md-9">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-angle-double-right"></span></span>
+                                <input type="text" ng-model="CITVehicle.fleetNumber" class="form-control" numbers-only name="fleetNumberText" placeholder="Fleet Number" ng-readonly="!editMode">   
+                            </div> 
+                            <span class="help-block">CIT Vehicle Fleet Number</span>       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">  
+            <div ng-if="!editMode" class="form-group pull-right">
+                <div class="col-md-12">                                                                                                                                                                                                               
+                    <div class="btn-group">
+                        <button has-permission='DELETE_CIT_AGENT_VEHICLE' class="btn btn-danger" ng-click="deleteVehiclePopup(CITVehicle, true)"><i class="fa fa-trash-o"></i> Delete Vehicle</button>                                               
+                        <button has-permission='UPDATE_CIT_AGENT_VEHICLE' class="btn btn-secondary" ng-click="viewCITVehicle(CITVehicle, true)"><i class="fa fa-edit"></i> Edit CIT Vehicle</button>                                
+                        <!--<button class="btn btn-default" ng-click="switchTab('Main')"><i class="fa fa-times-circle"></i> Dismiss</button>--> 
+                    </div>      
+                </div>
+            </div>
+            <div class="btn-group pull-right">
+                <!--<button ng-if="editMode" class="btn btn-default" ng-click="switchTab('Main')"><i class="fa fa-times-circle"></i> Cancel</button>-->
+                <button ng-if="editMode" class="btn btn-secondary" ng-click="saveCITVehicle()"><i class="fa fa-check-circle-o"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="removeVehicle">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete CIT Agent Vehicle</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closePopup()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DeleteVehicleForm">
+                        <div class="col-md-12">
+                            <div class="form-group text-left" >
+                                <label class="col-md-3 control-label">Note</label>
+                                <div class="col-md-7">                                            
+                                    <div class="input-group">
+                                        <!--<span class="input-group-addon"></span>-->
+                                        <textarea  style="width:280%; height: 180%;" type="text" ng-model="VehicleData.notes" class="form-control" name="message" placeholder="write note" required="">
+                                            </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button has-permission='DELETE_CIT_AGENT_VEHICLE' class="btn btn-secondary" ng-click="deleteVehicle(CITVehicle)"><i class="glyphicon glyphicon-saved"></i> Delete</button>
+                                <button type="button" class="btn btn-default" ng-click="closePopup()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+
+
+
+
+

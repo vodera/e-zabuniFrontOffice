@@ -1,0 +1,127 @@
+<section class="content" >       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>Master Records</li>                    
+        <li class="active">Message Templates</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-if="!ShowTemplateView">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><span class="fa fa-edit"></span><strong>Messaging Templates</strong></h4>
+                            <ul class="panel-controls">
+                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                            </ul>
+                            <!-- START DATATABLE EXPORT -->
+                            <div class="btn-group pull-right">
+                                <ul class="panel-controls">
+                                    <li>
+                                        <div class="dataTables_psize">
+                                            <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body"> 
+                            <div id="datatable_wrapper" class="">
+                                <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                    <thead>
+                                        <tr>
+                                            <th class="sorting col-centered">No</th>
+                                            <th class="sorting col-left">Template ID</th>
+                                            <th class="sorting">Template Name</th>
+                                            <th class="sorting">Description</th>
+                                            <th class="sorting">SmS Template</th>
+                                            <th class="sorting">Email Template</th>
+                                            <th class="sorting">Action Status</th>
+                                            <th class="sorting">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="templates in messageTemplates track by $index">
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{templates.templateId}}</td>
+                                            <td>{{templates.templateName}}</td>
+                                            <td>{{templates.description}}</td>
+                                            <td>{{templates.smsTemplate}}</td>
+                                            <td>{{templates.emailTemplate}}</td>
+                                            <td>{{templates.actionStatus}}</td>
+                                            <td><div class="btn-group pull-left">
+                                                    <button has-permission='UPDATE_MESSAGE_TEMPLATES' class="btn btn-default btn-xs" ng-click="edit(templates, true)"><i class="fa fa-pencil"></i> Edit </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-include src="'templates/table-footer.html'"></div>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->  
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowTemplate">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-edit"></span>Edit Templates</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="ShowTemplate = !ShowTemplate" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="TemplateForm">
+                        <div class="col-md-12">
+                            <div class="form-group" ng-show="email">
+                                <label class="col-md-3 control-label text-left">Message Template</label>
+                                <div class="col-md-7">                                            
+                                    <div class="input-group">
+                                        <span class="input-group-addon"></span>
+                                        <textarea type="text" ng-model="templates.emailTemplate" class="form-control" name="message template">
+                                            </textarea>
+                                        
+                                    </div>                                    
+                                    <span class="help-block">Edit Message Template</span>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="sms">
+                                <label class="col-md-3 control-label text-left">SMS Template</label>
+                                <div class="col-md-7">                                            
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"></span>
+                                        <textarea style="color:#000;" type="text" ng-model="templates.smsTemplate" class="form-control" name="sms template"></textarea>
+                                    </div>                                            
+                                    <span class="help-block">Edit SMS Template</span>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+
+                                <button has-permission='UPDATE_MESSAGE_TEMPLATES' class="btn btn-secondary" ng-click="saveTemplate()"><i class="glyphicon glyphicon-saved"></i> SAVE</button>
+                                <button type="button" class="btn btn-default" ng-click="ShowTemplate = !ShowTemplate"><i class="fa fa-times-circle"></i> Close Dialog</button>
+
+
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+</section>

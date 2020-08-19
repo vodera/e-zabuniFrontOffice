@@ -1,0 +1,231 @@
+<div class="tab-content">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"><span class="fa fa-user"></span><strong> Contact KYC Info</strong> - {{CustomerContact.fullName}}</h4>
+            <ul class="panel-controls">
+                <li><a ng-click="switchTabs('contact')" class="panel-remove"><span class="fa fa-times"></span></a></li>
+            </ul>
+        </div>
+        <div class="panel-body"> 
+            <form name="ContactViewForm" class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">   
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Contact Name</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-tag"></span></span>
+                                    <input type="text" ng-model="CustomerContact.fullName" class="form-control" name="name" placeholder="Contact Name">
+                                </div>                                    
+                                <span class="help-block">The full name of the contact</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Contact Phone</label>
+                            <div class="col-md-7">                                            
+                                <div ng-if="!PrincipalCustomer.editMode" class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-map-marker"></span></span>
+                                    <input type="text"  ng-model="CustomerContact.msisdn" class="form-control" name="locationText" placeholder="Enter physical address">
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Contact Email</label>
+                            <div class="col-md-7">                                            
+                                <div ng-if="!PrincipalCustomer.editMode" class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <input type="text" data-ng-model="CustomerContact.emailAddress" class="form-control" readOnly="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label text-left">Physical Address</label>
+                            <div class="col-md-7">
+                                <div class=" has-feedback">
+                                    <textarea  ng-model="PrincipalCustomer.physicalAddress" class="form-control" name="locationText" placeholder="Enter physical address"></textarea>
+                                </div>
+                                <span class="help-block">Physical Location Address</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+        <div class="panel-footer">
+            <div class="form-group pull-right">
+                <div class="col-md-12">                                                                                                                                                                                                               
+
+                    <div class="btn-group">
+                        <button class="btn btn-warning" ng-click="viewCustomer(PrincipalCustomer, false)"><i class="fa fa-times-circle"></i> Cancel</button>        
+                        <button has-permission='UPDATE_CONTACT' class="btn btn-secondary" ng-click="updateContact()"><i class="fa fa-check-square-o"></i> Save Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <h4 class="panel-title"><span class="fa fa-user"></span><strong> Contact Accounts</strong></h4>
+        </div>
+        <div class="panel-body"> 
+            <!--            <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr>
+                                    <th class="sorting col-centered">No</th>
+                                    <th class="sorting col-left">Outlet Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="outlet in outlets track by $index">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{outlet.outletName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>-->
+
+            <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                <thead>
+                    <tr>
+                        <th class="sorting col-md-1 col-centered">No</th>
+                        <th class="sorting col-left">Outlet</th>
+                        <th class="sorting col-md-3 col-left">Account Number</th>
+                        <th class="sorting col-left">Account Name</th>
+                        <th class="sorting col-left">Action</th>
+                        <th class="sorting col-left">Action Status</th>
+                        <th class="sorting col-md-2 col-left">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="account in ContactAccounts track by $index">
+                        <td>{{$index + 1}}</td>
+                        <td>{{account.outletAccount.outlet.outletName}}</td>
+                        <td>{{account.outletAccount.accountNumber.accountNumber}}</td>
+                        <td>{{account.outletAccount.accountNumber.accountName}}</td>
+                        <td>{{account.action}}</td>
+                        <td>{{account.actionStatus}}</td>
+                        <td>
+                            <div class="btn-group pull-left" ng-if="account.actionStatus !== 'Unapproved'">
+                                <button class="btn btn-danger btn-xs" ng-click="delinkContactAccount(account.contactId, account.outletContactMapId)"><i class="fa fa-pencil"></i> Delink </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-include src="'templates/table-footer.html'"></div> 
+            <div class="clearfix"></div>
+            <p></p>
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" ng-click="showOuletContact = true"><i class="fa fa-plus-circle"></i>Assign Account</button>
+            </div>
+
+        </div>
+        <div class="panel-footer">
+
+        </div>
+
+        <!--        <div class="panel-heading">
+                    <h4 class="panel-title"><span class="fa fa-user"></span><strong> Assign Outlets</strong></h4>
+                </div>
+                <div class="panel-body"> 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label text-left">Select Outlet to Assign</label>
+                                <div class="col-md-7">                                            
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                        <select ng-options="outlets.outletId as outlets.outletName for outlets in CustomerOutlets" ng-model="outlets.outletId" class="form-control" ng-change='outletChange(outlets.outletId)'>
+                                            <option value="" ng-if="!outlets.outletId">Select Outlet</option>
+                                        </select>
+                                    </div>                                            
+                                    <span class="help-block">Select outlet to assign to this contact</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="viewOutletAccounts" class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label text-left">Select Account(s)</label>
+                                    <div class="col-md-7">          
+                                        <div class="alert alert-danger" role="alert" ng-show="checkAccountError">
+                                            <button type="button" class="close" data-dismiss="alert" ng-click="checkAccountError = !checkAccountError"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            You must select an account
+                                        </div>
+                                        <div class="checkbox-set" style="padding-bottom: 5px;">
+                                            <div style="margin-bottom: 20px;" class="form-group" ng-repeat="OutletAccount in OutletAccounts" ng-if="$index % 1 == 0">
+                                                <div class="col-md-12">                                    
+                                                    <label class="check"><input type="checkbox" ng-checked="OutletAccount.outletAccMapId === CustomerContact.contactId" class="icheckbox" ng-model="OutletAccount.isChecked" ng-value="{{OutletAccount.outletAccMapId}}"/> {{OutletAccount.accountNumber.accountNumber + ' - ' + OutletAccount.accountNumber.accountName}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="help-block">The Bank Account(s) to linked to this Outlet</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="form-group pull-right">
+                            <div class="col-md-12">                                                                                                                                                                                                               
+        
+                                <div class="btn-group">
+                                    <button class="btn btn-warning" ng-click="viewCustomer(PrincipalCustomer, false)"><i class="fa fa-times-circle"></i> Cancel</button>        
+                                    <button has-permission='UPDATE_CONTACT' class="btn btn-secondary" ng-click="updateContact()"><i class="fa fa-check-square-o"></i> Save Contact</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>-->
+
+    </div>
+    <div class="modal-dlg fade in" style="display: block;" ng-show="showOuletContact">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-plus"></span> Assign Outlet Account</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="showOuletContact = false;" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="LinkOutletAccForm">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label text-left">Select Outlet to Assign</label>
+                            <div class="col-md-7">                                            
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <select ng-options="outlets.outletId as outlets.outletName for outlets in CustomerOutlets" ng-model="outlets.outletId" class="form-control" ng-change='outletChange(outlets.outletId)'>
+                                        <option value="" ng-if="!outlets.outletId">Select Outlet</option>
+                                    </select>
+                                </div>                                            
+                                <span class="help-block">Select outlet to assign to this contact</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label text-left">Select Account(s)</label>
+                            <div class="col-md-7">       
+                                <div class="input-group has-feedback">
+                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                    <select ng-disabled="!viewOutletAccounts" id="outletContactAccount" name="outletContactAccount" ng-model="outletContactAccount" class="form-control">
+                                        <!--                                        <option value="" ng-if="!OutletAccount.outletAccMapId">Select Account</option>-->
+                                        <option  ng-repeat="OutletAccount in OutletAccounts" ng-value="OutletAccount.outletAccMapId">{{OutletAccount.accountNumber.accountNumber + ' - ' + OutletAccount.accountNumber.accountName}}</option>
+                                    </select>
+                                </div> 
+                                <span class="help-block">The Bank Account(s) to linked to this Outlet</span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="showOuletContact = false;"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-secondary" ng-click="linkOutletContact(outletContactAccount, CustomerContact.contactId)"><i class="fa fa-link"></i> Add Account(s)</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div> 
+</div>

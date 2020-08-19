@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="CMSAdminApp" oncontextmenu="return false">
+    <head>        
+        <!--<base href="GABCMS">-->
+        <!-- META SECTION -->
+        <title>GAB - Cash Management System</title>            
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <!-- END META SECTION -->
+
+        <!-- CSS INCLUDE -->        
+        <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.min.css"/>  
+        <!--<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />-->
+        <link rel="stylesheet" type="text/css" id="theme" href="css/toaster.min.css"/>   
+        <!--<link href="css/libre-baskerville" rel="stylesheet" type="text/css" />-->
+        <!-- EOF CSS INCLUDE -->    
+    </head>
+    <body ng-controller="MainCtrl">
+        <!-- START PAGE CONTAINER -->
+        <div class="page-container page-navigation-top-fixed">
+
+            <!-- START PAGE SIDEBAR -->
+            <div class="page-sidebar">
+                <!-- START X-NAVIGATION -->
+<!--                <div class="equalizer"> 
+                    <ul><li><a href="index.html"></a></li></ul> 
+                </div>                -->
+                <ul class="x-navigation"  style="background-color: #004B91;">
+                    <li class="xn-logo">
+                        <a href="index2.html">
+                            <img src="img/logos/logo.png" alt="Gulf Bank" height="100%" width="100%"/>  
+                        </a>
+                        <a href="#" class="x-navigation-control"></a>                                                                      
+                    </li>                    
+                    <li class="active" style="background-color: #8C6A03;">
+                        <a href="#/AdminDashboard"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
+                    </li>         
+                    <li class="xn-title" has-permission='ONBOARD_PRINCIPAL_CUSTOMER'>ON-BOARDING MODULE</li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='ONBOARD_PRINCIPAL_CUSTOMER'><span class="fa fa-user"></span> <span class="xn-text">Customer On-boarding</span></a>
+                        <ul>
+                            <li has-permission='ONBOARD_PRINCIPAL_CUSTOMER'><a href="#/CustomerOnboarding"><span class="fa fa-file-text-o"></span>New Customer</a></li>
+                            <li has-permission='APPROVE_CUSTOMERS'><a href="#/ApproveCustomers"><span class="fa fa-check-square-o"></span>Approve Customers</a></li>
+                            <li has-permission='VIEW_CUSTOMERS'><a href="#/Customers"><span class="fa fa-list-ul"></span>List Customers</a></li>
+                        </ul>                               
+                    </li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='ADD_CIT_AGENT'><span class="fa fa-square"></span> <span class="xn-text">CIT Agents</span></a>
+                        <ul>
+                            <li has-permission='ADD_CIT_AGENT'><a href="#/CITAgentOnboarding"><span class="fa fa-file-text-o"></span>New CIT Agent</a></li>
+                            <li has-permission='APPROVE_CIT_AGENTS'><a href="#/ApproveCITAgents"><span class="fa fa-check-square-o"></span>Approve CIT Agents</a></li>
+                            <li has-permission='VIEW_CIT_AGENTS'><a href="#/CITAgents"><span class="fa fa-list-ul"></span>List CIT Agents</a></li>
+                        </ul>
+                    </li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='VIEW_BATCH_UPLOAD'><span class="fa fa-bars"></span><span class="xn-text">CIT Crew Onboarding</span></a>
+                        <ul>
+                            <li has-permission='VIEW_BATCH_UPLOAD'><a href="#/BatchFiles"><span class="fa fa-upload"></span>Batch File Upload</a></li>
+                            <li class="xn-openable">
+                                <a href="#"><span class="fa fa-group"></span>CIT Agent Crew</a>                                
+                                <ul>                                    
+                                    <li has-permission='APPROVE_CIT_AGENT_CREW'><a href="#/ConfirmCITCrew"><span class="fa fa-clipboard"></span>Confirm CIT Crew</a></li>
+                                    <li has-permission='APPROVE_CIT_AGENT_CREW'><a href="#/ApproveCITCrew"><span class="fa fa-check-square-o"></span>Approve CIT Crew</a></li>
+                                    <li has-permission='VIEW_CIT_AGENT_CREW'><a href="#/CITCrew"><span class="fa fa-list-ul"></span>List CIT Crew</a></li>
+                                </ul>
+                            </li>
+                            <li class="xn-openable">
+                                <a href="#"><span class="fa fa-truck"></span>CIT Agent Vehicles</a>                                
+                                <ul>                                    
+                                    <li has-permission='APPROVE_CIT_AGENT_VEHICLES'><a href="#/ConfirmCITVehicles"><span class="fa fa-clipboard"></span>Confirm CIT Vehicles</a></li>
+                                    <li has-permission='APPROVE_CIT_AGENT_VEHICLES'><a href="#/ApproveCITVehicles"><span class="fa fa-check-square-o"></span>Approve CIT Vehicles</a></li>
+                                    <li has-permission='VIEW_CIT_AGENT_VEHICLES'><a href="#/CITVehicles"><span class="fa fa-list-ul"></span>List CIT Vehicles</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="xn-title" has-permission='CREATE_OFFLINE_TRANSACTIONS'>COLLECTION REQUESTS</li>
+<!--                    <li has-permission='INTIATE_CASH_COLLECTION'>
+                        <a href="#/CashCollection"><span class="fa fa-file-o"></span> <span class="xn-text">Initiate a Request</span></a>                                                 
+                    </li>-->
+                    <li has-permission='CREATE_OFFLINE_TRANSACTIONS'>
+                        <a href="#/EnterOfflineRequest"><span class="fa fa-level-up"></span> <span class="xn-text">Enter Offline Request</span></a>                                                 
+                    </li>
+                    <li class="xn-openable" has-permission='FORWARD_CASH_COLLECTION_REQUEST'>
+                        <a href="#"><span class="glyphicon glyphicon-refresh glyphicon-repeat-animate"></span><span class="xn-text">Process Requests</span></a>
+                        <ul>
+                            <li has-permission='FORWARD_CASH_COLLECTION_REQUEST'><a href="#/ForwardRequests"><span class="fa fa-mail-forward"></span>Forward to CIT Agent</a></li>
+                            <!--<li has-permission='SCHEDULE_CREW'><a href="#/ScheduleCrew"><span class="fa fa-clock-o"></span>Crew Scheduling</a></li>-->
+                            <!--<li has-permission='APPROVE_SCHEDULED_CREW'><a href="#/ConfirmCrewSchedule"><span class="fa fa-check-square-o"></span>Confirm Crew Scheduling</a></li>-->
+                            <!--<li has-permission='ADD_TRANSACTION_DENOMINATIONS'><a href="#/InputTally"><span class="fa fa-money"></span>Counted Cash Entry</a></li>-->
+                        </ul>  
+                    </li>
+<!--                    <li has-permission='VIEW_CASH_COLLECTION'>
+                        <a href="#/MyRequests"><span class="glyphicon glyphicon-folder-open"></span> <span class="xn-text">My Requests</span></a>                        
+                    </li>-->
+                    <li has-permission='VIEW_ALL_CASH_COLLECTION'>
+                        <a href="#/CashCollectionRequests"><span class="fa fa-list"></span><span class="xn-text">All Requests</span></a>                        
+                    </li>
+                    <li class="xn-title" has-permission='VIEW_CASH_COLLECTION'>REPORTS MODULE</li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='VIEW_CASH_COLLECTION'><span class="fa fa-money"></span> <span class="xn-text">Collection Requests</span></a>
+                        <ul>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/PendingRequests"><span class="fa fa-spinner"></span>Pending Requests</a></li>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/CancelledRequests"><span class="fa fa-times"></span>Canceled Requests</a></li>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/CompletedRequest"><span class="glyphicon glyphicon-saved"></span>Completed Requests</a></li>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/OfflineRequests"><span class="fa fa-external-link"></span>Offline Collections</a></li>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/DetailedCollectionRequests"><span class="fa fa-list-ul"></span>Detailed Requests</a></li>
+                        </ul>  
+                    </li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='VIEW_CASH_COLLECTION'><span class="glyphicon glyphicon-list-alt"></span> <span class="xn-text">Transactions Report</span></a>
+                        <ul>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/PendingTransactions"><span class="fa fa-spinner"></span>Pending Transactions</a></li>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/CancelledTransactions"><span class="fa fa-times"></span>Canceled Transactions</a></li>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/SuccesfulRequest"><span class="fa fa-foursquare"></span>Successful Transactions</a></li>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/DetailedTransactions"><span class="fa fa-list-ul"></span>Detailed Transactions</a></li>
+                        </ul>
+                    </li>
+                    <li has-permission='VIEW_ALL_CASH_COLLECTION'>
+                        <!--<a href="#/MessageTransactions"><span class="fa fa-envelope-o"></span> <span class="xn-text">Messaging Reports</span></a>-->                                                
+                    </li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='VIEW_CASH_COLLECTION'><span class="fa fa-bar-chart-o"></span> <span class="xn-text">Summary Reports</span></a>
+                        <ul>
+                            <li has-permission='VIEW_CASH_COLLECTION'><a href="#/CustomerPerformanceReport"><span class="fa fa-repeat"></span>Customer Performance</a></li>
+                            <li has-permission='VIEW_CIT_AGENT_PERFORMANCE_REPORT'><a href="#/CITAgentPerformanceReport"><span class="fa fa-tasks"></span>CIT Agent Performance</a></li>
+                        </ul>
+                    </li>
+<!--                    <li class="xn-openable">
+                        <a href="#"><span class="fa fa-book"></span> <span class="xn-text">BI Reports</span></a>
+                        <ul>
+                            <li><a href=""><span class=""></span>BI Report1</a></li>
+                            <li><a href=""><span class=""></span>BI Report2</a></li>
+                        </ul>
+                    </li>-->
+                    <li class="xn-title" has-permission='CREATE_USER'>SYSTEM ADMINISTRATION</li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='CREATE_USER'><span class="fa fa-wrench"></span> <span class="xn-text">User Management</span></a>
+                        <ul>
+                            <li class="xn-openable">
+                                <a href="#"><span class="glyphicon glyphicon-user"></span>System Users</a>
+                                <ul>
+                                    <li has-permission='CREATE_USER'><a href="#/SystemUser"><span class="fa fa-plus"></span>Create New User</a></li>
+                                    <li has-permission='APPROVE_USERS'><a href="#/ApproveUsers"><span class="fa fa-check-square-o"></span>Approve Users</a></li>
+                                    <li has-permission='VIEW_USERS'><a href="#/SystemUsers"><span class="fa fa-users"></span>List System Users</a></li>
+                                </ul>                               
+                            </li>
+                            <li has-permission='VIEW_USER_ROLES'><a href="#/UserRoles"><span class="fa fa-pencil-square-o"></span>User Roles</a></li>
+                            <li has-permission='VIEW_ALL_AUDIT_LOGS'><a href="#/AuditTrail"><span class="fa fa-history"></span>Audit Trail Report</a></li>
+                        </ul>                               
+                    </li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission="VIEW_CUSTOMER_CATEGORIES" ><span class="glyphicon glyphicon-th"></span> <span class="xn-text">Master Records</span></a>
+                        <ul>
+                            <li class="xn-openable">
+                                <a href="#"><span class="glyphicon glyphicon-user"></span>Customer Categories</a>
+                                <ul>
+                                    <li has-permission='VIEW_CUSTOMER_CATEGORIES'><a href="#/CustomerCategories"><span class="fa fa-th-large"></span>List Categories </a></li>
+                                    <li has-permission='APPROVE_CUSTOMER_CATEGORY'><a href="#/ApproveCustomerCategories"><span class="fa fa-check-square-o"></span>Approve Categories</a></li>
+                                    
+                                </ul>                               
+                            </li>
+                            
+                            <li class="xn-openable">
+                                <a href="#"><span class="glyphicon glyphicon-user"></span>Departments</a>
+                                <ul>
+                                    <li has-permission='VIEW_DEPARTMENTS'><a href="#/Departments"><span class="fa fa-sitemap"></span>List Departments </a></li>
+                                    <li has-permission='APPROVE_DEPARTMENTS'><a href="#/ApproveDepartments"><span class="fa fa-check-square-o"></span>Approve Departments</a></li>
+                                    
+                                </ul>                               
+                            </li>
+                            
+                            <li class="xn-openable">
+                                <a href="#"><span class="glyphicon glyphicon-user"></span>Currencies</a>
+                                <ul>
+                                    <li has-permission='VIEW_CURRENCY'><a href="#/Currencies"><span class="fa fa-dollar"></span>List Currencies </a></li>
+                                    <li has-permission='APPROVE_CURRENCY'><a href="#/ApproveCurrencies"><span class="fa fa-check-square-o"></span>Approve Currencies</a></li>
+                                    
+                                </ul>                               
+                            </li>
+                            
+                            <!--<li has-permission="VIEW_REGIONS"><a href="#/Regions"><span class="fa fa-map-marker"></span>Regions</a></li>-->
+                            <li class="xn-openable">
+                                <a href="#"><span class="glyphicon glyphicon-user"></span>Templates</a>
+                                <ul>
+                                    <li has-permission='APPROVE_MESSAGE_TEMPLATES'><a href="#/ApproveTemplate"><span class="fa fa-check-square-o"></span>Approve Templates</a></li>
+                                    <li has-permission='VIEW_MESSAGE_TEMPLATES'><a href="#/MTemplate"><span class="fa fa-envelope"></span>List Templates</a></li>
+                                </ul>                               
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="xn-openable">
+                        <a href="#" has-permission='VIEW_PASSWORD_POLICY'><span class="fa fa-cogs"></span><span class="xn-text">System Configuration</span></a>
+                        <ul>
+                            <li has-permission='VIEW_PASSWORD_POLICY'><a href="#/PasswordPolicy"><span class="fa fa-unlock-alt"></span>Password Policy</a></li>
+                            <li has-permission='VIEW_SYSTEM_INTEGRATION'><a href="#/SystemIntegration"><span class="fa fa-exchange"></span>System Integration</a></li>
+                            <li has-permission='MANAGE_CONFIGURATION'><a href="#/SystemConfig"><span class="fa fa-cog"></span>Global Settings</a></li>
+                            <li has-permission='APPROVE_CONFIGURATIONS'><a href="#/ApproveConfigurations"><span class="fa fa-check-square-o"></span>Approve Configurations</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- END X-NAVIGATION -->
+            </div>
+            <!-- END PAGE SIDEBAR -->
+
+            <!-- PAGE CONTENT -->
+            <div class="page-content">
+
+                <!-- START X-NAVIGATION VERTICAL -->
+                <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                    <!-- TOGGLE NAVIGATION -->
+                    <li class="xn-icon-button">
+                        <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                    </li>
+                    <!-- END TOGGLE NAVIGATION -->
+                    <!-- TITLE -->
+                    <li class="">
+                        <a class="brand" href="index2.html"><span>CASH 2 BANK - ADMIN PORTAL</span></a>
+                    </li>   
+                    <!-- END TITLE -->
+                    <!-- start: Header Menu --> 
+                    <!-- start: User Dropdown -->
+                    <li class="pull-right">
+                        <a data-toggle="dropdown" href="#"><span class="fa fa-user"></span>{{userDetails.fullName}}<span class="caret"></span></a>
+                        <ul class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
+                            <li class="panel-heading"><h3 class="panel-title"><span class="fa fa-wrench"></span> Account Settings</h3></li>
+                            <li class=""><a href="#/MyProfile"><span class="fa fa-user"></span>Profile</a></li>
+                            <li class=""><a href="#/PasswordChange"><span class="fa fa-key"></span>Change Password</a></li>
+                            <li><a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-power-off"></span>Logout</a></li>
+                            <!--<li class="panel-footer"></li>-->
+                        </ul>
+                    </li>
+                    <!-- end: User Dropdown -->		
+                    <li class="xn-icon-button pull-right">
+                        <a href="#" data-toggle="dropdown"><span class="fa fa-bell-o"></span></a>
+                        <div class="informer informer-gold">0</div>                        
+                        <div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><span class="fa fa-refresh"></span> Notifications</h3>                                
+                                <div class="pull-right">
+                                    <span class="label label-danger">You don't have any notifications</span>
+                                </div>
+                            </div>
+                            <div class="panel-body list-group list-group-contacts scroll" style="height: 200px;">
+<!--                                <a href="#" class="list-group-item">
+                                    <div class="list-group-status status-online"></div>
+                                    <img src="assets/images/users/user2.jpg" class="pull-left" alt="John Doe"/>
+                                    <span class="contacts-title">John Doe</span>
+                                    <p>Praesent placerat tellus id augue condimentum</p>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="list-group-status status-away"></div>
+                                    <img src="assets/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk"/>
+                                    <span class="contacts-title">Dmitry Ivaniuk</span>
+                                    <p>Donec risus sapien, sagittis et magna quis</p>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="list-group-status status-away"></div>
+                                    <img src="assets/images/users/user3.jpg" class="pull-left" alt="Nadia Ali"/>
+                                    <span class="contacts-title">Nadia Ali</span>
+                                    <p>Mauris vel eros ut nunc rhoncus cursus sed</p>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="list-group-status status-offline"></div>
+                                    <img src="assets/images/users/user6.jpg" class="pull-left" alt="Darth Vader"/>
+                                    <span class="contacts-title">Darth Vader</span>
+                                    <p>I want my money back!</p>
+                                </a>-->
+                            </div>     
+                            <div class="panel-footer text-center">
+                                <a href="#">Show all notifications</a>
+                            </div>                            
+                        </div>  
+                    </li>
+                    <!-- start: Notifications Dropdown -->
+                    <li class="xn-icon-button pull-right">
+                        <a href="#" data-toggle="dropdown"><span class="fa fa-tasks"></span></a>
+                        <div class="informer informer-gold">0</div>
+                        <div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><span class="fa fa-tasks"></span> Tasks</h3>                                
+                                <div class="pull-right">
+                                    <span class="label label-warning">You don't have any pending tasks</span>
+                                </div>
+                            </div>
+                            <div class="panel-body list-group scroll" style="height: 200px;">                                
+<!--                                <a class="list-group-item" href="#">
+                                    <strong>Phasellus augue arcu, elementum</strong>
+                                    <div class="progress progress-small progress-striped active">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                                    </div>
+                                    <small class="text-muted">John Doe, 25 Sep 2014 / 50%</small>
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    <strong>Aenean ac cursus</strong>
+                                    <div class="progress progress-small progress-striped active">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">80%</div>
+                                    </div>
+                                    <small class="text-muted">Dmitry Ivaniuk, 24 Sep 2014 / 80%</small>
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    <strong>Lorem ipsum dolor</strong>
+                                    <div class="progress progress-small progress-striped active">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%;">95%</div>
+                                    </div>
+                                    <small class="text-muted">John Doe, 23 Sep 2014 / 95%</small>
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    <strong>Cras suscipit ac quam at tincidunt.</strong>
+                                    <div class="progress progress-small">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+                                    </div>
+                                    <small class="text-muted">John Doe, 21 Sep 2014 /</small><small class="text-success"> Done</small>
+                                </a>                                -->
+                            </div>     
+                            <div class="panel-footer text-center">
+                                <a href="#">Show all tasks</a>
+                            </div>                            
+                        </div> 
+                    </li>
+                    <!-- end: Notifications Dropdown -->			
+                    <!-- end: Header Menu -->
+                </ul>
+                <!-- END X-NAVIGATION VERTICAL -->  
+                
+                <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">                    
+                    <div class="ng-view"></div>
+                </div>
+                <!-- END PAGE CONTENT WRAPPER -->                                
+            </div>            
+            <!-- END PAGE CONTENT -->
+        </div>
+        <!-- END PAGE CONTAINER -->
+        
+        <!--SPINNER BOX-->
+        <!--<div class="app-spinner" name="mainspinner" ng-show="showLoading">
+            <div class="spinner-message">
+                <div class="spinner">
+                    <span class="glyphicon glyphicon-refresh glyphicon-repeat-animate"></span>
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <div><span class="spinner-text">Loading.........</span></div>
+                <span class="spinner-image"></span><span class="spinner-text ng-binding" data-ng-bind="caption">Please wait........</span>
+            </div>
+        </div>-->
+        <!--END SPINNER BOX-->
+
+        <toaster-container toaster-options="{'time-out': 10000,'position-class': 'toast-bottom-right'}"></toaster-container>
+        
+        <!-- MESSAGE BOX-->
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out"></span> Log <strong>Out</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to log out?</p>                    
+                        <p>Press No if you want to continue work. Press Yes to logout current user.</p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="" ng-click="doLogout()" class="btn btn-danger btn-lg">Yes</a>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MESSAGE BOX-->        
+
+        <!-- START PRELOADS -->
+        <audio id="audio-alert" src="audio/alert.mp3" preload="auto"></audio>
+        <audio id="audio-fail" src="audio/fail.mp3" preload="auto"></audio>
+        <!-- END PRELOADS -->                  
+
+        <!-- START SCRIPTS -->
+        <script type="text/ng-template" id="warning-dialog.html">
+            <div class="modal-header dialog-header-wait">
+             <h4><span class="fa fa-clock-o"></span> Your session is about to expire due to inactivity. Do Something!</h4>
+            </div>
+            <div idle-countdown="countdown" ng-init="countdown=5" class="modal-body">
+             <uib-progressbar max="5" value="5" animate="false" class="progress-striped active">You'll be logged out in {{countdown}} second(s).</uib-progressbar>
+            </div>
+        </script>
+        <script type="text/ng-template" id="timedout-dialog.html">
+            <div class="modal-header dialog-header-error">
+            <h4 class="modal-title" id="modal-title"><span class="fa fa-warning"></span> Session expired!</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+            <p>
+            Your session has expired due to inactivity. Please login again!
+            </p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-danger btn-block" type="button" ng-click="doLogout()">OK</button>
+            </div>
+        </script>
+       <script type="text/ng-template" id="token-expired-dialog.html">
+            <div class="modal-header dialog-header-error">
+            <h4 class="modal-title" id="modal-title"><span class="fa fa-warning"></span> Expired Access Token!</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+            <p>
+            Your access token has expired. Please login again!
+            </p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-danger btn-block" type="button" ng-click="doLogout()">OK</button>
+            </div>
+        </script> 
+        <script type="text/ng-template" id="processing-dialog.html">
+            <div class="modal-header dialog-header-wait">
+             <h4><span class="fa fa-clock-o"></span> Please wait</h4>
+            </div>
+            <div class="modal-body">
+             <uib-progressbar max="100" value="100" animate="true" class="progress-striped active" type="info">Loading, please wait......</uib-progressbar>
+            </div>
+        </script>
+        <script type="text/ng-template" id="alert-dialog.html">
+            <div class="modal-header dialog-header-wait">
+             <h4><span class="fa fa-warning"></span> Notification</h4>
+            </div>
+            <div class="modal-body">
+            <p>
+               {{alertMessage}}
+            </p>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary btn-block" type="button" ng-click="closeAlertDialog()">OK</button>
+            </div>
+        </script>
+               
+        <!-- START PLUGINS -->
+        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type='text/javascript' src="js/plugins/angularjs/angular.min.js"></script>
+        <script type='text/javascript' src="scripts/App.js"></script>
+        <!-- END SCRIPTS -->         
+    </body>
+</html>
+
+
+
+
+
+

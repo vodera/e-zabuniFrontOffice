@@ -1,0 +1,187 @@
+<section class="content"> 
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li> 
+        <li>Master Records</li> 
+        <li class="active">Customer Category</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="fa fa-th-large"></span> Currencies</h3>
+                        <ul class="panel-controls">
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+<!--                        <div id="cit_agent_filter" class="dataTables_filter">
+                            <label>Search:<input class="form-control " placeholder="keywords" type="search"></label>
+                        </div> -->
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr>
+                                    <th class="sorting col-centered">No</th>
+                                    <th class="sorting col-left">Currency Name</th>
+                                    <th class="sorting col-left">Currency Code</th>
+                                    <th class="sorting col-left">Currency Symbol</th>
+                                    <th class="sorting">Conversion Rate</th>
+                                    <th class="sorting">Last Updated On</th>
+                                    <th class="sorting">Action</th>
+                                    <th class="sorting">Action Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="Currency in Currencies track by $index">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{Currency.currencyName}}</td>
+                                    <td>{{Currency.currencyCode}}</td>
+                                    <td>{{Currency.symbol}}</td>
+                                    <td>{{Currency.conversionRate}}</td>
+                                    <td>{{Currency.actionStatus}}</td>
+                                    <td>{{Currency.lastUpdatedOn | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td>
+                                        <div class="btn-group pull-left">
+                                            <button  has-permission='UPDATE_CURRENCY' class="btn btn-default btn-xs" ng-click="editCurrency(Currency, true)"><i class="fa fa-pencil"></i> Edit </button>
+                                            <button has-permission='DELETE_CURRENCY' class="btn btn-danger btn-xs" ng-click="deleteCurrency(Currency, true)"><i class="fa fa-trash-o"></i> Delete </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>                        
+                        <div ng-include src="'templates/table-footer.html'"></div> 
+                    </div>
+                    <div class="panel-footer">
+                        <div class="pull-right">
+                            <button  has-permission='CREATE_CURRENCY' type="button" class="btn btn-secondary" ng-click="showCurrencyDlg({})"><i class="fa fa-plus-circle"></i>Add New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowCurrency">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-th-large"></span> Currencies</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="ShowCurrency = !ShowCurrency" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="CurrencyForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Currency Code:</label>
+                                <div class="col-md-5"> 
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-edit"></span></span>
+                                        <input type="text" ng-model="Currency.currencyCode" class="form-control" name="currencyCodeText" placeholder="Currency Code"  ng-readonly="Currency.editMode"> 
+                                    </div>
+                                    <span class="help-block">Currency Code</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Currency Name:</label>
+                                <div class="col-md-5"> 
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-tag"></span></span>
+                                        <input type="text" ng-model="Currency.currencyName" class="form-control" name="currencyNameText" placeholder="Currency Name" required> 
+                                    </div>
+                                    <span class="help-block">Currency Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Currency Symbol:</label>
+                                <div class="col-md-5"> 
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-dollar"></span></span>
+                                        <input type="text" ng-model="Currency.symbol" class="form-control" name="symbolText" placeholder="Currency Code" required> 
+                                    </div>
+                                    <span class="help-block">Currency Symbol</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Denominations:</label>
+                                <div class="col-md-7"> 
+                                    <table class="table datatable table-bordered table-condensed table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="sorting col-centered">No</th>
+                                                <th class="sorting col-left">Denomination</th>
+                                                <th class="sorting">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="CurrencyDenomination in CurrencyDenominations track by $index">
+                                                <td class="col-centered">{{$index + 1}}</td>
+                                                <td>
+                                                    <input type="text" ng-model="CurrencyDenomination.denomination" class="form-control" name="name" placeholder="Denomination" required>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group pull-left">
+                                                        <button type="button" class="btn btn-default btn-xs" ng-click="removeDenomination($index)"><i class="fa fa-times"></i> Remove </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                          
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-default" ng-click="addDenomination()"><i class="fa fa-plus-circle"></i>Add Denomination</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="ShowCurrency = !ShowCurrency"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button ng-if="!Currency.editMode" class="btn btn-secondary" ng-click="saveCurrency()"><i class="fa fa-check-square-o"></i> Save Currency</button>
+                                <button ng-if="Currency.editMode" class="btn btn-secondary" ng-click="updateCurrency()"><i class="fa fa-check-square-o"></i> Update Currency</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+    
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="DeleteCurrencyDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-th-large"></span> Currency</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="DeleteCurrencyDlg = !DeleteCurrencyDlg" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DeleteCurrencyForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Description</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="CurrencyInfo.notes" class="form-control" name="message" placeholder="Enter Note" required=""> </textarea>
+                                    </div>
+                                    <span class="help-block">Note Description</span>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="DeleteCurrencyDlg = !DeleteCurrencyDlg"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-danger" ng-click="deleteCurrencies()"><i class="fa fa-check-trash-o"></i> Delete Currency</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+</section>

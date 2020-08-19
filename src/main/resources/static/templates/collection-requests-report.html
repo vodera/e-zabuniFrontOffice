@@ -1,0 +1,162 @@
+<section class="content" >       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>Collection Requests</li>
+        <li class="active">{{PageParams.breadCrumb}}</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="panel-x tab-contentx" ng-if="!ShowRequestView">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><span class="fa fa-list-ul"></span><strong> {{PageParams.title}}</strong></h4>
+                                <!-- START DATATABLE EXPORT -->
+                                <div class="btn-group pull-right">
+                                    <ul class="panel-controls">
+                                        <li>
+                                            <div class="dataTables_psize">
+                                                <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="" ng-click="DownloadReport('csv')"><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="DownloadReport('xls')"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="DownloadReport('pdf')"><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-body"> 
+                                <div id="datatable_wrapper" class="">
+                                    <form class="form-horizontal" name="searchForm">
+                                    <div id="cit_agent_filter" class="dataTables_filter">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 text-left">Search:</label>
+                                                    <div class="col-md-8">   
+                                                        <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="RequestFilter.keyword">
+                                                    </div>
+                                                </div>
+                                                <div ng-if="PageParams.requestStatus !== 'Offline'" class="form-group">
+                                                    <label class="col-md-3">Stage:</label>
+                                                    <div class="col-md-8">   
+                                                        <select data-ng-options="requestStage for requestStage in ['All', 'Initiated', 'Forwarded', 'Crew Scheduled', 'Crew Confirmed', 'Tallied', 'Posted']" data-ng-model="RequestFilter.requestStage" class="form-control">
+                                                            <option value="" ng-if="!requestStage">Select Request Stage</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4">Date From:</label>
+                                                    <div class="col-md-7">   
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="RequestFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="!PageParams.requestStatus" class="form-group">
+                                                    <label class="col-md-4">Request Status:</label>
+                                                    <div class="col-md-7">   
+                                                        <select data-ng-options="requestStatus for requestStatus in ['All', 'Pending', 'Cancelled', 'Completed']" data-ng-model="RequestFilter.requestStatus" class="form-control">
+                                                            <option value="" ng-if="!requestStatus">Select Status</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Date To:</label>
+                                                    <div class="col-md-8">      
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="RequestFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="btn-group pull-right">
+                                                        <button class="btn btn-default" ng-click="resetRequestFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                        <button class="btn btn-info" ng-click="listCollectionRequests()"><i class="fa fa-filter"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>   
+                                </form>
+                                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                        <thead>
+                                            <tr>
+                                                <th class="col-centered">No</th>
+                                                <th class="sorting col-centered">Request ID</th>
+                                                <th class="sorting">Request Time</th>
+                                                <th class="">Customer | Outlet Name</th>
+                                                <th class="sorting">Preferred Time</th>
+                                                <!--<th class="sorting">Base Currency</th>-->
+                                                <th class="sorting">Total Value</th>
+                                                <!--<th class="sorting">No. Vehicles</th>-->
+                                                <th class="">Request Status</th>
+                                                <th class="">Request Stage</th>
+                                                <th class="sorting">Completion Time</th>
+                                                <th class="">Requested By</th>
+                                                <th class="">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="CollectionRequest in CollectionRequests track by $index">
+                                                <td class="col-centered">{{$index + 1}}</td>
+                                                <td class="col-md-1 col-centered">{{CollectionRequest.requestId}}</td>
+                                                <td>{{CollectionRequest.requestTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <td class="col-md-2">{{CollectionRequest.customerName+' - '+CollectionRequest.outletName}}</td>
+                                                <td>{{CollectionRequest.prefCollectionTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <!--<td>{{CollectionRequest.currencyCode}}</td>-->
+                                                <td>{{CollectionRequest.totalValue ? (CollectionRequest.totalValue | number:'2') : 'N/A'}}</td>
+                                                <!--<td>{{CollectionRequest.vehicleQty}}</td>-->
+                                                <td class="col-md-1">{{CollectionRequest.requestStatus}}</td>
+                                                <td class="col-md-1">{{CollectionRequest.requestStage}}</td>
+                                                <td>{{CollectionRequest.completionTime ? (CollectionRequest.completionTime | date:'yyyy-MM-dd HH:mm:ss') : 'N/A'}}</td>
+                                                <td>{{CollectionRequest.requestedBy}}</td>
+                                                <td>
+                                                    <div class="btn-group pull-left">
+                                                        <button class="btn btn-default btn-xs" ng-click="viewCollectionRequest(CollectionRequest)"><i class="fa fa-search-plus"></i> View </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-include src="'templates/table-footer.html'"></div>    
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="panel-bodyx tab-contentx" ng-if="ShowRequestView">
+                        <div ng-include src="'templates/request-report-view.html'" flex></div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    <!-- END PAGE CONTENT WRAPPER -->     
+</section>

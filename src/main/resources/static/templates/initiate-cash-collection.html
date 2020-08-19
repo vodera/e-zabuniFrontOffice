@@ -1,0 +1,174 @@
+<section class="content">
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li class="active">Initiate Cash Collection</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal" name="CashCollectionForm">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><span class="fa fa-money"></span><strong> Initiate Cash Collection Request</strong></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Customer Outlet Name</label>
+                                        <div class="col-md-6">
+                                            <div class="input-group has-feedback">
+                                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                                <select data-ng-options="CustomerOutlet as CustomerOutlet.outletName for CustomerOutlet in CustomerOutlets" data-ng-model="CashCollection.CustomerOutlet" class="form-control" ng-change="CustomerOutletChange()">
+                                                    <option value="" ng-if="!CashCollection.CustomerOutlet">Select Outlet for Cash Collection</option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block">Select Outlet for Cash Collection</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Preferred Collection Time</label>
+                                        <div class="col-md-6">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" datetime-picker="yyyy-MM-dd HH:mm" ng-model="CashCollection.prefCollectionTime.date" is-open="dateTimePicker.open" datepicker-options="CashCollection.prefCollectionTime.dateOptions" timepicker-options="CashCollection.prefCollectionTime.timepickerOptions" required=""/>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="dateTimePicker.open = !dateTimePicker.open"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    <button type="button" class="btn btn-secondary" ng-click="setToday()"><i class="fa fa-clock-o"></i> Today</button>
+                                                </span>
+                                            </p>
+                                            <span class="help-block">Preferred Date & Time of Cash Collection</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Customer Name</label>
+                                        <div class="col-md-7">
+                                            <div class="input-group has-feedback">
+                                                <span class="input-group-addon"><span class="fa fa-tag"></span></span>
+                                                <input data-ng-model="CashCollection.CustomerOutlet.customer.customerName" class="form-control" placeholder="Customer Name" readonly=""/>
+                                            </div>
+                                            <span class="help-block">Customer Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label text-left">Cash Collection Point</label>
+                                        <div class="col-md-7">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="fa fa-map-marker"></span></span>
+                                                <input type="text" ng-model="CashCollection.CustomerOutlet.physicalAddress" class="form-control" placeholder="Physical Address" readonly="">
+                                            </div>
+                                            <span class="help-block">The Outlet Physical Address</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="" style="margin-top: 30px"><hr/></div>
+                            <div class="panel-heading">
+                                <h5 class="tab-panel-title"><span class="fa fa-dollar"></span><strong> Cash Collection Amount [Per Currency]</strong></h5>
+                            </div>
+                            <div id="datatable_wrapper">
+                                <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                    <thead>
+                                        <tr>
+                                            <th class="sorting col-centered">No</th>
+                                            <th class="sorting">Currency</th>
+                                            <th class="sorting">Account Number</th>
+                                            <th class="sorting">Account Name</th>
+                                            <th class="sorting">Amount</th>
+                                            <th class="sorting">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="CashCollectionEntry in CashCollectionEntries track by $index">
+                                            <td class="col-centered">{{$index + 1}}</td>
+                                            <td>{{CashCollectionEntry.Currency.currencyCode}}</td>
+                                            <td>{{CashCollectionEntry.OutletAccount.accountNumber}}</td>
+                                            <td>{{CashCollectionEntry.OutletAccount.accountName}}</td>
+                                            <td>{{CashCollectionEntry.amount | number:'2'}}</td>
+                                            <td>
+                                                <div class="btn-group pull-left">
+                                                    <button class="btn btn-default btn-xs" ng-click="editCollectionEntry($index)"><i class="fa fa-pencil"></i> Edit</button>
+                                                    <button class="btn btn-default btn-xs" ng-click="removeCollectionEntry($index)"><i class="fa fa-times-circle"></i> Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="pull-right btn-group">
+                                    <button type="button" class="btn btn-default" ng-click="showDlg()"><i class="fa fa-plus-circle"></i>Add Entry</button>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-secondary" ng-click="submitCollectionRequest()"><i class="fa fa-chevron-right"></i> Submit Request</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+
+    <div class="modal-dlg fade in"  tabindex="-1"   role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowEntryDlg">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-money"></span> Add Cash Collection Entry</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeAndclear()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="CollectionEntryForm">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Select Currency:</label>
+                        <div class="col-md-7">
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select ng-if="!CollectionEntry.entryId" data-ng-options="Currency as Currency.currencyName+' - '+Currency.currencyCode for Currency in fetchCurrencies()" data-ng-model="CollectionEntry.Currency" class="form-control"  ng-change='currencyChange()'>
+                                    <option value="" ng-if="!CollectionEntry.Currency">Select Currency</option>
+                                </select>
+                                <input ng-if="CollectionEntry.entryId" type="text" ng-value="CollectionEntry.Currency.currencyName+' - '+CollectionEntry.Currency.currencyCode" class="form-control" readonly="">
+                            </div>
+                            <span class="help-block">Select Cash Collection Currency</span>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Select Bank Account</label>
+                        <div class="col-md-7">
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select data-ng-options="OutletAccount as OutletAccount.accountNumber+' - '+OutletAccount.accountName for OutletAccount in OutletCurrencyAccounts" data-ng-model="CollectionEntry.OutletAccount" class="form-control" ng-disabled="!CollectionEntry.Currency">
+                                    <option value="" ng-if="!CollectionEntry.OutletAccount">Select Account</option>
+                                </select>
+                            </div>
+                            <span class="help-block">Select Bank Account</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Enter Amount:</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-money"></span></span>
+                                <input type="text" ng-model="CollectionEntry.amount" class="form-control" name="name" placeholder="0.00" money-mask style="font-weight: 600;">
+                            </div>
+                            <span class="help-block">Enter amount to be collected</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closeAndclear()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="addCollectionEntry()"><i class="fa fa-check-square-o"></i> Save Entry</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

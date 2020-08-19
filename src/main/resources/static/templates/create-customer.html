@@ -1,0 +1,353 @@
+<section class="content">       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li> 
+        <li class="">Customer Onboarding</li>
+        <li class="">New Customer</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">                 
+                <ul class="nav custom-nav nav-pills nav-wizard">
+                    <li ng-class="{'active': CurrentStep === 1}"><a ng-class="{'disabled': CurrentStep < 1}" href="none" data-toggle="tab" ng-click="CurrentStep > 1 && navigatetoTab(1)">Customer Info</a></li>
+                    <li ng-class="{'active': CurrentStep === 2}"><a ng-class="{'disabled': (CurrentStep < 2 && HighestLevel < 2)}" href="none" data-toggle="tab" ng-click="((CurrentStep > 2 || HighestLevel >= 2) && navigatetoTab(2))">Customer Outlets</a></li>
+                    <li ng-class="{'active': CurrentStep === 3}"><a ng-class="{'disabled': (CurrentStep < 3 && HighestLevel < 3)}" href="none" data-toggle="tab" ng-click="((CurrentStep > 3 || HighestLevel >= 3) && navigatetoTab(3))">Customer Contacts</a></li>
+                    <li ng-class="{'active': CurrentStep === 4}"><a ng-class="{'disabled': (CurrentStep < 4 && HighestLevel < 4)}" href="none" data-toggle="tab" ng-click="((CurrentStep > 4 || HighestLevel >= 3) && navigatetoTab(4))">Confirm & Complete</a></li>
+                </ul> 
+                <div class="tab-content" ng-show="CurrentStep === 1">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><span class="fa fa-user"></span><strong> Principal Customer KYC Info</strong></h4>
+                        </div>
+                        <div class="panel-body"> 
+                            <form class="form-horizontal" name="PrincipalCustomerForm">
+                                <div class="row dataTables_filter">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-right">
+                                            <button type="button" class="btn btn-default" ng-click="searchPrincipal(true)"><i class="fa fa-eraser"></i> Clear</button>
+                                            <button type="button" class="btn btn-info" ng-click="searchPrincipal(false)"><i class="fa fa-search"></i> Search</button>
+                                        </div>
+                                        <div class="form-group  pull-right col-md-4">
+                                            <label class="col-md-4 control-label text-left">Customer Account:</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control " placeholder="Enter Customer A/C Ref" type="text" ng-model="BankCustomer.search" numbers-Only>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row dataTables_filter">
+                                    <div class="col-md-6">   
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label text-left">Customer Name</label>
+                                            <div class="col-md-7">                                            
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                    <input type="text" ng-model="PrincipalCustomer.customerName" class="form-control" name="name" placeholder="Customer Name" readonly="">
+                                                </div>                                    
+                                                <span class="help-block">The full name of the customer</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label text-left">Postal Address</label>
+                                            <div class="col-md-7">                                            
+                                                <div class="has-feedback">
+                                                    <textarea ng-model="PrincipalCustomer.postalAddress" class="form-control" name="postalAddressText" placeholder="Enter postal address" readonly=""></textarea>
+                                                </div>                                            
+                                                <span class="help-block">Customer Postal Address</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label text-left">Customer Category</label>
+                                            <div class="col-md-7">                                            
+                                                <div class="input-group has-feedback">
+                                                    <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                                    <select data-ng-options="category.custCategoryId as category.categoryName for category in CustomerCategories" data-ng-model="PrincipalCustomer.custCategoryId" class="form-control" required>
+                                                        <option value="" ng-if="!PrincipalCustomer.custCategoryId">Select Category</option>
+                                                    </select>
+                                                </div>                                            
+                                                <span class="help-block">Select Customer Category</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label text-left">Physical Location</label>
+                                            <div class="col-md-7">                                            
+                                                <div class=" has-feedback">
+                                                    <textarea  ng-model="PrincipalCustomer.physicalAddress" class="form-control" name="locationText" placeholder="Enter physical address" required></textarea>
+                                                </div>                                            
+                                                <span class="help-block">Physical Location Address</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </form>
+                            <div class="" style="margin-top: 30px"><hr/></div>
+                            <div class="panel-heading">
+                                <h5 class="tab-panel-title"><span class="fa fa-check-square-o"></span><strong> Customer Accounts</strong></h5>
+                            </div>
+                            <div id="datatable_wrapper">
+                                <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                    <thead>
+                                        <tr>
+                                            <th class="sorting col-centered">No</th>
+                                            <th class="sorting">Branch Name</th>
+                                            <th class="sorting">Currency</th>
+                                            <th class="sorting">Account Type</th>
+                                            <th class="sorting">Account Number</th>
+                                            <th class="sorting">Account Name</th>
+                                            <th class="sorting">Account Status</th>
+                                            <th class="sorting">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="CustAcc in CustomerAccounts track by $index">
+                                            <td class="col-centered">{{$index + 1}}</td>
+                                            <td>{{CustAcc.branchName}}</td>
+                                            <td>{{CustAcc.currency.currencyCode}}</td>
+                                            <td>{{CustAcc.accountType}}</td>
+                                            <td>{{CustAcc.accountNumber}}</td>
+                                            <td>{{CustAcc.accountName}}</td>
+                                            <td>{{CustAcc.accountStatus}}</td>
+                                            <td>
+                                                <div class="btn-group pull-left">
+                                                    <button class="btn btn-default btn-xs" ng-click="removeItem($index)"><i class="fa fa-times-circle"></i> Remove</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>  
+                                <div class="pull-right">
+                                    <button ng-if="PrincipalCustomer.customerName" type="button" class="btn btn-primary" ng-click="showDlg()"><i class="fa fa-plus-circle"></i>Add Account</button>
+                                </div>
+                            </div>                                
+                            <div class="panel-footer">
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-secondary" ng-click="proceedNextStep(PrincipalCustomerForm)"><i class="fa fa-chevron-right"></i> Proceed</button>
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>                    
+                </div>
+                <div ng-if="CurrentStep === 2">
+                    <div  ng-include src="'templates/customer-outlet.html'" flex></div>
+                </div> 
+                <div ng-if="CurrentStep === 3">
+                    <div  ng-include src="'templates/customer-contact.html'" flex></div>
+                </div> 
+                <div ng-if="CurrentStep === 4">
+                    <div  ng-include src="'templates/confirm-customer.html'" flex></div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- END PAGE CONTENT WRAPPER -->    
+    <div class="modal-dlg fade in"  tabindex="-1"   role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowLinkAcc">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-link"></span> {{isPrincipal ? 'Customer Bank Account Details' : 'Add Customer Account'}}</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeAndclear()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="LinkAccForm">
+                        <div ng-if="!isPrincipal" class="dataTables_filter">
+                            <label class="col-md-2 control-label text-left">Account No:</label>
+                            <div class="col-md-6">
+                                <input class="form-control " placeholder="Enter Account Reference Number" type="text" ng-model="LinkCustAcc.search" numbers-Only required>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-default" ng-click="LinkCustAcc = null"><i class="fa fa-eraser"></i> Clear</button>
+                                    <button class="btn btn-info" ng-click="searchAccount()"><i class="fa fa-search"></i> Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left">Branch Name</label>
+                                <div class="col-md-9">  
+                                    <input type="text" ng-model="LinkCustAcc.branchName" class="form-control" name="branchText" placeholder="Branch Name" ng-readonly="true"> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left">Account Type</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="LinkCustAcc.accountType" class="form-control" name="accountTypeText" placeholder="Account Type" ng-readonly="true"> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left">Currency</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="LinkCustAcc.currency.currencyCode" class="form-control" name="currencyText" placeholder="Currency" ng-readonly="true">   
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left">Account Number</label>
+                                <div class="col-md-9">  
+                                    <input type="text" ng-model="LinkCustAcc.accountNumber" class="form-control" name="branchText" placeholder="Account Number" ng-readonly="true"> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left">Account Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="LinkCustAcc.accountName" class="form-control" numbers-only name="accountTypeText" placeholder="Account Name" ng-readonly="true"> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left">Account Status</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="LinkCustAcc.accountStatus" class="form-control" numbers-only name="currencyText" placeholder="Account Status" ng-readonly="true">   
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="closeAndclear()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button ng-if="!isPrincipal" class="btn btn-secondary" ng-click="linkAccount(LinkCustAcc)"><i class="fa fa-check"></i> Add Account</button>
+                                <button ng-if="isPrincipal" class="btn btn-secondary" ng-click="principalAccountOK(LinkCustAcc, CustAcc)"><i class="fa fa-check"></i> OK</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div> 
+
+    <div class="modal-dlg fade in"  tabindex="-1"   role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowOutlet">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-building"></span>{{CustOutlet.outletId ? ' Edit Customer Outlet' : ' Add Customer Outlet'}}</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeAndclear()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <form class="form-horizontal" name="OutletForm">                   
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Outlet Name:</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CustOutlet.outletName" class="form-control" name="name" placeholder="Outlet Name" required>
+                            </div>                                            
+                            <span class="help-block">Customer Outlet Name</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Physical Address:</label>
+                        <div class="col-md-7">                                            
+                            <div class=" has-feedback">
+                                <textarea  ng-model="CustOutlet.physicalAddress" class="form-control" name="locationText" placeholder="Enter physical address" required></textarea>
+                            </div>                                            
+                            <span class="help-block">Physical Location Address</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Outlet Account(s):</label>
+                        <div class="col-md-7">          
+                            <div class="alert alert-danger" role="alert" ng-show="checkAccountError">
+                                <button type="button" class="close" data-dismiss="alert" ng-click="checkAccountError = !checkAccountError"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                You must select an account
+                            </div>
+                            <div class="checkbox-set">
+                                <div class="form-group" ng-repeat="CustomerAccount in CustomerAccounts" ng-if="$index % 1 == 0">
+                                    <div class="col-md-12">                                    
+                                        <label class="check"><input type="checkbox" class="icheckbox" ng-model="CustomerAccount.isChecked" ng-value="{{CustomerAccount.accountNumber}}"/> {{CustomerAccount.accountNumber + ' - ' + CustomerAccount.accountName}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="help-block">The Bank Account(s) to linked to this Outlet</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                            
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closeAndclear()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="addOutlet()"><i class="fa fa-check-square-o"></i>{{CustOutlet.outletId ? ' Save Outlet':' Add Outlet'}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowContact">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-user"></span>{{OutletContact.contactId ? ' Edit Outlet Contact':' Add Outlet Contact'}}</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeAndclear()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="OutletContactForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Contact Name</label>
+                                <div class="col-md-5"> 
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                        <input type="text" ng-model="OutletContact.fullName" class="form-control" name="contactText" placeholder="Contact Name" required> 
+                                    </div>
+                                    <span class="help-block">Contact Full Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Phone Number</label>
+                                <div class="col-md-5">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                        <input type="text" ng-model="OutletContact.msisdn" class="form-control" minlength="10" maxlength="10" name="msisdnText" placeholder="Phone number" numbers-Only required ng-pattern="/^[0][7][0-9]/"> 
+                                    </div>
+                                    <span ng-show="OutletContactForm.msisdnText.$error.pattern">Not a valid number!</span>
+                                    <span class="help-block">Contact Phone Number (National format e.g. 07xxxxxxxx)</span>
+                                </div>
+                            </div>   
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Email Address</label>
+                                <div class="col-md-5">
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-envelope"></span></span>
+                                        <input type="email" ng-model="OutletContact.emailAddress" class="form-control" name="emailAddressText" placeholder="Email Address" required> 
+                                    </div>
+                                    <span class="help-block">Contact Email Address</span>
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Contact Account(s):</label>
+                                <div class="col-md-7">          
+                                    <div class="alert alert-danger" role="alert" ng-show="checkAccountError">
+                                        <button type="button" class="close" data-dismiss="alert" ng-click="checkAccountError = !checkAccountError"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        You must select an account
+                                    </div>
+                                    <div class="checkbox-set">
+                                        <div class="form-group" ng-repeat="ContactAccount in CustOutlet.accounts" ng-if="$index % 1 == 0">
+                                            <div class="col-md-12">                                    
+                                                <label class="check"><input type="checkbox" class="icheckbox" ng-model="ContactAccount.isChecked" ng-value="{{ContactAccount.accountNumber}}"/> {{ContactAccount.accountNumber + ' - ' + ContactAccount.accountName}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="help-block">The Account(s) to be operated by this contact</span>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="closeAndclear()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-secondary" ng-click="addContact()"><i class="fa fa-check-square-o"></i>{{OutletContact.contactId ? ' Save Contact':' Add Contact'}}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>         
+</section>

@@ -1,0 +1,134 @@
+<section class="content" >       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>Message reports</li>
+        <li class="active">{{PageParams.breadCrumb}}</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="panel-x tab-contentx" ng-if="!ShowTransactionView">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><span class="fa fa-list-ul"></span><strong> {{PageParams.title}}</strong></h4>
+                                <!-- START DATATABLE EXPORT -->
+                                <div class="btn-group pull-right">
+                                    <ul class="panel-controls">
+                                        <li>
+                                            <div class="dataTables_psize">
+                                                <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="" ><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href=""><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href=""><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-body"> 
+                                <div id="datatable_wrapper" class="">
+                                    <form class="form-horizontal" name="searchForm">
+                                    <div id="cit_agent_filter" class="dataTables_filter">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 text-left">Search:</label>
+                                                    <div class="col-md-8">   
+                                                        <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="MessageFilter.keyword">
+                                                    </div>
+                                                </div>
+                                                <div ng-if="!PageParams.trxStatus" class="form-group">
+                                                    <label class="col-md-3">Status:</label>
+                                                    <div class="col-md-8">   
+                                                        <select data-ng-options="trxStatus for trxStatus in ['All', 'Pending', 'Cancelled', 'Completed']" data-ng-model="MessageFilter.trxStatus" class="form-control">
+                                                            <option value="" ng-if="!trxStatus">Select Status</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4">Date From:</label>
+                                                    <div class="col-md-7">   
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="dd-MM-yyyy" data-ng-model="MessageFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Date To:</label>
+                                                    <div class="col-md-8">      
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="dd-MM-yyyy" data-ng-model="MessageFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="btn-group pull-right">
+                                                        <button class="btn btn-default" ng-click="resetMessagesFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                        <button class="btn btn-info" ng-click="loadMessagesReport()"><i class="fa fa-filter"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>   
+                                </form>
+                                    <table class="table datatable table-bordered table-condensed table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-centered">No</th>
+                                                <th>Template_Name</th>
+                                                <th>Description</th>
+                                                <th>Email_Template</th>
+                                                <th>SMS_Template</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="Message in Messages track by $index">
+                                                <td class="col-centered">{{$index + 1}}</td>
+                                                <td >{{Message.templateName}}</td>
+                                                <td>{{Message.description}}</td>
+                                                <td> {{Message.emailTemplate}}</td>                                                
+                                                <td>{{Message.smsTemplate}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-include src="'templates/table-footer.html'"></div>    
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="panel-bodyx tab-contentx" ng-if="ShowTransactionView">
+                        <div ng-include src="'templates/request-report-view.html'" flex></div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    <!-- END PAGE CONTENT WRAPPER -->     
+</section>

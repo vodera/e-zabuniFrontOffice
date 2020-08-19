@@ -1,0 +1,204 @@
+<section class="content" >       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>CIT Agents</li>                    
+        <li class="active">Approve CIT Agents</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal" name="CITAgentApprovalForm">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><strong>Approve CIT Agents</strong></h4>
+                            <!-- START DATATABLE EXPORT -->
+                            <div class="btn-group pull-right">
+                                <ul class="panel-controls">
+                                    <li>
+                                        <div class="dataTables_psize">
+                                            <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="btn-group">
+                                            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" ng-click="DownloadReport('csv')"><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="" ng-click="DownloadReport('xls')"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="" ng-click="DownloadReport('pdf')"><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body"> 
+                            <div id="datatable_wrapper" class="">
+                                <form class="form-horizontal" name="searchForm">
+                                    <div id="cit_agent_filter" class="dataTables_filter">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 text-left">Search:</label>
+                                                    <div class="col-md-8">   
+                                                        <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="CitAgentFilter.keyword">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Date From:</label>
+                                                    <div class="col-md-8">   
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="CitAgentFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4">Status:</label>
+                                                    <div class="col-md-7">   
+                                                        <select data-ng-options="subscriptionStatus for subscriptionStatus in ['All', 'Active', 'Inactive']" data-ng-model="CitAgentFilter.subscriptionStatus" class="form-control">
+                                                            <option value="" ng-if="!subscriptionStatus">Select Status</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4">Date To:</label>
+                                                    <div class="col-md-7">      
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="CitAgentFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="btn-group pull-right">
+                                                        <button class="btn btn-default" ng-click="resetUnapproveCitAgentFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                        <button class="btn btn-info" ng-click="listUnapprovedCITAgents()"><i class="fa fa-filter"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>   
+                                </form>
+                                <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                    <thead>
+                                        <tr>
+                                            <th class="col-centered"><input type="checkbox" ng-model="UnapprovedCITAgents.allItemsSelected" ng-change="checkAll()"/></th>
+                                            <th class="sorting col-centered">No</th>
+                                            <th class="sorting col-left">CIT Agent ID</th>
+                                            <th class="sorting">CIT Agent Name</th>
+                                            <th class="sorting">Location</th>
+                                            <th class="sorting">Postal Address</th>
+                                            <th class="sorting">Company Telephone</th>
+                                            <th class="sorting">Email Address</th>
+                                            <th class="sorting">Creation Date</th>
+                                            <th class="sorting">Approve Action</th>
+                                            <th class="sorting col-centered">Approval Status</th>
+                                            <th class="sorting">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="CITAgent in UnapprovedCITAgents track by $index">
+                                            <td class="col-centered"><input type="checkbox" ng-model="CITAgent.isChecked" ng-change="checkOne()" /></td>
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{CITAgent.citAgentId}}</td>
+                                            <td>{{CITAgent.citAgentName}}</td>
+                                            <td>{{CITAgent.location}}</td>
+                                            <td>{{CITAgent.postalAddress}}</td>
+                                            <td>{{CITAgent.companyTel}}</td>
+                                            <td>{{CITAgent.emailAddress}}</td>
+                                            <td>{{CITAgent.creationDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                            <td>{{CITAgent.action}}</td>
+                                            <td class="col-centered">{{CITAgent.actionStatus}}</td>
+                                            <td>
+                                                <div class="btn-group pull-left">
+                                                    <button ng-if="CITAgent.action == 'Update'" class="btn btn-default btn-xs" ng-click="ShowChanges(CITAgent)"><i class="fa fa-search-plus"></i> View Changes </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-include src="'templates/table-footer.html'"></div>  
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title"><span class="fa fa-check-square-o"></span> Approve records</h5>
+                                    </div>
+                                    <div class="panel-body"> 
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label text-left"> Action:</label>
+                                                    <div class="col-md-7">
+                                                        <div class="col-md-4">
+                                                            <label class="check"><input type="radio" class="iradio" ng-model="CITAgentApproval.action" value="approved"/> Approve</label>
+                                                        </div>
+                                                        <div class="col-md-4">        
+                                                            <label class="check"><input type="radio" class="iradio" ng-model="CITAgentApproval.action" value="rejected"/> Reject</label>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label text-left"> Notes:</label>
+                                                    <div class="col-md-9"> 
+                                                        <textarea class="form-control" ng-model="CITAgentApproval.notes" required=""></textarea>
+                                                        <span class="help-block">Specify a reason for approval or rejection</span>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-group pull-right">
+                                                    <a class="btn btn-default" href="#/CITAgents"><i class="fa fa-times-circle"></i> Dismiss</a>
+                                                    <button class="btn btn-secondary" has-permission="APPROVE_CIT_AGENTS" ng-click="approveCITAgents()"><i class="glyphicon glyphicon-send"></i> Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                </form>
+            </div>
+        </div>     
+        <!-- END PAGE CONTENT WRAPPER --> 
+        <div class="modal-dlg fade in" style="display: block;" ng-show="ShowChange">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-recycle"></span> Changes Pending Approval</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="ShowChange = !ShowChange" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                        <thead>
+                            <tr>
+                                <th class="sorting col-left">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="change in changes">
+                                <td>{{change}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>    
+    </div> 
+</section>

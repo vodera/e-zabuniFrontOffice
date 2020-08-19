@@ -1,0 +1,5 @@
+<resource-env-ref>
+    <description>API global url</description>
+    <resource-env-ref-name>cashCollectionApiUrl</resource-env-ref-name>
+    <resource-env-ref-type>ke.co.tracom.gulf.bank.entities.wrappers.UrlResource</resource-env-ref-type>
+</resource-env-ref>

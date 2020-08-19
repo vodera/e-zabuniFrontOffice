@@ -1,0 +1,133 @@
+<section class="content" >       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>Summary reports</li>
+        <li class="active">Customer Performance</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="panel-x tab-contentx">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><span class="fa fa-bar-chart-o""></span><strong> Customer Performance Report</strong></h4>
+                                <!-- START DATATABLE EXPORT -->
+                                <div class="btn-group pull-right">
+                                    <ul class="panel-controls">
+                                        <li>
+                                            <div class="dataTables_psize">
+                                                <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="" ng-click="DownloadReport('csv')"><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="DownloadReport('xls')"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="DownloadReport('pdf')"><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-body"> 
+                                <div id="datatable_wrapper" class="">
+                                    <form class="form-horizontal" name="searchForm">
+                                    <div id="cit_agent_filter" class="dataTables_filter">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="col-md-4">Select Customer:</label>
+                                                <div class="col-md-7">   
+                                                    <div class="input-group has-feedback">
+                                                        <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                                        <div custom-select="PrincipalCustomer.customerId as PrincipalCustomer.customerName for PrincipalCustomer in searchCustomer($searchTerm)" custom-select-options="{ 'async': true }" ng-model="SummaryFilter.customerId">
+                                                            <div class="pull-left">
+                                                                <strong>{{ PrincipalCustomer.customerName}}</strong><br/>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Date From:</label>
+                                                    <div class="col-md-8">   
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="dd-MM-yyyy" data-ng-model="SummaryFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Date To:</label>
+                                                    <div class="col-md-8">      
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="dd-MM-yyyy" data-ng-model="SummaryFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="btn-group pull-right">
+                                                        <button class="btn btn-default" ng-click="resetSummaryFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                        <button class="btn btn-info" ng-click="loadCustomerPerformanceReport()"><i class="fa fa-filter"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>   
+                                </form>
+                                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                        <thead>
+                                            <tr>
+                                                <th class="sorting col-centered">No</th>
+                                                <th class="sorting">Account Name</th>
+                                                <th class="sorting">Account Number</th>
+                                                <th>Location | Outlet</th>
+                                                <th class="col-right">Collection Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="record in CustomerPerformanceReport | orderBy:sortType:sortReverse track by $index ">
+                                                <td class="col-centered">{{$index + 1}}</td>
+                                                <td>{{record.accountName}}</td> 
+                                                <td>{{record.accountNumber}}</td>
+                                                <td>{{record.location}}</td> 
+                                                <td class="col-right">{{record.depositAmount | number:'2'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-right" colspan="4"><strong>Total Amount :</strong></td>
+                                                <td class="col-right"><strong>{{TotalAmount | number:'2'}}</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-include src="'templates/table-footer.html'"></div>    
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>  
+        </div>
+    <!-- END PAGE CONTENT WRAPPER -->     
+</section>

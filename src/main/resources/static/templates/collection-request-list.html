@@ -1,0 +1,468 @@
+<section class="content" >       
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li ng-if="PageParams.processRequests" class="active">Process Requests</li>
+        <li class="active">{{PageParams.breadCrumb}}</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <div class="panel-x tab-contentx" ng-if="!ShowRequestView">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><span class="fa fa-list-ul"></span><strong> {{PageParams.title}}</strong></h4>
+                                <!-- START DATATABLE EXPORT -->
+                                <div class="btn-group pull-right">
+                                    <ul class="panel-controls">
+                                        <li>
+                                            <div class="dataTables_psize">
+                                                <label>Page Size: <select id="psize" data-ng-options="size for size in PageSizes" data-ng-model="selectedSize" class="form-control" ng-change="setPageSize(selectedSize)">
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="" ng-click="DownloadReport('csv')"><img src='img/icons/csv.png' width="24"/> CSV</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="DownloadReport('xls')"><img src='img/icons/xls.png' width="24"/> XLS</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="" ng-click="DownloadReport('pdf')"><img src='img/icons/pdf.png' width="24"/> PDF</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-body"> 
+                                <div id="datatable_wrapper" class="">
+                                    <form class="form-horizontal" name="searchForm">
+                                    <div id="cit_agent_filter" class="dataTables_filter">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 text-left">Search:</label>
+                                                    <div class="col-md-8">   
+                                                        <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="RequestFilter.keyword">
+                                                    </div>
+                                                </div>
+                                                <div ng-if="!PageParams.processRequests" class="form-group">
+                                                    <label class="col-md-3">Stage:</label>
+                                                    <div class="col-md-8">   
+                                                        <select data-ng-options="requestStage for requestStage in ['All', 'Initiated', 'Forwarded', 'Crew Scheduled', 'Crew Confirmed', 'Tallied', 'Posted']" data-ng-model="RequestFilter.requestStage" class="form-control">
+                                                            <option value="" ng-if="!requestStage">Select Request Stage</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4">Date From:</label>
+                                                    <div class="col-md-7">   
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="RequestFilter.dateFrom" is-open="dateFrom.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateFrom.closed = !dateFrom.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="!PageParams.processRequests" class="form-group">
+                                                    <label class="col-md-4">Request Status:</label>
+                                                    <div class="col-md-7">   
+                                                        <select data-ng-options="requestStatus for requestStatus in ['All', 'Pending', 'Cancelled', 'Completed']" data-ng-model="RequestFilter.requestStatus" class="form-control">
+                                                            <option value="" ng-if="!requestStatus">Select Status</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-md-3">Date To:</label>
+                                                    <div class="col-md-8">      
+                                                        <p class="input-group">
+                                                            <input type="text" class="form-control text-left" uib-datepicker-popup="yyyy/MM/dd" data-ng-model="RequestFilter.dateTo" is-open="dateTo.closed" datepicker-options="dateOptions" close-text="Close" />
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-default" ng-click="dateTo.closed = !dateTo.closed"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="btn-group pull-right">
+                                                        <button class="btn btn-default" ng-click="resetFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                        <button class="btn btn-info" ng-click="listCollectionRequests()"><i class="fa fa-filter"></i> Filter</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>   
+                                </form>
+                                    <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                                        <thead>
+                                            <tr>
+                                                <th class="sorting col-centered">No</th>
+                                                <th class="sorting">Request ID</th>
+                                                <th class="sorting">Request Time</th>
+                                                <th class="sorting">Customer | Outlet Name</th>
+                                                <th class="sorting">Preferred Time</th>
+                                                <!--<th class="sorting">Base Currency</th>-->
+                                                <!--<th class="sorting">Total Value</th>-->
+                                                <th class="sorting">No. Vehicles</th>
+                                                <th class="sorting">Request Status</th>
+                                                <th class="sorting">Request Stage</th>
+                                                <th class="sorting">Completion Time</th>
+                                                <th class="sorting">Requested By</th>
+                                                <th class="sorting">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="CollectionRequest in CollectionRequests track by $index">
+                                                <td class="col-centered">{{$index + 1}}</td>
+                                                <td>{{CollectionRequest.requestId}}</td>
+                                                <td>{{CollectionRequest.requestTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <td>{{CollectionRequest.customerName+' - '+CollectionRequest.outletName}}</td>
+                                                <td>{{CollectionRequest.prefCollectionTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                                <!--<td>{{CollectionRequest.currencyCode}}</td>-->
+                                                <!--<td>{{CollectionRequest.totalValue}}</td>-->
+                                                <td>{{CollectionRequest.vehicleQty}}</td>
+                                                <td>{{CollectionRequest.requestStatus}}</td>
+                                                <td>{{CollectionRequest.requestStage}}</td>
+                                                <td>{{CollectionRequest.completionTime ? (CollectionRequest.completionTime | date:'yyyy-MM-dd HH:mm:ss') : 'N/A'}}</td>
+                                                <td>{{CollectionRequest.requestedBy}}</td>
+                                                <td>
+                                                    <div class="btn-group pull-left">
+                                                        <button class="btn btn-default btn-xs" ng-click="viewCollectionRequest(CollectionRequest)"><i class="fa fa-search-plus"></i> View </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-include src="'templates/table-footer.html'"></div>    
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="panel-bodyx tab-contentx" ng-if="ShowRequestView">
+                        <div ng-include src="'templates/request-view.html'" flex></div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    <!-- END PAGE CONTENT WRAPPER --> 
+    
+    <div class="modal-dlg fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowAmendDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-edit"></span> Amend Transaction Amount</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeDialog()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <form class="form-horizontal" name="CollectionTransactionForm">                   
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Transaction ID</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CollectionTransaction.trxId" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Transaction ID</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Transaction Currency:</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-dollar"></span></span>
+                                <input type="text" ng-model="CollectionTransaction.currencyCode.currencyCode" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Transaction Currency</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Bank Account Number</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-check-square-o"></span></span>
+                                <input type="text" ng-model="CollectionTransaction.accountNumber" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Bank Account Number</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Transaction Amount:</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-money"></span></span>
+                                <input type="text" ng-model="CollectionTransaction.trxValue" class="form-control" name="trxAmountTxt" placeholder="0.00" money-mask style="font-weight: 600;">
+                            </div> 
+                            <span class="help-block">Transaction amount</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                            
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closeDialog()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="amendTrxAmount(CollectionTransaction, true)"><i class="fa fa-check-square-o"></i> Amend</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> 
+    
+    <div class="modal-dlg fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowCancelDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-times"></span> Cancel Request</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeDialog()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <form class="form-horizontal" name="CancelRequestForm">                   
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Request ID</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CollectionRequest.requestId" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Request ID</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Request Time:</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                                <input type="text" ng-model="CollectionRequest.requestTime" ng-value="CollectionRequest.requestTime | date:'yyyy-MM-dd HH:mm:ss'" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Request Time</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Request Stage</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-check-square-o"></span></span>
+                                <input type="text" ng-model="CollectionRequest.requestStage" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Request Stage</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Cancellation Reason:</label>
+                        <div class="col-md-7">
+                           <div class="has-feedback">
+                                <textarea ng-model="CollectionRequest.reason" class="form-control" placeholder="Enter reason"></textarea>
+                            </div> 
+                            <span class="help-block">Specify a reason for canceling the request</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                            
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closeDialog()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="cancelRequest(true)"><i class="fa fa-check-square-o"></i> Cancel Request</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> 
+    
+    <div class="modal-dlg fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowForwardDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-chevron-right"></span> Forward Request to CIT</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeDialog()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <form class="form-horizontal" name="ForwardRequestForm">                   
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Request ID</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-model="CollectionRequest.requestId" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Request ID</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Request Time:</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                                <input type="text" ng-model="CollectionRequest.requestTime" ng-value="CollectionRequest.requestTime | date:'yyyy-MM-dd HH:mm:ss'" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Request Time</span>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Select CIT Agent</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-caret-down"></span></span>
+                                <select data-ng-options="CITAgent.citAgentId as CITAgent.citAgentName for CITAgent in CITAgents" data-ng-model="CollectionRequest.citAgentId" class="form-control" required>
+                                    <option value="" ng-if="!CollectionRequest.citAgentId">Select CIT Agent</option>
+                                </select>
+                            </div>                                
+                            <span class="help-block">Select CIT Agent to forward request to</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Notes:</label>
+                        <div class="col-md-7">
+                           <div class="has-feedback">
+                                <textarea ng-model="CollectionRequest.notes" class="form-control" placeholder="Enter notes"></textarea>
+                            </div> 
+                            <span class="help-block">Add a comment (optional)</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                            
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closeDialog()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="processRequest(true)"><i class="fa fa-check-square-o"></i> Forward Request</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> 
+    
+    <div class="modal-dlg fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowTallyDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-money"></span> Tallied Amount Input - Transaction ID: {{CollectionTransaction.trxId}}</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="processRequest(false)" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <form class="form-horizontal" name="TransactionTallyForm" novalidate="">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Currency:</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-money"></span></span>
+                                <input type="text" ng-model="CollectionTransaction.currencyCode.currencyCode" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Transaction Currency</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label text-left">Coinage:</label>
+                        <div class="col-md-9"> 
+                            <table class="table datatable table-bordered table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="sorting col-centered">No</th>
+                                        <th class="sorting col-centered">Denomination</th>
+                                        <th class="col-right">Units</th>
+                                        <th class="col-right">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="CurrencyDenomination in CollectionTransaction.Currency.cmsCurrencyDenominationList track by $index">
+                                        <td class="col-centered">{{$index + 1}}</td>
+                                        <td class="col-centered" style="vertical-align: middle;">{{CurrencyDenomination.denomination}}</td>
+                                        <td>
+                                            <input type="text" ng-model="CurrencyDenomination.units" ng-value="(CurrencyDenomination.value ? ((CurrencyDenomination.value / CurrencyDenomination.denomination) | number:'0') : 0)" class="form-control col-right" placeholder="0" numbers-Only>
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="CurrencyDenomination.value" ng-value="CurrencyDenomination.units ? ((CurrencyDenomination.denomination * CurrencyDenomination.units) | number:'2') : 0.00" class="form-control col-right" placeholder="0.00" money-mask style="font-weight: 600;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="col-centered"><Strong>Totals</strong></td>
+                                        <td class="col-right"><Strong>{{getInputTotals(CollectionTransaction.Currency.cmsCurrencyDenominationList, 'units') | number:'0'}}</strong></td>
+                                        <td class="col-right"><Strong>{{getInputTotals(CollectionTransaction.Currency.cmsCurrencyDenominationList, 'value') | number:'2'}}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>  
+                        </div>
+                    </div>
+                    <div class="modal-footer">                            
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="processRequest(false)"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="processRequest(true, CollectionTransaction)"><i class="fa fa-check-square-o"></i> Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-dlg fade in" tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowConfirmDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-edit"></span> Confirm Transaction</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="closeDialog()" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <form class="form-horizontal" name="CollectionTransactionConfirmForm">                   
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Transaction ID</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                <input type="text" ng-value="CollectionTransaction.trxId" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Transaction ID</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Bank Account Number</label>
+                        <div class="col-md-7">                                            
+                            <div class="input-group has-feedback">
+                                <span class="input-group-addon"><span class="fa fa-check-square-o"></span></span>
+                                <input type="text" ng-value="'['+CollectionTransaction.currencyCode.currencyCode+'] '+CollectionTransaction.accountNumber" class="form-control" readonly="">
+                            </div>                                
+                            <span class="help-block">Bank Account Number</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Transaction Amount:</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-money"></span></span>
+                                <input type="text" ng-value="CollectionTransaction.trxValue | number:'2'" class="form-control" style="font-weight: 600;" readonly="">
+                            </div> 
+                            <span class="help-block">Transaction amount</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label text-left">Notes:</label>
+                        <div class="col-md-7">
+                           <div class="has-feedback">
+                                <textarea ng-model="CollectionTransaction.notes" class="form-control" placeholder="Enter notes"></textarea>
+                            </div> 
+                            <span class="help-block">Add a comment (optional)</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                            
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default" ng-click="closeDialog()"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                            <button type="button" class="btn btn-secondary" ng-click="processRequest(true, CollectionTransaction)"><i class="fa fa-check-square-o"></i> Confirm</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> 
+</section>

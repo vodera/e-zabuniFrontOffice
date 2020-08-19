@@ -1,0 +1,178 @@
+<section class="content"> 
+    <!-- START BREADCRUMB -->
+    <ul class="breadcrumb">
+        <li><a href="#">Home</a></li> 
+        <li>Master Records</li> 
+        <li class="active">Departments</li>
+    </ul>
+    <!-- END BREADCRUMB -->
+
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrap">
+        <div class="row">
+            <div class="col-md-12">                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="fa fa-sitemap"></span> Departments</h3>
+                        <ul class="panel-controls">
+                            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+<!--                        <div id="cit_agent_filter" class="dataTables_filter">
+                            <label>Search:<input class="form-control " placeholder="keywords" type="search"></label>
+                        </div> -->
+<form class="form-horizontal" name="searchForm">
+                                <div id="cit_agent_filter" class="dataTables_filter">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-md-3 text-left">Search:</label>
+                                                <div class="col-md-8">   
+                                                    <input class="form-control " placeholder="keyword(s)" type="search" data-ng-model="UserFilter.keyword">
+                                                </div>
+                                            </div>
+<!--                                            <div class="form-group">
+                                                <label class="col-md-3">User Type:</label>
+                                                <div class="col-md-8">   
+                                                    <select data-ng-options="userType for userType in ['Bank Operator', 'Customer', 'CIT Agent']" data-ng-model="UserFilter.userType" class="form-control">
+                                                        <option value="" ng-if="!userType">Select User Category</option>
+                                                    </select>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                 <label class="col-md-4">Approval Status:</label>
+                                                <div class="col-md-7">   
+                                                    <select data-ng-options="approvalStatus for approvalStatus in ['All', 'Approved', 'Rejected', 'Unapproved']" data-ng-model="UserFilter.approvalStatus" class="form-control">
+                                                        <option value="" ng-if="!approvalStatus">Select Approval Status</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="btn-group pull-right">
+                                                    <button class="btn btn-default" ng-click="resetUserFilter()"><i class="fa fa-times"></i> Reset</button>
+                                                    <button class="btn btn-info" ng-click="listUnapprovedUsers()"><i class="fa fa-filter"></i> Filter</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                      
+                                </div>   
+                            </form>
+                        <table class="table datatable table-bordered table-condensed table-striped" col-resizeable>
+                            <thead>
+                                <tr>
+                                    <th class="sorting col-centered">No</th>
+                                    <th class="sorting col-left">Department Name</th>
+                                    <th class="sorting">Description</th>
+                                    <th class="sorting">Approval Status</th>
+                                    <th class="sorting">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="Department in Departments track by $index">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{Department.departmentName}}</td>
+                                    <td>{{Department.description}}</td>
+                                    <td>{{Department.actionStatus}}</td>
+                                    <td>
+                                        <div class="btn-group pull-left">
+                                            <button has-permission='UPDATE_DEPARTMENTS' class="btn btn-default btn-xs" ng-click="editDepartment(Department)"><i class="fa fa-pencil"></i> Edit </button>
+                                            <button has-permission='DELETE_DEPARTMENTS' class="btn btn-danger btn-xs" ng-click="deleteDep(Department, true)"><i class="fa fa-trash-o"></i> Delete </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="pull-right">
+                            <button has-permission='CREATE_DEPARTMENTS' type="button" class="btn btn-secondary" ng-click="showDepartmentDlg({})"><i class="fa fa-plus-circle"></i>Add Department</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT WRAPPER -->
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="ShowDepartmentDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-sitemap"></span> Department</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="ShowDepartmentDlg = !ShowDepartmentDlg" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DepartmentForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Department Name</label>
+                                <div class="col-md-5"> 
+                                    <div class="input-group has-feedback">
+                                        <span class="input-group-addon"><span class="fa fa-tag"></span></span>
+                                        <input type="text" ng-model="Department.departmentName" class="form-control" placeholder="Department Name" required> 
+                                    </div>
+                                    <span class="help-block">Department Name</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Description</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="Department.description" class="form-control" name="descriptionText" placeholder="Enter description"> </textarea>
+                                    </div>
+                                    <span class="help-block">Department Description</span>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="ShowDepartmentDlg = !ShowDepartmentDlg"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-secondary" ng-click="saveDepartment()"><i class="fa fa-check-square-o"></i> Save Department</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+    
+    <div class="modal-dlg fade in"  tabindex="-1" role="dialog" aria-hidden="true" style="display: block;" ng-show="DeleteDepartmentDlg">  
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title"><span class="fa fa-sitemap"></span> Department</h3>
+                <ul class="panel-controls">
+                    <li><a href="" ng-click="DeleteDepartmentDlg = !DeleteDepartmentDlg" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body"> 
+                <div class="row"> 
+                    <form class="form-horizontal" name="DeleteDepartmentForm">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label text-left">Description</label>
+                                <div class="col-md-5">
+                                    <div class="has-feedback">
+                                        <textarea ng-model="DepartmentData.notes" class="form-control" name="message" placeholder="Enter Note" required=""> </textarea>
+                                    </div>
+                                    <span class="help-block">Note Description</span>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div class="modal-footer">                            
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default" ng-click="DeleteDepartmentDlg = !DeleteDepartmentDlg"><i class="fa fa-times-circle"></i> Close Dialog</button>
+                                <button class="btn btn-danger" ng-click="deleteSystem()"><i class="fa fa-check-trash-o"></i> Delete Department</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>    
+    </div>
+</section>
