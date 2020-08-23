@@ -779,6 +779,9 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$localStorage', '$window', 
                 $scope.evaluation = function (){
                     $scope.evaluationStage = true;
                 }
+                $scope.progressReport = function (){
+                    $scope.reportingStage = true;
+                }
 
                 // Hardcoded Tenders
                 $scope.Tenders =
