@@ -45,6 +45,13 @@ app.config(function ($routeProvider, $locationProvider, IdleProvider, KeepaliveP
                 isAuthenticated: true,
                 permission: ''
             })
+            .when('/TenderDocuments', {
+                url: "/TenderDocuments",
+                templateUrl: 'templates/tender-documents.html',
+                controller: 'TenderDocumentsCtrl',
+                isAuthenticated: true,
+                permission: ''
+            })
             .when('/CompletedTender', {
                 url: "/CompletedTender",
                 templateUrl: 'templates/completed-tenders.html',
@@ -1034,8 +1041,12 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$localStorage', '$window', 
     .controller('TenderViewCtrl', ['$rootScope', '$scope', 'DataService', '$window', '$timeout', '$q', function ($rootScope, $scope, DataService, $window, $timeout, $q) {
 
             $scope.applyTender = function() {
-                $scope.TenderApplication = true;
+                // $scope.TenderApplication = true;
+                $scope.TenderDocuments = true;
             }
+
+
+
     }])
 
     .controller('AppliedTenderCtrl', ['$rootScope', '$scope', 'DataService', '$window', '$timeout', '$q', function ($rootScope, $scope, DataService, $window, $timeout, $q) {
@@ -1197,13 +1208,32 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$localStorage', '$window', 
                 {TenderTitle:"REHABILITATION WORKS OF MBWALENI WATER", TenderType: "Open Tender", EntityName:"Ministry of Health", ApplicationFee: "0", PublishDate: "25th-Aug-2020", CloseDate: "25th-Aug-2020", ReferenceNo:"NIB/T/006/2018-2017", Status: "Published" }]
 
         $scope.applyTender = function() {
-            $scope.TenderApplication = true;
+            // $scope.TenderApplication = true;
+            $window.location = '#/TenderDocuments';
+
         }
 
         $scope.ViewTender = function(Tender){
             console.log("click view tender")
             $scope.Tender = Tender;
             $scope.ShowTenderView = true;
+        }
+
+
+    }])
+
+
+    .controller('TenderDocumentsCtrl', ['$rootScope', '$scope', 'DataService', '$window', '$timeout', '$q', function ($rootScope, $scope, DataService, $window, $timeout, $q) {
+
+        $scope.next = function() {
+            $scope.TenderApplication = true;
+            // $window.location = '#/TenderDocuments';
+
+        }
+
+        $scope.finishApplication = function(){
+            $window.location = '#/TenderList';
+            $rootScope.notify('success', 'Success', 'Tender Application Completed Successfully');
         }
 
 
